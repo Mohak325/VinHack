@@ -1,10 +1,9 @@
-import Image from "next/image";
-import Form from "./components/Form";
+import LoadingScreen from "./components/Loading";
 
 export default function Home() {
   return (
     <div className="">
-      <Form/>
+      <LoadingScreen/>
     </div>
   );
 }
