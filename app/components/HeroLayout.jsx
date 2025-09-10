@@ -1,35 +1,49 @@
-import React from "react";
+"use client";
 
-const HeroLayout = ({ children }) => {
+import React, { useState } from "react";
+import LoadingScreen from "./Loading";
+import Hero from "./Hero";
+
+export default function HeroLayout() {
+  // `isAppLoading` controls the visibility and mounting of the LoadingScreen's content.
+  const [isAppLoading, setIsAppLoading] = useState(true);
+
+  // `isHeroVisible` mounts the Hero component once loading is done.
+  const [isHeroVisible, setIsHeroVisible] = useState(false);
+
+  const handleLoadingComplete = () => {
+    // 1. Loading is done. Mount the Hero component immediately.
+    // It will be rendered underneath the still-visible loading screen.
+    setIsHeroVisible(true);
+
+    // 2. Wait a brief moment for React to render the Hero,
+    // then trigger the fade-out of the loading screen.
+    setTimeout(() => {
+      setIsAppLoading(false);
+    }, 100); // 100ms is enough time for the Hero to be ready.
+  };
+
   return (
-    <div className="relative w-full h-full p-4">
-      {/* Black border with cutout corners */}
-      <div
-        className="absolute inset-0 bg-black"
-        style={{
-          clipPath:
-            "polygon(0% 30px, 30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0% calc(100% - 30px))",
-        }}
-      ></div>
+    <div>
+      {/* The Hero component is only mounted after loading is complete */}
+      {isHeroVisible && <Hero isVisible={true} />}
 
-      {/* Corner Fills to cover the space left by clip-path */}
-      <div className="absolute top-0 left-0 w-[30px] h-[30px] bg-black"></div>
-      <div className="absolute top-0 right-0 w-[30px] h-[30px] bg-black"></div>
-      <div className="absolute bottom-0 left-0 w-[30px] h-[30px] bg-black"></div>
-      <div className="absolute bottom-0 right-0 w-[30px] h-[30px] bg-black"></div>
-
-      {/* Inner content container with matching cutout shape */}
+      {/* This container controls the fade-out transition */}
       <div
-        className="relative w-full h-full bg-[#D5D1BE]"
-        style={{
-          clipPath:
-            "polygon(0% 30px, 30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0% calc(100% - 30px))",
-        }}
+        className={`
+          fixed top-0 left-0 w-full h-full z-50 
+          transition-opacity duration-1000 ease-in-out
+          ${isAppLoading ? "opacity-100" : "opacity-0 pointer-events-none"}
+        `}
       >
-        {children}
+        {/* The content of the loading screen is only present while loading */}
+        {isAppLoading && (
+          <LoadingScreen
+            onCompletion={handleLoadingComplete}
+            assetPaths={[]} // Pass your asset paths here
+          />
+        )}
       </div>
     </div>
   );
-};
-
-export default HeroLayout;
+}

@@ -1,28 +1,19 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
+import Notch from "./Notch";
 import HeroContent from "./HeroContent";
 import CircularMenu from "./CircularMenu";
-import Notch from "./Notch";
 
-const Hero = ({ isVisible }) => {
+const Hero = ({
+  isVisible,
+  ruigslayClassName,
+  nostromoLightClassName,
+  nostromoMediumClassName,
+}) => {
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [soundOn, setSoundOn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-
-  // Effect to handle mouse movement anywhere on the screen
-  useEffect(() => {
-    const handleMouseMove = (e) => setCoords({ x: e.clientX, y: e.clientY });
-    if (isVisible) {
-      window.addEventListener("mousemove", handleMouseMove);
-    }
-    return () => window.removeEventListener("mousemove", handleMouseMove);
-  }, [isVisible]);
-
-  const tokenizeCoords = (x, y) => {
-    const formatNum = (num) => num.toString().padStart(4, "0").split("");
-    return ["X.", ...formatNum(x), "//", "Y.", ...formatNum(y)];
-  };
 
   const menuItems = [
     { name: "ABOUT", href: "#about" },
@@ -35,6 +26,7 @@ const Hero = ({ isVisible }) => {
 
   return (
     <div
+      onMouseMove={(e) => setCoords({ x: e.clientX, y: e.clientY })}
       className={`font-light fixed inset-0 bg-[#D5D1BE] text-black ${
         isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
@@ -55,38 +47,48 @@ const Hero = ({ isVisible }) => {
         <div className="absolute top-0 right-0 w-[30px] h-[30px] bg-black"></div>
         <div className="absolute bottom-0 left-0 w-[30px] h-[30px] bg-black"></div>
         <div className="absolute bottom-0 right-0 w-[30px] h-[30px] bg-black"></div>
-
-        {/* Notches are now siblings to the inner content area, fixing their positioning */}
-        <Notch
-          position="top"
-          soundOn={soundOn}
-          onToggleSound={() => setSoundOn((s) => !s)}
-        />
-        <Notch position="left" tokens={tokenizeCoords(coords.x, coords.y)} />
-        <Notch
-          position="right"
-          onToggleMenu={() => setIsMenuOpen(!isMenuOpen)}
-        />
-        <Notch position="bottom" />
-
-        {/* Inner content container with matching cutout shape */}
         <div
           className="relative w-full h-full bg-[#D5D1BE]"
           style={{
             clipPath:
               "polygon(0% 30px, 30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0% calc(100% - 30px))",
           }}
-        >
-          <HeroContent isVisible={isVisible} />
-        </div>
-      </div>
+        ></div>
 
-      {/* Circular Menu is a sibling to the main layout, as it's a fixed-position overlay */}
-      <CircularMenu
-        isOpen={isMenuOpen}
-        items={menuItems}
-        onClose={() => setIsMenuOpen(false)}
-      />
+        {/* Notches */}
+        <Notch
+          type="sound"
+          soundOn={soundOn}
+          onToggle={() => setSoundOn((s) => !s)}
+          fontClassName={nostromoLightClassName}
+        />
+        <Notch
+          type="menu"
+          onToggle={() => setIsMenuOpen(!isMenuOpen)}
+          fontClassName={nostromoLightClassName}
+        />
+        <Notch
+          type="coords"
+          coords={coords}
+          fontClassName={nostromoLightClassName}
+        />
+        <Notch type="discover" fontClassName={nostromoLightClassName} />
+
+        {/* Main Content */}
+        <HeroContent
+          isVisible={isVisible}
+          ruigslayClassName={ruigslayClassName}
+          nostromoLightClassName={nostromoLightClassName}
+        />
+
+        {/* Circular Menu */}
+        <CircularMenu
+          isOpen={isMenuOpen}
+          onClose={() => setIsMenuOpen(false)}
+          items={menuItems}
+          fontClassName={nostromoMediumClassName}
+        />
+      </div>
     </div>
   );
 };

@@ -5,8 +5,9 @@ import Image from "next/image";
 import ProgressBar from "./ProgressBar";
 import DecryptingText from "./DecryptingText";
 import AnimatedLines from "./AnimatedLines";
+import { orbitron } from "../fonts";
 
-const LoadingScreen = ({ onCompletion }) => {
+const LoadingScreen = ({ onCompletion, assetPaths }) => {
   const [progress, setProgress] = useState(0);
   const [isFadingOut, setIsFadingOut] = useState(false);
   const [loadingText, setLoadingText] = useState("SYSTEM LOADING");
@@ -18,32 +19,22 @@ const LoadingScreen = ({ onCompletion }) => {
   const targetTagline = "We are cooking something. Stay Tuned!";
 
   useEffect(() => {
-    const minLoadingTime = 3000; // Set minimum loading time to 3 seconds
-
-    // Array of assets to preload for the main page
-    const assetsToLoad = [
-      "/loading-topmost.png",
-      "/loading-top.png",
-      "/loading-bottommost.png",
-      "/assets/top_right_hand.svg",
-      "/assets/bottom_left_hand.svg",
-    ];
+    const minLoadingTime = 3000;
 
     let loadedCount = 0;
 
     const updateProgress = () => {
       loadedCount++;
-      const newProgress = (loadedCount / assetsToLoad.length) * 100;
+      const newProgress = (loadedCount / assetPaths.length) * 100;
       setProgress(newProgress);
     };
 
-    // Promise that resolves when all assets are loaded
     const assetsLoadedPromise = new Promise((resolve) => {
-      if (assetsToLoad.length === 0) {
+      if (assetPaths.length === 0) {
         resolve();
         return;
       }
-      const imagePromises = assetsToLoad.map((src) => {
+      const imagePromises = assetPaths.map((src) => {
         return new Promise((resolveImage) => {
           const img = new window.Image();
           img.src = src;
@@ -54,31 +45,27 @@ const LoadingScreen = ({ onCompletion }) => {
           img.onerror = () => {
             console.warn(`Could not load asset: ${src}`);
             updateProgress();
-            resolveImage(); // Resolve even on error
+            resolveImage();
           };
         });
       });
       Promise.all(imagePromises).then(resolve);
     });
 
-    // Promise that resolves after the minimum time
     const minTimePromise = new Promise((resolve) => {
       setTimeout(resolve, minLoadingTime);
     });
 
-    // When both asset loading and minimum time are complete...
     Promise.all([assetsLoadedPromise, minTimePromise]).then(() => {
-      // Use a short timeout to ensure 100% is displayed briefly
       setTimeout(() => {
         setLoadingText("ACCESS GRANTED");
         setLoadingComplete(true);
-        onCompletion(); // Signal to the parent page to show the Hero component
-        setIsFadingOut(true); // Start the fade-out animation
+        onCompletion();
+        setIsFadingOut(true);
       }, 300);
     });
-  }, [onCompletion]);
+  }, [onCompletion, assetPaths]);
 
-  // Show the date decryption effect near the end of the loading process
   useEffect(() => {
     if (progress >= 90) {
       setShowDate(true);
@@ -87,8 +74,10 @@ const LoadingScreen = ({ onCompletion }) => {
 
   return (
     <div
-      className={`min-h-screen bg-black flex items-center justify-center fixed inset-0 z-50 overflow-hidden font-orbitron transition-opacity duration-1000 ${
-        isFadingOut ? "opacity-0 pointer-events-none" : "opacity-100"
+      className={`min-h-screen bg-black flex items-center justify-center fixed inset-0 z-50 overflow-hidden transition-opacity duration-1000 ${
+        orbitron.className
+      } ${
+        isFadingOut ? "opacity-0 bg-black pointer-events-none" : "opacity-100"
       }`}
     >
       <div className="hidden md:block absolute top-0 left-0 w-full z-0">
@@ -120,7 +109,7 @@ const LoadingScreen = ({ onCompletion }) => {
             targetText={targetText}
             start={true}
             isComplete={loadingComplete}
-            className="text-5xl font-bold text-[#E86100] tracking-wider font-orbitron leading-none"
+            className="text-5xl font-bold text-[#E86100] tracking-wider leading-none"
           />
         </div>
 
@@ -131,13 +120,13 @@ const LoadingScreen = ({ onCompletion }) => {
                 targetText={targetDate}
                 start={showDate}
                 isComplete={loadingComplete}
-                className="text-[#E86100] text-2xl md:text-3xl font-bold font-orbitron"
+                className="text-[#E86100] text-2xl md:text-3xl font-bold"
               />
               <DecryptingText
                 targetText={targetTagline}
                 start={showDate}
                 isComplete={loadingComplete}
-                className="text-[#E86100] text-md md:text-lg font-bold font-orbitron"
+                className="text-[#E86100] text-md md:text-lg font-bold"
               />
             </div>
           )}

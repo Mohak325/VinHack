@@ -1,19 +1,16 @@
 "use client";
 
 import React from "react";
-import localFont from "next/font/local";
 
-const ruigslay = localFont({
-  src: "../../public/fonts/ruigslay/Ruigslay_Regular.ttf",
-  weight: "400",
-  style: "normal",
-});
-
-const HeroContent = ({ isVisible }) => {
+const HeroContent = ({
+  isVisible,
+  ruigslayClassName,
+  nostromoLightClassName,
+}) => {
   return (
-    <div className="absolute inset-0 z-10 w-full h-full flex flex-col justify-center items-center">
+    <div className="absolute inset-0 w-full h-full flex flex-col justify-center items-center">
       <h1
-        className={`text-[clamp(3rem,10vw,10rem)] leading-none relative z-20 ${ruigslay.className}`}
+        className={`text-[clamp(3rem,10vw,10rem)] leading-none relative z-20 ${ruigslayClassName}`}
       >
         VinHack
       </h1>
@@ -23,14 +20,15 @@ const HeroContent = ({ isVisible }) => {
         href="https://gravitas.vit.ac.in/events/5fceeb67-a8ca-4ab9-9419-eb3f9b9d6b69"
         target="_blank"
         rel="noopener noreferrer"
-        className="relative inline-block w-[clamp(140px,18vw,280px)] aspect-[230/80] z-5 group"
+        className="relative inline-block w-[clamp(140px,18vw,280px)] aspect-[230/80] z-20 group"
       >
         <svg
           viewBox="0 0 286 100"
           fill="none"
           xmlns="http://www.w3.org/2000/svg"
-          className="w-full h-full transition-transform duration-300 group-hover:scale-95"
+          className="w-full h-full transition-transform duration-150 group-hover:scale-95"
         >
+          {/* SVG paths remain unchanged */}
           <path
             d="M7 1H278.999C282.313 1.00026 285 3.68673 285 7V92.2236C285 95.5374 282.314 98.2246 279 98.2246H7.00098C3.68724 98.2243 1.00004 95.5378 1 92.2246V7C1.00025 3.68641 3.68653 1 7 1Z"
             fill="#141312"
@@ -54,16 +52,18 @@ const HeroContent = ({ isVisible }) => {
             fill="#EA8244"
           />
         </svg>
-        <span className="absolute inset-0 flex items-center justify-center text-[#E0D8C7] text-[clamp(0.7rem,1.6vw,1.3rem)] transition-transform duration-300 group-hover:scale-95">
+        <span
+          className={`absolute inset-0 flex items-center justify-center text-[#E0D8C7] text-[clamp(0.7rem,1.6vw,1.3rem)] transition-transform duration-150 group-hover:scale-95 ${nostromoLightClassName}`}
+        >
           REGISTER NOW
         </span>
       </a>
 
       {/* Illustrations */}
       <div
-        className={`absolute -top-18 -right-3 w-96 h-96 md:w-128 md:h-128 z-0 transition-all duration-1000 pointer-events-none ${
+        className={`absolute -top-12 -right-8 w-96 h-96 md:w-128 md:h-128 z-40 pointer-events-none transition-all duration-1000 ${
           isVisible
-            ? "opacity-100 translate-x-0 translate-y-0 rotate-0"
+            ? "opacity-100 rotate-[-30deg] translate-x-3 -translate-y-3 md:rotate-0 md:translate-x-0 md:translate-y-0"
             : "opacity-0 translate-x-16 -translate-y-4 rotate-12"
         }`}
         style={{
@@ -79,14 +79,14 @@ const HeroContent = ({ isVisible }) => {
       </div>
 
       <div
-        className={`absolute -bottom-12 -left-4 w-96 h-96 md:w-128 md:h-128 z-0 transition-all duration-1000 pointer-events-none ${
+        className={`absolute -bottom-12 -left-8 w-96 h-96 md:w-128 md:h-128 z-40 pointer-events-none transition-all duration-1000 ${
           isVisible
-            ? "opacity-100 translate-x-0 translate-y-0 rotate-0"
+            ? "opacity-100 rotate-[-30deg] -translate-x-3 translate-y-3 md:rotate-0 md:translate-x-0 md:translate-y-0"
             : "opacity-0 -translate-x-16 translate-y-4 -rotate-12"
         }`}
         style={{
           transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
-          transitionDelay: "800ms",
+          transitionDelay: "600ms",
         }}
       >
         <img
