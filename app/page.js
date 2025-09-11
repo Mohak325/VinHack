@@ -1,9 +1,9 @@
-import LoadingScreen from "./components/Loading";
+import AboutVinhack from "./components/about/AboutVinhack";
 
 export default function Home() {
   return (
     <div className="">
-      <LoadingScreen/>
+      <AboutVinhack/>
     </div>
   );
 }
