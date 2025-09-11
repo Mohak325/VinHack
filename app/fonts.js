@@ -8,7 +8,7 @@ export const orbitron = Orbitron({
 });
 
 export const nostromoLight = localFont({
-  src: "../public/fonts/nostromo/Nostromo_Light.otf",
+  src:"../public/fonts/nostromo/Nostromo_Light.otf",
   weight: "300",
   style: "normal",
   variable: "--font-nostromo-light",
@@ -22,7 +22,7 @@ export const nostromoMedium = localFont({
 });
 
 export const ruigslay = localFont({
-  src: "../public/fonts/ruigslay/Ruigslay_Regular.ttf",
+  src: "../public/fonts/ruigslay/Ruigslay.ttf",
   weight: "400",
   style: "normal",
   variable: "--font-ruigslay",
