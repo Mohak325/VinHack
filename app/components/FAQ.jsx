@@ -1,13 +1,14 @@
 "use client";
 
 import { useRef, useState } from "react";
+import { orbitron } from "../fonts";
 
 export default function FaqSection() {
   return (
-    <section className="relative w-full mt-150 py-10 bg-faq-pattern ">
+    <section className="relative w-full mt-150 py-10 bg-faq-pattern">
       <div className="max-w-6xl w-full mx-auto px-6 py-12">
         {/* Title */}
-        <h1 className="text-center text-3xl font-bold mb-12">FAQS</h1>
+        <h1 className="text-center text-3xl font-bold mb-12 font-orbitron">FAQS</h1>
 
         {/* Grid Layout */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -15,7 +16,7 @@ export default function FaqSection() {
           <div className="space-y-10">
             {/* General FAQs */}
             <div>
-              <h2 className="text-[28px] font-orbitron font-bold text-black mb-6">GENERAL FAQS</h2>
+              <h2 className={`text-center text-[28px] font-bold text-black mb-6 ${orbitron.className}`}>GENERAL FAQS</h2>
               <div className="space-y-4">
                 <FaqItem
                   question="What is a hackathon?"
@@ -42,19 +43,19 @@ export default function FaqSection() {
 
             {/* Hacking FAQs */}
             <div>
-              <h2 className="text-[28px] font-orbitron font-bold text-black mb-6">HACKING FAQS</h2>
+              <h2 className={`text-center text-[28px] font-bold text-black mb-6 ${orbitron.className}`}>HACKING FAQS</h2>
               <div className="space-y-4">
                 <FaqItem
                   question="What should I bring?"
-                  answer="Make sure to bring your laptop, charger and any other required tech you’ll need for your hack. You will find it helpful to bring along key items you would bring to a sleepover: pillows, blanket, toothbrush/toothpaste, deodorant, earphones, etc."
+                  answer="Make sure to bring your laptop, charger and any other required tech you'll need for your hack. You will find it helpful to bring along key items you would bring to a sleepover: pillows, blanket, toothbrush/toothpaste, deodorant, earphones, etc."
                 />
                 <FaqItem
-                  question="But I don’t have a team!"
+                  question="But I don't have a team!"
                   answer="There will be opportunities for willing participants to look for, make or join a team before and at the hackathon through the Discord and after opening ceremonies. If you want to hack as a team, be sure to be proactive during these opportunities! Alternatively, if you have a team and want to find an additional member, these are also opportunities for your team."
                 />
                 <FaqItem
-                  question="But I don’t have any ideas!"
-                  answer="Don’t let this deter you from participating! There is a lot of time and inspiration at the event! A good recommendation for coming up with ideas is to think about annoyances in your everyday life that you could potentially solve. Talk to your friends and family to help you!"
+                  question="But I don't have any ideas!"
+                  answer="Don't let this deter you from participating! There is a lot of time and inspiration at the event! A good recommendation for coming up with ideas is to think about annoyances in your everyday life that you could potentially solve. Talk to your friends and family to help you!"
                 />
               </div>
             </div>
@@ -64,7 +65,7 @@ export default function FaqSection() {
           <div className="space-y-10">
             {/* VinHack FAQs */}
             <div>
-              <h2 className="text-[28px] font-orbitron font-bold text-black mb-6">VINHACK FAQS</h2>
+              <h2 className={`text-center text-[28px] font-bold text-black mb-6 ${orbitron.className}`}>VINHACK FAQS</h2>
               <div className="space-y-4">
                 <FaqItem
                   question="What is the theme of VinHack?"
@@ -91,7 +92,7 @@ export default function FaqSection() {
 
             {/* Sign Up FAQs */}
             <div>
-              <h2 className="text-[28px] font-orbitron font-bold text-black mb-6">SIGN UP FAQS</h2>
+              <h2 className={`text-center text-[28px] font-bold text-black mb-6 ${orbitron.className}`}>SIGN UP FAQS</h2>
               <div className="space-y-4">
                 <FaqItem
                   question="Where can I register for VinHack?"
