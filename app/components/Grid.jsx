@@ -1,8 +1,9 @@
 import React from 'react';
+import FaqSection from './FAQ';
 
 const GridPlusBackground = () => {
   return (
-    <div className="w-full h-screen relative overflow-hidden" style={{ backgroundColor: '#D5D1BE' }}>
+    <div className="top-40 w-full relative" style={{ backgroundColor: '#D5D1BE' }}>
       {/* Grid lines background */}
       <div 
         className="absolute inset-0"
@@ -18,7 +19,7 @@ const GridPlusBackground = () => {
       
       {/* Grid container for plus symbols */}
       <div className="absolute inset-0 grid grid-cols-5 gap-8 p-8">
-        {/* Generate 50 plus symbols (5x10 grid) */}
+        {/* Generate 30 plus symbols (5x6 grid) */}
         {Array.from({ length: 30 }, (_, index) => (
           <div
             key={index}
@@ -34,11 +35,9 @@ const GridPlusBackground = () => {
         ))}
       </div>
       
-      {/* Optional content overlay area */}
-      <div className="relative z-10 flex items-center justify-center h-full">
-        <div className="bg-white bg-opacity-80 rounded-lg p-8 shadow-lg">
-          <p className="text-gray-800 text-lg">Your content goes here</p>
-        </div>
+      {/* Content overlay area */}
+      <div className="relative z-10">
+        <FaqSection/>
       </div>
     </div>
   );

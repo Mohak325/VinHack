@@ -4,7 +4,7 @@ import { useRef, useState } from "react";
 
 export default function FaqSection() {
   return (
-    <section className=" w-full mt-150 py-10 bg-faq-pattern ">
+    <section className="relative w-full mt-150 py-10 bg-faq-pattern ">
       <div className="max-w-6xl w-full mx-auto px-6 py-12">
         {/* Title */}
         <h1 className="text-center text-3xl font-bold mb-12">FAQS</h1>

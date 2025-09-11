@@ -29,7 +29,7 @@ const Hero = ({
   return (
     <div
       onMouseMove={(e) => setCoords({ x: e.clientX, y: e.clientY })}
-      className={`font-light fixed inset-0 bg-[#D5D1BE] text-black ${
+      className={`font-light absolute inset-0 bg-[#D5D1BE] text-black ${
         isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
       }`}
     >

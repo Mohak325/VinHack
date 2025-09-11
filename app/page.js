@@ -4,6 +4,8 @@ import { useState } from "react";
 import LoadingScreen from "./components/Loading";
 import Hero from "./components/Hero";
 import { ruigslay, nostromoLight, nostromoMedium } from "./fonts";
+import FaqSection from "./components/FAQ";
+import GridPlusBackground from "./components/Grid";
 
 export default function Home() {
   const [loadingFinished, setLoadingFinished] = useState(false);
@@ -25,6 +27,7 @@ export default function Home() {
         nostromoLightClassName={nostromoLight.className}
         nostromoMediumClassName={nostromoMedium.className}
       />
+      <GridPlusBackground/>
     </div>
   );
 }
