@@ -1,10 +1,10 @@
-import Image from "next/image";
-import Form from "./components/Form";
+
+import Footer from "./components/Footer";
 
 export default function Home() {
   return (
     <div className="">
-      <Form/>
+      <Footer/>
     </div>
   );
 }

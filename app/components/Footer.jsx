@@ -20,7 +20,7 @@ const poppins = Poppins({ subsets: ['latin'], weight: ['400', '600'] });
 
 const formatCoord = (num) => num.toString().padStart(4, '0');
 
-export default function Home() {
+export default function Footer() {
   const [coords, setCoords] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
