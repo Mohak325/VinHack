@@ -1,0 +1,213 @@
+'use client';
+
+import React, { useState, useEffect, useRef } from 'react';
+import Notch from './Notch';
+// Grid.jsx is no longer imported, as the component is defined locally below.
+
+// 1. Import your custom fonts directly into this file.
+//    (Ensure the path '../lib/fonts' is correct for your project structure)
+import { orbitron, nostromoLight, nostromoMedium, ruigslay } from '../fonts';
+
+// Local Grid component from our previous fix to ensure it's visible.
+const GridPlusBackground = () => {
+  return (
+    <div className="absolute inset-0 pointer-events-none">
+      <div 
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, #c0bdab 1px, transparent 1px),
+            linear-gradient(to bottom, #c0bdab 1px, transparent 1px)
+          `,
+          backgroundSize: '40px 40px'
+        }}
+      >
+      </div>
+      <div className="absolute inset-0 grid grid-cols-5 gap-8 p-8">
+        {Array.from({ length: 30 }, (_, index) => (
+          <div
+            key={index}
+            className="flex items-center justify-center"
+          >
+            <div
+              className="text-md font-light select-none"
+              style={{ color: '#ea8244' }}
+            >
+              +
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+};
+
+
+// This data can be fetched from a database or API in a real application.
+const tracksData = [
+  {
+    id: '.01',
+    title: 'Lorem ipsum dolor sit amet',
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam....',
+  },
+  {
+    id: '.02',
+    title: 'Vestibulum sed arcu non odio',
+    description: 'Euismod lacinia at quis risus. Sed vulputate mi sit amet mauris. Velit sed ullamcorper morbi tincidunt ornare massa eget. Ut enim ad minim veniam....',
+  },
+  {
+    id: '.03',
+    title: 'Integer enim neque volutpat',
+    description: 'Ac tincidunt vitae semper quis. Nunc sed velit dignissim sodales ut eu sem. Amet justo donec enim diam vulputate ut. Ut enim ad minim veniam....',
+  },
+  {
+    id: '.04',
+    title: 'Pellentesque habitant morbi',
+    description: 'Tristique senectus et netus et. Egestas purus viverra accumsan in nisl. At quis risus sed vulputate odio ut enim. Ut enim ad minim veniam....',
+  },
+  {
+    id: '.05',
+    title: 'Massa ultricies mi quis',
+    description: 'Hendrerit dolor magna. Et netus et malesuada fames ac turpis. Amet consectetur adipiscing elit duis tristique. Ut enim ad minim veniam....',
+  },
+];
+
+
+const Tracks = () => {
+  const [scrollProgress, setScrollProgress] = useState(0);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [soundOn, setSoundOn] = useState(false);
+  const containerRef = useRef(null);
+  
+  const finalAnimationTarget = (tracksData.length - 1 + 0.25) / tracksData.length;
+  const containerHeightVh = 100 + ((tracksData.length - 1) * 100 * finalAnimationTarget);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      if (!containerRef.current) return;
+      const { top, height } = containerRef.current.getBoundingClientRect();
+      const scrollableHeight = height - window.innerHeight;
+      const progress = Math.max(0, Math.min(1, -top / scrollableHeight));
+      const animationProgress = progress * finalAnimationTarget;
+      setScrollProgress(animationProgress);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+    return () => {
+      window.removeEventListener('scroll', handleScroll);
+    };
+  }, [finalAnimationTarget]);
+  
+  useEffect(() => {
+    const handleMouseMove = (event) => {
+      setMousePos({ x: event.clientX, y: event.clientY });
+    };
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => {
+      window.removeEventListener('mousemove', handleMouseMove);
+    };
+  }, []);
+
+  const progressTotal = scrollProgress * tracksData.length;
+  const currentCardFloat = Math.floor(progressTotal);
+  const progressWithinCard = progressTotal - currentCardFloat;
+
+  let circleX, circleY;
+  const isCurrentSideEven = currentCardFloat % 2 === 0;
+  
+  const topBound = -35;
+  const bottomBound = 35;
+  const verticalTravel = bottomBound - topBound;
+
+  if (progressWithinCard < 0.5) {
+    const descentProgress = progressWithinCard * 2;
+    circleY = topBound + descentProgress * verticalTravel;
+    circleX = isCurrentSideEven ? 75 : 25;
+  } else {
+    const transitionProgress = (progressWithinCard - 0.5) * 2;
+    circleY = bottomBound - transitionProgress * verticalTravel;
+    const startX = isCurrentSideEven ? 75 : 25;
+    const endX = isCurrentSideEven ? 25 : 75;
+    circleX = startX + transitionProgress * (endX - startX);
+  }
+
+  const circleStyle = { top: '50%', left: `${circleX}%`, transform: `translate(-50%, ${circleY}%)` };
+  const progressPerCard = 1 / tracksData.length;
+  const titleOpacity = 1 - Math.min(1, scrollProgress / (progressPerCard * 0.5));
+  
+  return (
+    <div ref={containerRef} className="relative w-full" style={{ height: `${containerHeightVh}vh` }}>
+      <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+        <div className="relative w-full h-full p-4 sm:p-8 md:p-12">
+          {/* Main frame and background */}
+          <div className="absolute inset-0 bg-black" style={{ clipPath: 'polygon(2% 0, 98% 0, 100% 2%, 100% 98%, 98% 100%, 2% 100%, 0 98%, 0 2%)' }}></div>
+          
+          <div className="absolute inset-0 bg-[#E6DCD1]" style={{ clipPath: 'polygon(2% 0, 40% 0, 42% 6%, 58% 6%, 60% 0, 98% 0, 100% 2%, 100% 35%, 97% 38%, 97% 62%, 100% 65%, 100% 98%, 98% 100%, 60% 100%, 58% 94%, 42% 94%, 40% 100%, 2% 100%, 0 98%, 0 65%, 3% 62%, 3% 38%, 0 35%, 0 2%)' }}>
+              
+              <GridPlusBackground />
+
+              <div className="relative w-full h-full z-10">
+                  {/* TRACKS title */}
+                  <div className="absolute top-0 left-0 w-full pt-16 sm:pt-20 text-center z-20 pointer-events-none transition-opacity duration-300" style={{ opacity: titleOpacity }}>
+                      <h2 className={`text-5xl sm:text-6xl lg:text-8xl font-black tracking-widest text-black ${orbitron.className}`}>TRACKS</h2>
+                  </div>
+
+                  {/* Animated circle */}
+                  <div className="absolute w-48 h-48 md:w-64 md:h-64 z-10" style={circleStyle}>
+                      <div className="w-full h-full rounded-full bg-[#DDC9B4] border-4 border-black"></div>
+                  </div>
+
+                  {/* Track content */}
+                  <div className="relative w-full h-full z-10">
+                      {tracksData.map((track, index) => {
+                          const isCardEven = index % 2 === 0;
+                          const textAlign = isCardEven ? 'text-left' : 'text-right';
+                          const contentAlign = isCardEven ? 'items-start' : 'items-end';
+                          const position = isCardEven ? 'left-0' : 'right-0';
+                          const padding = isCardEven ? 'pl-16 lg:pl-20' : 'pr-20 lg:pr-24';
+                          const textStyle = { transform: `translateY(${(index - scrollProgress * tracksData.length) * 100 + 25}%)` };
+                          const firstCardMargin = index === 0 ? 'mt-24 sm:mt-32' : '';
+
+                          return (
+                              <div key={track.id} className={`absolute w-[42%] h-full flex flex-col justify-center ${textAlign} ${contentAlign} ${position} ${padding} ${firstCardMargin}`} style={textStyle}>
+                                  <p className={`font-bold text-black text-4xl lg:text-6xl xl:text-7xl ${nostromoMedium.className}`}>{track.id}</p>
+                                  <p className={`text-black/70 mt-2 text-base lg:text-xl xl:text-2xl ${nostromoLight.className}`}>{track.title}</p>
+                                  <p className={`leading-relaxed text-black/60 mt-4 text-sm lg:text-base xl:text-lg ${nostromoLight.className}`}>
+                                      {track.description}
+                                      <a href="#" className="font-bold text-black/70 hover:text-black transition-colors duration-300 ml-1">View More</a>
+                                  </p>
+                              </div>
+                          );
+                      })}
+                  </div>
+              </div>
+          </div>
+          
+          {/* Use the Notch component for the indents */}
+          <Notch 
+            type="sound" 
+            soundOn={soundOn} 
+            onToggle={() => setSoundOn(!soundOn)} 
+            fontClassName={ruigslay.className}
+          />
+          <Notch 
+            type="menu" 
+            onToggle={() => console.log('Menu button clicked')}
+            fontClassName={ruigslay.className}
+          />
+          <Notch
+            type="coords"
+            coords={mousePos}
+            fontClassName={ruigslay.className}
+          />
+          <Notch 
+            type="discover" 
+            fontClassName={ruigslay.className}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+export default Tracks;
