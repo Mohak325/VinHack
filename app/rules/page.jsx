@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import Notch from './notch.jsx';
+import Notch from './Notch.jsx'; // Ensure this path is correct
 
 const RulesPage = () => {
   const [soundOn, setSoundOn] = useState(true);
@@ -42,8 +42,8 @@ const RulesPage = () => {
   return (
     <div className="fixed inset-0 bg-black">
       <div className="relative w-full h-full p-4">
-        {/* Black border and corner fills */}
-        <div className="absolute inset-0 bg-black" style={{ clipPath: "polygon(0% 30px, 30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0% calc(100% - 30px))" }}></div>
+        {/* Border and corner elements */}
+        <div className="absolute inset-0" style={{ clipPath: "polygon(0% 30px, 30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0% calc(100% - 30px))" }}></div>
         <div className="absolute top-0 left-0 w-[30px] h-[30px] bg-black"></div>
         <div className="absolute top-0 right-0 w-[30px] h-[30px] bg-black"></div>
         <div className="absolute bottom-0 left-0 w-[30px] h-[30px] bg-black"></div>
@@ -55,29 +55,38 @@ const RulesPage = () => {
         <Notch position="right" onToggleMenu={handleToggleMenu} />
         <Notch position="bottom" />
 
-        {/* Inner content container */}
+        {/* Inner content container with responsive padding */}
         <div
-          className="relative w-full h-full bg-[#D5D1BE] flex flex-col items-center justify-center p-5 md:p-10"
-          style={{ clipPath: "polygon(0% 30px, 30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0% calc(100% - 30px))" }}
+          className="relative w-full h-full flex flex-col items-center justify-center p-6 sm:p-8 md:p-12"
+          style={{ 
+            clipPath: "polygon(0% 30px, 30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0% calc(100% - 30px))",
+            backgroundColor: '#D5D1BE',
+            backgroundImage: `
+              linear-gradient(rgba(0,0,0,0.09) 1px, transparent 1px),
+              linear-gradient(90deg, rgba(0,0,0,0.09) 1px, transparent 1px),
+              url("data:image/svg+xml,%3csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3e%3cg stroke='%23F5B37F' stroke-width='1'%3e%3cpath d='M 50 46 V 54 M 46 50 H 54'/%3e%3c/g%3e%3c/svg%3e")
+            `,
+            backgroundSize: '40px 40px, 40px 40px, 100px 100px'
+          }}
         >
-          <div className="w-full max-w-5xl">
-            {/* --- MODIFIED HEADING --- */}
-            <h1 className="text-center text-5xl md:text-7xl tracking-widest font-bold mb-12" style={{ 
+          {/* Max-width container for content readability */}
+          <div className="w-full max-w-4xl overflow-y-auto">
+            {/* Responsive Heading */}
+            <h1 className="text-center text-4xl sm:text-5xl md:text-7xl tracking-widest font-bold mb-8 md:mb-12" style={{ 
               fontFamily: '"Orbitron", sans-serif',
-              color: '#000' // Text color for heading set to black
+              color: '#000'
             }}>
               RULES
             </h1>
-            {/* --- END MODIFIED HEADING --- */}
-            <ul className="list-none p-0 m-0 flex flex-col gap-6">
+            {/* Responsive List */}
+            <ul className="list-none p-0 m-0 flex flex-col gap-4 md:gap-6">
               {rules.map((rule, index) => (
-                <li key={index} style={{
+                <li key={index} className="text-base sm:text-lg md:text-xl" style={{
                   fontFamily: '"Poppins", sans-serif',
                   fontWeight: 'bold',
                   textAlign: 'left',
-                  fontSize: '1.2rem',   
                   lineHeight: '1.7',
-                  color: '#000' // Text color for rules set to black
+                  color: '#000'
                 }}>
                   • {rule}
                 </li>

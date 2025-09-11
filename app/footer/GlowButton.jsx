@@ -1,8 +1,5 @@
-// GlowButton.jsx
 import { twMerge } from "tailwind-merge";
 
-// 1. Define the SVG for the new corner style
-// This component creates the shape from the image you provided.
 const Corner = ({ className }) => (
   <svg
     width="20"
@@ -35,7 +32,6 @@ export default function GlowButton({ children, className }) {
   return (
     <button className={mergedClasses}>
       {children}
-      {/* 2. Use the new Corner component, rotating it for each position */}
       <Corner className="absolute top-1 left-1 text-orange-500" />
       <Corner className="absolute top-1 right-1 text-orange-500 transform rotate-90" />
       <Corner className="absolute bottom-1 right-1 text-orange-500 transform rotate-180" />
