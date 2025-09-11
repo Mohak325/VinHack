@@ -1,7 +1,6 @@
 import React from 'react';
-import FaqSection from './FAQ';
 
-const GridPlusBackground = () => {
+const GridPlusBackground = ({ children }) => {
   return (
     <div className="top-40 w-full relative" style={{ backgroundColor: '#D5D1BE' }}>
       {/* Grid lines background */}
@@ -35,9 +34,9 @@ const GridPlusBackground = () => {
         ))}
       </div>
       
-      {/* Content overlay area */}
+      {/* Content overlay area - This is where the children will be rendered */}
       <div className="relative z-10">
-        <FaqSection/>
+        {children}
       </div>
     </div>
   );

@@ -2,11 +2,13 @@
 
 import { useRef, useState } from "react";
 import { orbitron } from "../fonts";
+import GridPlusBackground from "./Grid";
 
 export default function FaqSection() {
   return (
     <section className="relative w-full mt-150 py-10 bg-faq-pattern">
-      <div className="max-w-6xl w-full mx-auto px-6 py-12">
+      <GridPlusBackground>
+        <div className="relative max-w-6xl w-full mx-auto px-6 py-12 z-10">
         {/* Title */}
         <h1 className="text-center text-3xl font-bold mb-12 font-orbitron">FAQS</h1>
 
@@ -115,6 +117,8 @@ export default function FaqSection() {
           </div>
         </div>
       </div>
+      </GridPlusBackground>
+      
     </section>
   );
 }
