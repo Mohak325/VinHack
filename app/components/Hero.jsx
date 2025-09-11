@@ -4,6 +4,8 @@ import React, { useState } from "react";
 import Notch from "./Notch";
 import HeroContent from "./HeroContent";
 import CircularMenu from "./CircularMenu";
+import FaqSection from "./FAQ";
+
 
 const Hero = ({
   isVisible,
