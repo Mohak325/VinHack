@@ -10,3 +10,11 @@
   font-style: normal;
 }
 
+@layer utilities {
+  .perspective-\[500px\] {
+    perspective: 500px;
+  }
+  .preserve-3d {
+    transform-style: preserve-3d;
+  }
+}
