@@ -30,7 +30,7 @@ export default function Home() {
         nostromoLightClassName={nostromoLight.className}
         nostromoMediumClassName={nostromoMedium.className}
       />
-      
+      <div className="w-full h-screen"/>
       <AboutVinnhack />
       <AboutVinnovateit />
       <Tracks/>

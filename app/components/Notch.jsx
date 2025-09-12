@@ -109,7 +109,7 @@ const Notch = ({ type, soundOn, onToggle, coords, fontClassName }) => {
     case "sound":
       return (
         <div
-          className={`${baseClasses} top-4 left-1/2 -translate-x-1/2 h-8 md:h-10 w-50 md:w-64 bg-black`}
+          className={`${baseClasses} top-4 left-1/2 -translate-x-1/2 h-8 md:h-10 w-50 md:w-64 bg-black fixed`}
           style={{ clipPath: "polygon(0 0, 100% 0, 85% 100%, 15% 100%)" }}
         >
           <div
@@ -149,7 +149,7 @@ const Notch = ({ type, soundOn, onToggle, coords, fontClassName }) => {
     case "menu":
       return (
         <div
-          className={`${baseClasses} top-1/2 right-3 -translate-y-1/2 w-7 h-72 bg-black`}
+          className={`${baseClasses} top-1/2 fixed right-3 -translate-y-1/2 w-7 h-72 bg-black`}
           style={{ clipPath: "polygon(0 15%, 100% 0, 100% 100%, 0 85%)" }}
         >
           <button
@@ -168,7 +168,7 @@ const Notch = ({ type, soundOn, onToggle, coords, fontClassName }) => {
     case "coords":
       return (
         <div
-          className={`${baseClasses} top-1/2 left-3 -translate-y-1/2 w-7 h-72 bg-black`}
+          className={`${baseClasses} top-1/2 fixed left-3 -translate-y-1/2 w-7 h-72 bg-black`}
           style={{ clipPath: "polygon(0 0, 100% 15%, 100% 85%, 0 100%)" }}
         >
           <div
@@ -198,6 +198,32 @@ const Notch = ({ type, soundOn, onToggle, coords, fontClassName }) => {
           >
             DISCOVER
           </a>
+        </div>
+      );
+    case "border":
+      return (
+        <div className="absolute inset-0 w-full h-full p-4">
+          {/* Black border with cutout corners */}
+          <div
+            className="absolute inset-0 bg-black"
+            style={{
+              clipPath:
+                "polygon(0% 30px, 30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0% calc(100% - 30px))",
+            }}
+          ></div>
+
+          {/* Corner Fills to cover the space left by clip-path */}
+          <div className="absolute top-0 left-0 w-[30px] h-[30px] bg-black"></div>
+          <div className="absolute top-0 right-0 w-[30px] h-[30px] bg-black"></div>
+          <div className="absolute bottom-0 left-0 w-[30px] h-[30px] bg-black"></div>
+          <div className="absolute bottom-0 right-0 w-[30px] h-[30px] bg-black"></div>
+          <div
+            className="relative w-full h-full bg-[#D5D1BE]"
+            style={{
+              clipPath:
+                "polygon(0% 30px, 30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0% calc(100% - 30px))",
+            }}
+          ></div>
         </div>
       );
     default:

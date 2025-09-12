@@ -15,7 +15,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${orbitron.variable} ${nostromoLight.variable} ${nostromoMedium.variable} ${ruigslay.variable} font-sans`}
+        className={`${orbitron.variable} overflow-x-hidden ${nostromoLight.variable} ${nostromoMedium.variable} ${ruigslay.variable} font-sans`}
       >
         {children}
       </body>
