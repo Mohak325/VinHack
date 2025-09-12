@@ -1,4 +1,10 @@
 import "./globals.css";
+import {
+  orbitron,
+  nostromoLight,
+  nostromoMedium,
+  ruigslay,
+} from "./fonts";
 
 export const metadata = {
   title: "VinHack 25",
@@ -9,9 +15,11 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
+        className={`${orbitron.variable} ${nostromoLight.variable} ${nostromoMedium.variable} ${ruigslay.variable} font-sans`}
       >
         {children}
       </body>
     </html>
   );
 }
+
