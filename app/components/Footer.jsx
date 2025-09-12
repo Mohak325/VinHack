@@ -87,8 +87,6 @@ export default function Footer() {
       
       {/* Apply delay and top padding to the main content */}
       <main className="flex-1 flex flex-col items-center justify-center text-center relative px-4 sm:px-6 pt-20 animate-main">
-        
-        
 
         <ScrambleText
           as="h1"
@@ -124,7 +122,7 @@ export default function Footer() {
           </a>
         </div>
 
-       
+
       </main>
 
       <footer className="bg-[#d6d1c4] text-black py-8 md:py-12 px-6 md:px-20 relative rounded-t-3xl">
