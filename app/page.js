@@ -29,7 +29,7 @@ export default function Home() {
         nostromoLightClassName={nostromoLight.className}
         nostromoMediumClassName={nostromoMedium.className}
       />
-      <Tracks/>
+      {/* <Tracks/> */}
       <FaqSection/>
       <Footer/>
       
