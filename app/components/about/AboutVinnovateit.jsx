@@ -34,7 +34,7 @@ const nostromo = localFont({
 	display: "swap",
 });
 
-const AboutVinhack = () => {
+const AboutVinnovateit = () => {
 	const targetRef = useRef(null);
 	const { scrollYProgress } = useScroll({
 		target: targetRef,
@@ -117,9 +117,24 @@ const AboutVinhack = () => {
 					style={{ opacity: paragraphOpacity }}
 					className="absolute top-[25%] bottom-[10%] left-[5%] w-[50%] flex flex-col justify-between"
 				>
-					<div className="text-[#EA8244] text-justify text-2xl p-4" style={{ fontWeight: 600 }}>
-						VinHack is a 36 hour hybrid hackathon that encourages collaboration, learning and innovation through brainstorming groundbreaking ideas and generating prototypes that solve real world problems. Conducted in 3 rounds, teams of 1-4 members will be provided with an ideal platform to analyse the problem statements and develop algorithms to implement their solutions. VinHack also incorporates guest speaker sessions and fun games to push our coders to achieve their greatest potentials and expand their technical knowledge and skills.The event will culminate with prizes for winners in various categories.
+					<div
+						className="text-[#EA8244] text-justify text-2xl p-4"
+						style={{ fontWeight: 600 }}
+					>
+						VinnovateIT is the one-stop destination for all you curious cats to
+						satisfy your hunger in the diverse world of computer science. In
+						other words… think of it as the place where genius meets curiosity —
+						and the result is pure magic. So come immerse yourself, in what we
+						like to believe is the closest thing to Hogwarts.
 					</div>
+					<button className="mt-4 self-start">
+						<Image
+							src="/click_for_website.svg"
+							alt="Learn More About Vinnovateit"
+							width={300}
+							height={50}
+						/>
+					</button>
 				</motion.div>
 
 				{/* Circle (Moves & Scales) */}
@@ -144,8 +159,8 @@ const AboutVinhack = () => {
 					className="absolute w-2/3"
 				>
 					<Image
-						src="/vinnhack_text.svg"
-						alt="Vinnhack Text"
+						src="/vinnovateit_text.svg"
+						alt="Vinnovateit Text"
 						width={400}
 						height={100}
 						className="w-full h-auto object-contain"
@@ -159,7 +174,7 @@ const AboutVinhack = () => {
 					className={`absolute right-0 top-[37.5%] p-[2.5%] w-[25%] h-[37.5%] text-center ${nostromo.className}`}
 				>
 					<div className="text-5xl" style={{ fontWeight: 700 }}>
-						.01
+						.02
 					</div>
 				</motion.div>
 
@@ -171,7 +186,7 @@ const AboutVinhack = () => {
 						className={`text-center ${nostromo.className}`}
 					>
 						<div className="text-5xl" style={{ fontWeight: 700 }}>
-							.01
+							.02
 						</div>
 					</motion.div>
 
@@ -199,4 +214,4 @@ const AboutVinhack = () => {
 	);
 };
 
-export default AboutVinhack;
+export default AboutVinnovateit;

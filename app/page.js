@@ -1,9 +1,11 @@
-import AboutVinhack from "./components/about/AboutVinhack";
+import AboutVinnovateit from "./components/about/AboutVinnovateit";
+import AboutVinnhack from "./components/about/AboutVinhack";
 
 export default function Home() {
   return (
     <div className="">
-      <AboutVinhack/>
+      <AboutVinnhack />
+      <AboutVinnovateit />
     </div>
   );
 }
