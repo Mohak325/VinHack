@@ -2,7 +2,7 @@ import React from 'react';
 
 const GridPlusBackground = ({ children }) => {
   return (
-    <div className="top-40 w-full relative" style={{ backgroundColor: '#D5D1BE' }}>
+    <div className="w-full relative" style={{ backgroundColor: '#D5D1BE' }}>
       {/* Grid lines background */}
       <div 
         className="absolute inset-0"
