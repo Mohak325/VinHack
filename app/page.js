@@ -7,6 +7,7 @@ import { ruigslay, nostromoLight, nostromoMedium } from "./fonts";
 import FaqSection from "./components/FAQ";
 
 import Footer from "./components/Footer";
+import Tracks from "./components/Track";
 
 export default function Home() {
   const [loadingFinished, setLoadingFinished] = useState(false);
@@ -28,8 +29,10 @@ export default function Home() {
         nostromoLightClassName={nostromoLight.className}
         nostromoMediumClassName={nostromoMedium.className}
       />
+      <Tracks/>
       <FaqSection/>
       <Footer/>
+      
     </div>
   );
 }
