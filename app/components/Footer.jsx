@@ -43,7 +43,7 @@ export default function Footer() {
     ...formatCoord(coords.y).split(''),
   ];
 
-  // --- UPDATED ANIMATION STYLES ---
+  // --- ANIMATION STYLES ---
   const animationStyles = `
     @keyframes fadeInLeft {
       from { opacity: 0; transform: translateX(-20px); }
@@ -85,11 +85,11 @@ export default function Footer() {
     >
       <style>{animationStyles}</style>
       
-      {/* Apply delay to the main content */}
-      <main className="flex-1 flex flex-col items-center justify-center text-center relative px-4 sm:px-6 animate-main">
+      {/* Apply delay and top padding to the main content */}
+      <main className="flex-1 flex flex-col items-center justify-center text-center relative px-4 sm:px-6 pt-20 animate-main">
         
         <div
-          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 hidden md:flex flex-col items-start gap-y-0.5 text-xs tracking-widest font-mono animate-side fade-in-left"
+          className="absolute left-4 top-1/2 -translate-y-1/2 z-10 flex flex-col items-start gap-y-0.5 text-xs tracking-widest font-mono animate-side fade-in-left"
           style={{ color: "#F5B37F" }}
         >
           {leftSideText.map((token, i) => (
@@ -133,7 +133,7 @@ export default function Footer() {
           </a>
         </div>
 
-        <button className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-[#F5B37F] z-10 hidden md:flex flex-col space-y-0 font-mono hover:text-white transition-colors duration-300 animate-side fade-in-right">
+        <button className="absolute right-4 top-1/2 -translate-y-1/2 text-sm text-[#F5B37F] z-10 flex flex-col space-y-0 font-mono hover:text-white transition-colors duration-300 animate-side fade-in-right">
           <span>M</span>
           <span>E</span>
           <span>N</span>
