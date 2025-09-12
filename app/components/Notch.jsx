@@ -109,7 +109,7 @@ const Notch = ({ type, soundOn, onToggle, coords, fontClassName }) => {
     case "sound":
       return (
         <div
-          className={`${baseClasses} top-4 left-1/2 -translate-x-1/2 h-8 md:h-10 w-50 md:w-64 bg-black`}
+          className={`${baseClasses} top-0 left-1/2 -translate-x-1/2 h-8 md:h-10 w-50 md:w-64 bg-black`}
           style={{ clipPath: "polygon(0 0, 100% 0, 85% 100%, 15% 100%)" }}
         >
           <div
@@ -149,7 +149,7 @@ const Notch = ({ type, soundOn, onToggle, coords, fontClassName }) => {
     case "menu":
       return (
         <div
-          className={`${baseClasses} top-1/2 right-3 -translate-y-1/2 w-7 h-72 bg-black`}
+          className={`${baseClasses} top-1/2 right-0 -translate-y-1/2 w-7 h-72 bg-black`}
           style={{ clipPath: "polygon(0 15%, 100% 0, 100% 100%, 0 85%)" }}
         >
           <button
@@ -168,7 +168,7 @@ const Notch = ({ type, soundOn, onToggle, coords, fontClassName }) => {
     case "coords":
       return (
         <div
-          className={`${baseClasses} top-1/2 left-3 -translate-y-1/2 w-7 h-72 bg-black`}
+          className={`${baseClasses} top-1/2 left-0 -translate-y-1/2 w-7 h-72 bg-black`}
           style={{ clipPath: "polygon(0 0, 100% 15%, 100% 85%, 0 100%)" }}
         >
           <div
@@ -186,7 +186,7 @@ const Notch = ({ type, soundOn, onToggle, coords, fontClassName }) => {
     case "discover":
       return (
         <div
-          className={`${baseClasses} bottom-3.5 left-1/2 -translate-x-1/2 h-5 md:h-7 w-40 bg-black rounded-t-xl`}
+          className={`${baseClasses} bottom-0 left-1/2 -translate-x-1/2 h-5 md:h-7 w-40 bg-black rounded-t-xl`}
           style={{
             clipPath: "polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)",
           }}
