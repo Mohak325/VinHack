@@ -234,27 +234,7 @@ const Tracks = () => {
               </div>
           </div>
           
-          {/* Use the Notch component for the indents */}
-          <Notch 
-            type="sound" 
-            soundOn={soundOn} 
-            onToggle={() => setSoundOn(!soundOn)} 
-            fontClassName={ruigslay.className}
-          />
-          <Notch 
-            type="menu" 
-            onToggle={() => console.log('Menu button clicked')}
-            fontClassName={ruigslay.className}
-          />
-          <Notch
-            type="coords"
-            coords={mousePos}
-            fontClassName={ruigslay.className}
-          />
-          <Notch 
-            type="discover" 
-            fontClassName={ruigslay.className}
-          />
+          
         </div>
       </div>
     </div>
