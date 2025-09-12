@@ -5,6 +5,7 @@ import { Orbitron } from "next/font/google";
 import localFont from "next/font/local";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
+import CoinFlip from "../CoinFlip";
 
 const orbitron = Orbitron({ subsets: ["latin"] });
 
@@ -34,7 +35,7 @@ const nostromo = localFont({
 	display: "swap",
 });
 
-const AboutVinhack = () => {
+const AboutVinhack = ({ isFlipping }) => {
 	const targetRef = useRef(null);
 	const { scrollYProgress } = useScroll({
 		target: targetRef,
@@ -125,15 +126,12 @@ const AboutVinhack = () => {
 				{/* Circle (Moves & Scales) */}
 				<motion.div
 					style={{ x: circleX, scale: circleScale }}
-					className="absolute top-[5%] left-[25%] grid w-[50%] h-[75%] place-items-center"
+					className="absolute top-[5%] left-[25%] w-[50%] h-[75%]"
 				>
-					<div className="bg-[#DAB89D] rounded-full aspect-square h-full w-auto max-w-full max-h-full border-8 border-black col-start-1 row-start-1"></div>
-					<Image
-						src="/circle_border.svg"
-						alt="Circle Border"
-						width={500}
-						height={500}
-						className="w-full h-auto col-start-1 row-start-1 px-[5%]"
+					<CoinFlip
+						frontImg="/vinnhack_text.svg"
+						backImg="/vinnovateit_text.svg"
+						isFlipping={isFlipping}
 					/>
 				</motion.div>
 
