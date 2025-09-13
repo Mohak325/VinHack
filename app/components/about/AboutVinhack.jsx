@@ -53,7 +53,7 @@ const AboutVinhack = ({ isFlipping }) => {
 
 	// 2. Circle Animation
 	const circleX = useTransform(scrollYProgress, [0, 1], ["0%", "55%"]);
-	const circleScale = useTransform(scrollYProgress, [0, 1], [1, 0.6]);
+	const circleScale = useTransform(scrollYProgress, [0, 1], [0.9, 0.6]);
 
 	// 3. Left & Right Column Fade Out
 	const sideColumnsOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
@@ -118,21 +118,34 @@ const AboutVinhack = ({ isFlipping }) => {
 					style={{ opacity: paragraphOpacity }}
 					className="absolute top-[25%] bottom-[10%] left-[5%] w-[50%] flex flex-col justify-between"
 				>
-					<div className="text-[#EA8244] text-justify text-2xl p-4" style={{ fontWeight: 600 }}>
-						VinHack is a 36 hour hybrid hackathon that encourages collaboration, learning and innovation through brainstorming groundbreaking ideas and generating prototypes that solve real world problems. Conducted in 3 rounds, teams of 1-4 members will be provided with an ideal platform to analyse the problem statements and develop algorithms to implement their solutions. VinHack also incorporates guest speaker sessions and fun games to push our coders to achieve their greatest potentials and expand their technical knowledge and skills.The event will culminate with prizes for winners in various categories.
+					<div
+						className="text-[#EA8244] text-justify text-2xl p-4"
+						style={{ fontWeight: 600 }}
+					>
+						VinHack is a 36 hour hybrid hackathon that encourages collaboration,
+						learning and innovation through brainstorming groundbreaking ideas
+						and generating prototypes that solve real world problems. Conducted
+						in 3 rounds, teams of 1-4 members will be provided with an ideal
+						platform to analyse the problem statements and develop algorithms to
+						implement their solutions. VinHack also incorporates guest speaker
+						sessions and fun games to push our coders to achieve their greatest
+						potentials and expand their technical knowledge and skills.The event
+						will culminate with prizes for winners in various categories.
 					</div>
 				</motion.div>
 
 				{/* Circle (Moves & Scales) */}
 				<motion.div
 					style={{ x: circleX, scale: circleScale }}
-					className="absolute top-[5%] left-[25%] w-[50%] h-[75%]"
+					className="absolute top-[5%] left-[25%] w-[50%] h-[75%] flex justify-center items-center"
 				>
-					<CoinFlip
-						frontImg="/vinnhack_text.svg"
-						backImg="/vinnovateit_text.svg"
-						isFlipping={isFlipping}
-					/>
+					<div className="w-full h-auto aspect-square">
+						<CoinFlip
+							frontImg="/vinnhack_text.svg"
+							backImg="/vinnovateit_text.svg"
+							isFlipping={isFlipping}
+						/>
+					</div>
 				</motion.div>
 
 				{/* Heading (Moves & Scales) */}

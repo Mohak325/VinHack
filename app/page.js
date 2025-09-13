@@ -24,6 +24,7 @@ export default function Home() {
 	return (
 		<div ref={containerRef}>
 			<AboutVinnhack isFlipping={isFlipping} />
+			<div className="h-[40vh] bg-[#fcd8b9]" />
 			<AboutVinnovateit isFlipping={isFlipping} />
 		</div>
 	);

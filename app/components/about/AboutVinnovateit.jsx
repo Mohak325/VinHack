@@ -53,7 +53,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
 
 	// 2. Circle Animation
 	const circleX = useTransform(scrollYProgress, [0, 1], ["0%", "55%"]);
-	const circleScale = useTransform(scrollYProgress, [0, 1], [1, 0.6]);
+	const circleScale = useTransform(scrollYProgress, [0, 1], [0.9, 0.6]);
 
 	// 3. Left & Right Column Fade Out
 	const sideColumnsOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
@@ -141,13 +141,15 @@ const AboutVinnovateit = ({ isFlipping }) => {
 				{/* Circle (Moves & Scales) */}
 				<motion.div
 					style={{ x: circleX, scale: circleScale }}
-					className="absolute top-[5%] left-[25%] w-[50%] h-[75%]"
+					className="absolute top-[5%] left-[25%] w-[50%] h-[75%] flex justify-center items-center"
 				>
-					<CoinFlip
-						frontImg="/vinnhack_text.svg"
-						backImg="/vinnovateit_text.svg"
-						isFlipping={isFlipping}
-					/>
+					<div className="w-full h-auto aspect-square">
+						<CoinFlip
+							frontImg="/vinnhack_text.svg"
+							backImg="/vinnovateit_text.svg"
+							isFlipping={isFlipping}
+						/>
+					</div>
 				</motion.div>
 
 				{/* Heading (Moves & Scales) */}
