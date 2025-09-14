@@ -7,7 +7,7 @@ import React, {
   useEffect,
   useRef,
 } from "react";
-import CircularMenu from "./CircularMenu";
+import SlidingMenu from "./SlidingMenu";
 
 const BorderContext = createContext();
 
@@ -114,7 +114,7 @@ const Notch = ({ type, fontClassName, className }) => {
   };
 
   const tokens = coords ? tokenizeCoords(coords.x, coords.y) : [];
-  const baseClasses = "fixed z-51 flex justify-center items-center";
+  const baseClasses = "fixed z-52 flex justify-center items-center";
   const textClasses = `text-xs md:text-sm tracking-widest transition-opacity ${fontClassName}`;
   const textColor = { color: "#F5B37F" };
 
@@ -172,8 +172,11 @@ const Notch = ({ type, fontClassName, className }) => {
             className={`${textClasses} flex flex-col items-center justify-center h-full w-full hover:opacity-70`}
             style={textColor}
           >
-            {"MENU".split("").map((char, i) => (
-              <span key={i} className="leading-tight tracking-widest">
+            {(isMenuOpen ? "CLOSE" : "MENU").split("").map((char, i) => (
+              <span
+                key={i}
+                className="leading-tight tracking-widest transition-opacity duration-300"
+              >
                 {char}
               </span>
             ))}
@@ -229,15 +232,6 @@ const Border = ({
   const [soundOn, setSoundOn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
-  const menuItems = [
-    { name: "ABOUT", href: "#about" },
-    { name: "SCHEDULE", href: "#schedule" },
-    { name: "PRIZES", href: "#prizes" },
-    { name: "SPONSORS", href: "#sponsors" },
-    { name: "FAQ", href: "#faq" },
-    { name: "CONTACT", href: "#contact" },
-  ];
-
   const cornerNotchColor = "#000000";
   const cornerNotchSize = "20px"; // Matched to border size
 
@@ -250,35 +244,35 @@ const Border = ({
         className="relative w-full h-full"
       >
         {/* Borders */}
-        <div className="fixed top-0 left-0 w-full h-[20px] bg-black z-50 pointer-events-none"></div>
-        <div className="fixed bottom-0 left-0 w-full h-[20px] bg-black z-50 pointer-events-none"></div>
-        <div className="fixed top-0 left-0 w-[20px] h-full bg-black z-50 pointer-events-none"></div>
-        <div className="fixed top-0 right-0 w-[20px] h-full bg-black z-50 pointer-events-none"></div>
+        <div className="fixed top-0 left-0 w-full h-[20px] bg-black z-52 pointer-events-none"></div>
+        <div className="fixed bottom-0 left-0 w-full h-[20px] bg-black z-52 pointer-events-none"></div>
+        <div className="fixed top-0 left-0 w-[20px] h-full bg-black z-52 pointer-events-none"></div>
+        <div className="fixed top-0 right-0 w-[20px] h-full bg-black z-52 pointer-events-none"></div>
 
         {/* --- ADDED: Corner Notches --- */}
         <div
-          className="fixed top-[20px] left-[20px] w-0 h-0 z-50 pointer-events-none"
+          className="fixed top-[20px] left-[20px] w-0 h-0 z-52 pointer-events-none"
           style={{
             borderTop: `${cornerNotchSize} solid ${cornerNotchColor}`,
             borderRight: `${cornerNotchSize} solid transparent`,
           }}
         />
         <div
-          className="fixed top-[20px] right-[20px] w-0 h-0 z-50 pointer-events-none"
+          className="fixed top-[20px] right-[20px] w-0 h-0 z-52 pointer-events-none"
           style={{
             borderTop: `${cornerNotchSize} solid ${cornerNotchColor}`,
             borderLeft: `${cornerNotchSize} solid transparent`,
           }}
         />
         <div
-          className="fixed bottom-[20px] left-[20px] w-0 h-0 z-50 pointer-events-none"
+          className="fixed bottom-[20px] left-[20px] w-0 h-0 z-52 pointer-events-none"
           style={{
             borderBottom: `${cornerNotchSize} solid ${cornerNotchColor}`,
             borderRight: `${cornerNotchSize} solid transparent`,
           }}
         />
         <div
-          className="fixed bottom-[20px] right-[20px] w-0 h-0 z-50 pointer-events-none"
+          className="fixed bottom-[20px] right-[20px] w-0 h-0 z-52 pointer-events-none"
           style={{
             borderBottom: `${cornerNotchSize} solid ${cornerNotchColor}`,
             borderLeft: `${cornerNotchSize} solid transparent`,
@@ -297,12 +291,9 @@ const Border = ({
         {/* Main Content */}
         <div className="relative z-10">{children}</div>
 
-        {/* Circular Menu */}
+        {/* Sliding Menu */}
         <div className="pointer-events-auto">
-          <CircularMenu
-            items={menuItems}
-            fontClassName={nostromoMediumClassName}
-          />
+          <SlidingMenu />
         </div>
       </div>
     </BorderContext.Provider>

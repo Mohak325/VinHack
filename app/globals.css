@@ -1,5 +1,45 @@
 @import "tailwindcss";
+
+
+
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
+html,
+body {
+  overflow-x: hidden;
+  /* Allow vertical scrolling */
+  overflow-y: auto;
+}
+
+/* Custom Scrollbar Styles */
+/* For Firefox */
+html, body {
+  scrollbar-width: thin;
+  scrollbar-color: #F5B37F #000000; /* thumb and track color */
+}
+
+/* For Chrome, Safari, and Opera */
+html::-webkit-scrollbar,
+body::-webkit-scrollbar {
+  width: 2px;
+}
+
+html::-webkit-scrollbar-track,
+body::-webkit-scrollbar-track {
+  background: #1a1a1a; /* A dark color for the track */
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background-color: #F5B37F;
+  border-radius: 2px;
+}
+
+html::-webkit-scrollbar-button,
+body::-webkit-scrollbar-button {
+  display: none;
+}
+
 
 @layer utilities {
   .perspective-\[500px\] {
@@ -8,4 +48,17 @@
   .preserve-3d {
     transform-style: preserve-3d;
   }
+}
+
+@keyframes blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+.animate-blink {
+  animation: blink 1s infinite;
+}
+
+.animation-delay-200 {
+  animation-delay: 0.2s;
 }

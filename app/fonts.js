@@ -28,3 +28,9 @@ export const ruigslay = localFont({
   variable: "--font-ruigslay",
 });
 
+export const gulimche = localFont({
+  src: "../public/fonts/gulimche/GulimChe.ttf",
+  weight: "400",
+  style: "normal",
+  variable: "--font-gulimche",
+});
