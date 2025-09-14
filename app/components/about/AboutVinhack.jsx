@@ -144,7 +144,7 @@ const AboutVinhack = ({ isFlipping }) => {
 					<div className="h-full w-auto aspect-square max-w-full max-h-full">
 						<CoinFlip
 							frontImg="/vinhack23.jpg"
-							backImg="/vinnovateit.png"
+							backImg="/vinnovateit.jpg"
 							isFlipping={isFlipping}
 						/>
 					</div>
