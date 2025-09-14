@@ -62,15 +62,15 @@ const AboutVinnovateit = ({ isFlipping }) => {
 
 	return (
 		// The main scrollable container - increased height for more static time at end
-		<section ref={targetRef} className="relative h-[400vh]">
+		<section ref={targetRef} className="relative h-[400vh] min-h-screen">
 			{/* The sticky container that holds all content */}
-			<div className="sticky top-0 h-screen w-full overflow-hidden">
+			<div className="sticky top-0 h-screen w-full overflow-hidden max-w-full">
 				{/* --- ANIMATED ELEMENTS --- */}
 
 				{/* Left Column (Fades Out) */}
 				<motion.div
 					style={{ opacity: sideColumnsOpacity }}
-					className={`absolute flex flex-col justify-between w-[25%] h-[75%] px-[2%] pt-[0.3%] ${orbitron.className}`}
+					className={`absolute flex flex-col justify-between w-[25%] lg:w-[22%] xl:w-[20%] h-[75%] px-[1.5%] lg:px-[2%] pt-[0.3%] text-xs lg:text-sm xl:text-base overflow-hidden ${orbitron.className}`}
 				>
 					<div>STYLE = UTF - 1</div>
 					<div>ENERGY-PULSE: VIBRANT ORANGE</div>
@@ -80,15 +80,16 @@ const AboutVinnovateit = ({ isFlipping }) => {
 								key={i}
 								src="/X.svg"
 								alt={`X ${i}`}
-								width={20}
-								height={20}
+								width={16}
+								height={16}
+								className="lg:w-5 lg:h-5 xl:w-6 xl:h-6"
 							/>
 						))}
 					</div>
 					<div>CODE-ESSENCE: CREATIVE CHAOS</div>
 					<div>
 						<Image
-							className="pt-[5%] px-[20%] w-full"
+							className="pt-[5%] px-[15%] lg:px-[20%] xl:px-[25%] w-full"
 							src="/p1.svg"
 							alt="P1 Graphic"
 							width={250}
@@ -100,9 +101,9 @@ const AboutVinnovateit = ({ isFlipping }) => {
 				{/* Right Column (Fades Out) */}
 				<motion.div
 					style={{ opacity: sideColumnsOpacity }}
-					className={`absolute right-0 top-0 flex flex-col justify-between p-[2.5%] w-[25%] h-[75%] text-start ${nostromo.className}`}
+					className={`absolute right-0 top-0 flex flex-col justify-between p-[2%] lg:p-[2.5%] xl:p-[3%] w-[25%] lg:w-[22%] xl:w-[20%] h-[75%] text-start overflow-hidden ${nostromo.className}`}
 				>
-					<div className="text-[2em]" style={{ fontWeight: 300 }}>
+					<div className="text-2xl lg:text-3xl xl:text-4xl" style={{ fontWeight: 300 }}>
 						<div>DISRUPT.</div>
 						<div>CREATE.</div>
 						<div>DOMINATE.</div>
@@ -112,10 +113,10 @@ const AboutVinnovateit = ({ isFlipping }) => {
 				{/* New Paragraph (Fades In) */}
 				<motion.div
 					style={{ opacity: paragraphOpacity }}
-					className="absolute top-[25%] bottom-[10%] left-[5%] w-[50%] flex flex-col justify-between"
+					className="absolute top-[25%] bottom-[10%] left-[5%] w-[50%] lg:w-[45%] xl:w-[42%] flex flex-col justify-between overflow-hidden"
 				>
 					<div
-						className="text-[#EA8244] text-justify text-2xl p-4"
+						className="text-[#EA8244] text-justify text-sm sm:text-base lg:text-lg xl:text-xl 2xl:text-2xl p-2 sm:p-3 lg:p-4 xl:p-5 leading-tight sm:leading-relaxed lg:leading-relaxed xl:leading-loose overflow-hidden"
 						style={{ fontWeight: 600 }}
 					>
 						VinnovateIT is the one-stop destination for all you curious cats to
@@ -124,12 +125,13 @@ const AboutVinnovateit = ({ isFlipping }) => {
 						and the result is pure magic. So come immerse yourself, in what we
 						like to believe is the closest thing to Hogwarts.
 					</div>
-					<button className="mt-4 self-start">
+					<button className="mt-3 lg:mt-4 xl:mt-5 self-start">
 						<Image
 							src="/click_for_website.svg"
 							alt="Learn More About Vinnovateit"
-							width={300}
-							height={50}
+							width={250}
+							height={40}
+							className="lg:w-[300px] lg:h-[50px] xl:w-[350px] xl:h-[60px]"
 						/>
 					</button>
 				</motion.div>
@@ -137,9 +139,9 @@ const AboutVinnovateit = ({ isFlipping }) => {
 				{/* Circle (Moves & Scales) */}
 				<motion.div
 					style={{ x: circleX, scale: circleScale }}
-					className="absolute top-[5%] left-[25%] w-[50%] h-[75%] flex justify-center items-center"
+					className="absolute top-[5%] left-[22%] lg:left-[25%] xl:left-[28%] w-[56%] lg:w-[50%] xl:w-[44%] h-[75%] flex justify-center items-center overflow-visible"
 				>
-					<div className="h-full w-auto aspect-square">
+					<div className="h-full w-auto aspect-square max-w-full max-h-full">
 						<CoinFlip
 							frontImg="/vinhack23.jpg"
 							backImg="/vinnovateit.png"
@@ -152,14 +154,14 @@ const AboutVinnovateit = ({ isFlipping }) => {
 				<motion.div
 					style={{ top: headingTop, left: headingLeft }} // Control both top and left
 					// Remove positioning from className, as it's now fully controlled by style
-					className="absolute w-2/3"
+					className="absolute w-2/3 lg:w-3/5 xl:w-1/2 overflow-hidden"
 				>
 					<Image
 						src="/vinnovateit_text.svg"
 						alt="Vinnovateit Text"
 						width={400}
 						height={100}
-						className="w-full h-auto object-contain"
+						className="w-full h-auto object-contain max-w-full max-h-full"
 					/>
 				</motion.div>
 
@@ -169,39 +171,39 @@ const AboutVinnovateit = ({ isFlipping }) => {
 					style={{ opacity: sideColumnsOpacity }} // Re-apply the fade-out opacity
 					className={`absolute right-0 top-[37.5%] p-[2.5%] w-[25%] h-[37.5%] text-center ${nostromo.className}`}
 				>
-					<div className="text-5xl" style={{ fontWeight: 700 }}>
+					<div className="text-4xl lg:text-5xl xl:text-6xl" style={{ fontWeight: 700 }}>
 						.02
 					</div>
 				</motion.div>
 
 				{/* Container for the cards and the NEW .02 */}
-				<div className="absolute bottom-0 right-0 flex w-1/3 h-[25%] items-center justify-center gap-10 p-0">
+				<div className="absolute bottom-0 right-0 flex w-1/3 h-[25%] items-center justify-center gap-4 lg:gap-6 xl:gap-10 p-0 overflow-hidden">
 					{/* This is the NEW .02, which fades in with the paragraph */}
 					<motion.div
 						style={{ opacity: paragraphOpacity }}
 						className={`text-center ${nostromo.className}`}
 					>
-						<div className="text-5xl" style={{ fontWeight: 700 }}>
+						<div className="text-4xl lg:text-5xl xl:text-6xl" style={{ fontWeight: 700 }}>
 							.02
 						</div>
 					</motion.div>
 
-					<div className="flex items-center justify-center w-1/4 h-2/3 p-0">
+					<div className="flex items-center justify-center w-1/4 h-2/3 p-0 overflow-hidden">
 						<Image
 							src="/card.svg"
 							alt="Card Graphic 1"
 							width={100}
 							height={150}
-							className="flex w-full h-full object-contain"
+							className="w-full h-full object-contain max-w-full max-h-full"
 						/>
 					</div>
-					<div className="flex items-center justify-center w-1/4 h-2/3 p-0">
+					<div className="flex items-center justify-center w-1/4 h-2/3 p-0 overflow-hidden">
 						<Image
 							src="/card.svg"
 							alt="Card Graphic 2"
 							width={100}
 							height={150}
-							className="w-full h-full object-contain"
+							className="w-full h-full object-contain max-w-full max-h-full"
 						/>
 					</div>
 				</div>
