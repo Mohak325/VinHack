@@ -103,14 +103,16 @@ const AboutVinnovateit = ({ isFlipping }) => {
 					style={{ opacity: sideColumnsOpacity }}
 					className={`absolute right-0 top-0 flex flex-col justify-between p-[2%] lg:p-[2.5%] xl:p-[3%] w-[25%] lg:w-[22%] xl:w-[20%] h-[75%] text-start overflow-hidden ${nostromo.className}`}
 				>
-					<div className="text-2xl lg:text-3xl xl:text-4xl" style={{ fontWeight: 300 }}>
+					<div
+						className="text-2xl lg:text-3xl xl:text-4xl"
+						style={{ fontWeight: 300 }}
+					>
 						<div>DISRUPT.</div>
 						<div>CREATE.</div>
 						<div>DOMINATE.</div>
 					</div>
 				</motion.div>
 
-				{/* New Paragraph (Fades In) */}
 				<motion.div
 					style={{ opacity: paragraphOpacity }}
 					className="absolute top-[25%] bottom-[10%] left-[5%] w-[50%] lg:w-[45%] xl:w-[42%] flex flex-col justify-between overflow-hidden"
@@ -125,7 +127,12 @@ const AboutVinnovateit = ({ isFlipping }) => {
 						and the result is pure magic. So come immerse yourself, in what we
 						like to believe is the closest thing to Hogwarts.
 					</div>
-					<button className="mt-3 lg:mt-4 xl:mt-5 self-start">
+					<a
+						href="https://vinnovateit.com"
+						target="_blank"
+						rel="noopener noreferrer"
+						className="mt-3 lg:mt-4 xl:mt-5 self-start"
+					>
 						<Image
 							src="/click_for_website.svg"
 							alt="Learn More About Vinnovateit"
@@ -133,7 +140,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
 							height={40}
 							className="lg:w-[300px] lg:h-[50px] xl:w-[350px] xl:h-[60px]"
 						/>
-					</button>
+					</a>
 				</motion.div>
 
 				{/* Circle (Moves & Scales) */}
@@ -171,7 +178,10 @@ const AboutVinnovateit = ({ isFlipping }) => {
 					style={{ opacity: sideColumnsOpacity }} // Re-apply the fade-out opacity
 					className={`absolute right-0 top-[37.5%] p-[2.5%] w-[25%] h-[37.5%] text-center ${nostromo.className}`}
 				>
-					<div className="text-4xl lg:text-5xl xl:text-6xl" style={{ fontWeight: 700 }}>
+					<div
+						className="text-4xl lg:text-5xl xl:text-6xl"
+						style={{ fontWeight: 700 }}
+					>
 						.02
 					</div>
 				</motion.div>
@@ -183,7 +193,10 @@ const AboutVinnovateit = ({ isFlipping }) => {
 						style={{ opacity: paragraphOpacity }}
 						className={`text-center ${nostromo.className}`}
 					>
-						<div className="text-4xl lg:text-5xl xl:text-6xl" style={{ fontWeight: 700 }}>
+						<div
+							className="text-4xl lg:text-5xl xl:text-6xl"
+							style={{ fontWeight: 700 }}
+						>
 							.02
 						</div>
 					</motion.div>
