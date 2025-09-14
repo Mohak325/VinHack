@@ -8,6 +8,9 @@ import Hero from "./components/Hero";
 import FaqSection from "./components/FAQ";
 import Footer from "./components/Footer";
 import Tracks from "./components/Track";
+import Coc from "./components/coc.jsx";
+import Rules from "./components/rules.jsx";
+
 import { ruigslay, nostromoLight, nostromoMedium } from "./fonts";
 import AboutVinnovateit from "./components/about/AboutVinnovateit";
 import AboutVinnhack from "./components/about/AboutVinhack";
@@ -68,7 +71,6 @@ export default function Home() {
 					<AboutVinnovateit isFlipping={isFlipping} />
 					<div className="w-full h-[50vh]" />
 				</div>
-
 				{/* Remaining sections */}
 				<Tracks />
 				<FaqSection />
@@ -76,4 +78,5 @@ export default function Home() {
 			</GridPlusBackground>
 		</div>
 	);
+
 }
