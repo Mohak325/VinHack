@@ -45,30 +45,26 @@ const AboutVinnovateit = ({ isFlipping }) => {
 	// --- ANIMATION MAPPINGS ---
 	// Map scroll progress (0 to 1) to CSS values
 
-	// 1. Heading ("About Vinnovateit") Animation
-	// Animate the 'top' property from a start percentage to an end percentage.
-	const headingTop = useTransform(scrollYProgress, [0, 1], ["85%", "10%"]);
-	// Add an explicit 'left' transform to ensure it stays on the left.
-	const headingLeft = useTransform(scrollYProgress, [0, 1], ["5%", "5%"]); // Stays at 5% from the left
+	// Animations compressed into 20% of scroll (40%-60%) for maximum static time
+	// 1. Heading Animation - starts at 40% scroll, completes at 60%
+	const headingTop = useTransform(scrollYProgress, [0.4, 0.6], ["85%", "10%"]);
+	const headingLeft = useTransform(scrollYProgress, [0.4, 0.6], ["5%", "5%"]);
 
-	// 2. Circle Animation
-	const circleX = useTransform(scrollYProgress, [0, 1], ["0%", "55%"]);
-	const circleScale = useTransform(scrollYProgress, [0, 1], [0.9, 0.6]);
+	// 2. Circle Animation - starts at 40% scroll, completes at 60%
+	const circleX = useTransform(scrollYProgress, [0.4, 0.6], ["0%", "55%"]);
+	const circleScale = useTransform(scrollYProgress, [0.4, 0.6], [0.9, 0.6]);
 
-	// 3. Left & Right Column Fade Out
-	const sideColumnsOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+	// 3. Left & Right Column Fade Out - starts at 38% scroll, fades by 50%
+	const sideColumnsOpacity = useTransform(scrollYProgress, [0.38, 0.5], [1, 0]);
 
-	// 4. New Paragraph Fade In
-	const paragraphOpacity = useTransform(scrollYProgress, [0.4, 0.7], [0, 1]);
+	// 4. New Paragraph Fade In - starts at 50% scroll, fully visible at 60%
+	const paragraphOpacity = useTransform(scrollYProgress, [0.5, 0.6], [0, 1]);
 
 	return (
-		// The main scrollable container
-		<section ref={targetRef} className="relative h-[300vh]">
+		// The main scrollable container - increased height for more static time at end
+		<section ref={targetRef} className="relative h-[400vh]">
 			{/* The sticky container that holds all content */}
 			<div className="sticky top-0 h-screen w-full overflow-hidden">
-				{/* Background */}
-				<div className="absolute inset-0 bg-[#fcd8b9]"></div>
-
 				{/* --- ANIMATED ELEMENTS --- */}
 
 				{/* Left Column (Fades Out) */}
@@ -143,10 +139,10 @@ const AboutVinnovateit = ({ isFlipping }) => {
 					style={{ x: circleX, scale: circleScale }}
 					className="absolute top-[5%] left-[25%] w-[50%] h-[75%] flex justify-center items-center"
 				>
-					<div className="w-full h-auto aspect-square">
+					<div className="h-full w-auto aspect-square">
 						<CoinFlip
-							frontImg="/vinnhack_text.svg"
-							backImg="/vinnovateit_text.svg"
+							frontImg="/vinhack23.jpg"
+							backImg="/vinnovateit.png"
 							isFlipping={isFlipping}
 						/>
 					</div>

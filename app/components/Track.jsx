@@ -159,7 +159,7 @@ const Tracks = () => {
           {/* Main frame and background */}
           <div className="absolute inset-0 bg-black"></div>
           
-          <div className="absolute inset-0 bg-[#E6DCD1]">
+          <div className="absolute inset-0" style={{ backgroundColor: '#D5D1BE' }}>
               
               <GridPlusBackground />
 
