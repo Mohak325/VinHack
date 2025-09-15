@@ -1,7 +1,6 @@
-'use client';
+"use client";
 
-import React, { useState, useEffect, useRef } from 'react';
-import Notch from './Notch';
+import React, { useState, useEffect, useRef } from "react";
 // Grid.jsx is no longer imported, as the component is defined locally below.
 
 // 1. Import your custom fonts directly into this file.
@@ -22,19 +21,15 @@ const GridPlusBackground = () => {
             linear-gradient(to right, #c0bdab 1px, transparent 1px),
             linear-gradient(to bottom, #c0bdab 1px, transparent 1px)
           `,
-          backgroundSize: '40px 40px'
+          backgroundSize: "40px 40px",
         }}
-      >
-      </div>
+      ></div>
       <div className="absolute inset-0 grid grid-cols-5 gap-8 p-8">
         {Array.from({ length: 30 }, (_, index) => (
-          <div
-            key={index}
-            className="flex items-center justify-center"
-          >
+          <div key={index} className="flex items-center justify-center">
             <div
               className="text-md font-light select-none"
-              style={{ color: '#ea8244' }}
+              style={{ color: "#ea8244" }}
             >
               +
             </div>
@@ -44,6 +39,7 @@ const GridPlusBackground = () => {
     </div>
   );
 };
+
 
 
 // --- The image paths are now updated with smaller, optimized stock photos ---
@@ -77,18 +73,19 @@ const tracksData = [
     title: 'Massa ultricies mi quis',
     description: 'Hendrerit dolor magna. Et netus et malesuada fames ac turpis. Amet consectetur adipiscing elit duis tristique. Ut enim ad minim veniam....',
     imageUrl: 'https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=500&auto=format&fit=crop',
-  },
+  }
 ];
-
 
 const Tracks = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [soundOn, setSoundOn] = useState(false);
   const containerRef = useRef(null);
-  
-  const finalAnimationTarget = (tracksData.length - 1 + 0.15) / tracksData.length;
-  const containerHeightVh = 100 + ((tracksData.length - 1) * 100 * finalAnimationTarget);
+
+  const finalAnimationTarget =
+    (tracksData.length - 1 + 0.15) / tracksData.length;
+  const containerHeightVh =
+    100 + (tracksData.length - 1) * 100 * finalAnimationTarget;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -100,19 +97,19 @@ const Tracks = () => {
       setScrollProgress(animationProgress);
     };
 
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, { passive: true });
     return () => {
-      window.removeEventListener('scroll', handleScroll);
+      window.removeEventListener("scroll", handleScroll);
     };
   }, [finalAnimationTarget]);
-  
+
   useEffect(() => {
     const handleMouseMove = (event) => {
       setMousePos({ x: event.clientX, y: event.clientY });
     };
-    window.addEventListener('mousemove', handleMouseMove);
+    window.addEventListener("mousemove", handleMouseMove);
     return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
+      window.removeEventListener("mousemove", handleMouseMove);
     };
   }, []);
 
@@ -122,7 +119,6 @@ const Tracks = () => {
 
   let circleX, circleY;
   const isCurrentSideEven = currentCardFloat % 2 === 0;
-  
   const topBound = -35;
   const bottomBound = 35;
   const verticalTravel = bottomBound - topBound;
@@ -139,32 +135,41 @@ const Tracks = () => {
     circleX = startX + transitionProgress * (endX - startX);
   }
 
-  const circleStyle = { top: '50%', left: `${circleX}%`, transform: `translate(-50%, ${circleY}%)` };
+  const circleStyle = {
+    top: "50%",
+    left: `${circleX}%`,
+    transform: `translate(-50%, ${circleY}%)`,
+  };
   const progressPerCard = 1 / tracksData.length;
-  const titleOpacity = 1 - Math.min(1, scrollProgress / (progressPerCard * 0.5));
-  
+  const titleOpacity =
+    1 - Math.min(1, scrollProgress / (progressPerCard * 0.5));
+
   const firstCard = tracksData[0];
-  const introTransitionEnd = 0.1; 
+  const introTransitionEnd = 0.1;
   const introOpacity = 1 - Math.min(1, progressTotal / introTransitionEnd);
 
   const currentImageIndex = Math.min(tracksData.length - 1, currentCardFloat);
   const currentImageUrl = tracksData[currentImageIndex]?.imageUrl;
   const circleBgStyle = {
     backgroundImage: `url(${currentImageUrl})`,
-    backgroundSize: 'cover',
-    backgroundPosition: 'center',
+    backgroundSize: "cover",
+    backgroundPosition: "center",
   };
 
   return (
-    <div ref={containerRef} className="relative w-full" style={{ height: `${containerHeightVh}vh` }}>
+    <div
+      ref={containerRef}
+      className="relative w-full"
+      style={{ height: `${containerHeightVh}vh` }}
+    >
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
         <div className="relative w-full h-full p-4 sm:p-8 md:p-12">
           {/* Main frame and background */}
           <div className="absolute inset-0 bg-black"></div>
-          
+
           <div className="absolute inset-0 bg-[#E6DCD1]">
-              
-              <GridPlusBackground />
+            <GridPlusBackground />
+
 
               <div className="relative w-full h-full z-10">
                   {/* TRACKS title */}
@@ -190,54 +195,87 @@ const Tracks = () => {
                       opacity: introOpacity,
                       pointerEvents: introOpacity > 0 ? 'auto' : 'none',
                     }}
+                    >
+                <p
+                  className={`font-bold text-black text-4xl lg:text-6xl xl:text-7xl ${nostromoMedium.className}`}
+                >
+                  {firstCard.id}
+                </p>
+                <p
+                  className={`text-black/70 mt-2 text-base lg:text-xl xl:text-2xl ${nostromoLight.className}`}
+                >
+                  {firstCard.title}
+                </p>
+                <p
+                  className={`leading-relaxed text-black/60 mt-4 text-sm lg:text-base xl:text-lg ${nostromoLight.className}`}
+                >
+                  {firstCard.description}
+                  <a
+                    href="#"
+                    className="font-bold text-black/70 hover:text-black transition-colors duration-300 ml-1"
+
                   >
-                    <p className={`font-bold text-black text-4xl lg:text-6xl xl:text-7xl ${nostromoMedium.className}`}>{firstCard.id}</p>
-                    <p className={`text-black/70 mt-2 text-base lg:text-xl xl:text-2xl ${nostromoLight.className}`}>{firstCard.title}</p>
-                    <p className={`leading-relaxed text-black/60 mt-4 text-sm lg:text-base xl:text-lg ${nostromoLight.className}`}>
-                      {firstCard.description}
-                      <a href="#" className="font-bold text-black/70 hover:text-black transition-colors duration-300 ml-1">View More</a>
-                    </p>
-                  </div>
-
-
-                  {/* Track content */}
-                  <div className="relative w-full h-full z-10">
-                      {tracksData.map((track, index) => {
-                          const isCardEven = index % 2 === 0;
-                          const textAlign = isCardEven ? 'text-left' : 'text-right';
-                          const contentAlign = isCardEven ? 'items-start' : 'items-end';
-                          const position = isCardEven ? 'left-0' : 'right-0';
-                          const padding = isCardEven ? 'pl-16 lg:pl-20' : 'pr-20 lg:pr-24';
-                          const firstCardMargin = index === 0 ? 'mt-24 sm:mt-32' : '';
-                          
-                          const verticalOffset = index === 0 ? 0 : 25;
-                          const cardOpacity = index === 0 ? 1 - introOpacity : 1;
-
-                          const combinedStyle = {
-                            transform: `translateY(${(index - scrollProgress * tracksData.length) * 100 + verticalOffset}%)`,
-                            opacity: cardOpacity,
-                          };
-
-                          return (
-                              <div 
-                                  key={track.id} 
-                                  className={`absolute w-[42%] h-full flex flex-col justify-center ${textAlign} ${contentAlign} ${position} ${padding} ${firstCardMargin}`} 
-                                  style={combinedStyle}
-                              >
-                                  <p className={`font-bold text-black text-4xl lg:text-6xl xl:text-7xl ${nostromoMedium.className}`}>{track.id}</p>
-                                  <p className={`text-black/70 mt-2 text-base lg:text-xl xl:text-2xl ${nostromoLight.className}`}>{track.title}</p>
-                                  <p className={`leading-relaxed text-black/60 mt-4 text-sm lg:text-base xl:text-lg ${nostromoLight.className}`}>
-                                      {track.description}
-                                      <a href="#" className="font-bold text-black/70 hover:text-black transition-colors duration-300 ml-1">View More</a>
-                                  </p>
-                              </div>
-                          );
-                      })}
-                  </div>
+                    View More
+                  </a>
+                </p>
               </div>
+
+              {/* Track content */}
+              <div className="relative w-full h-full z-10">
+                {tracksData.map((track, index) => {
+                  const isCardEven = index % 2 === 0;
+                  const textAlign = isCardEven ? "text-left" : "text-right";
+                  const contentAlign = isCardEven ? "items-start" : "items-end";
+                  const position = isCardEven ? "left-0" : "right-0";
+                  const padding = isCardEven
+                    ? "pl-16 lg:pl-20"
+                    : "pr-20 lg:pr-24";
+                  const firstCardMargin = index === 0 ? "mt-24 sm:mt-32" : "";
+
+                  const verticalOffset = index === 0 ? 0 : 25;
+                  const cardOpacity = index === 0 ? 1 - introOpacity : 1;
+
+                  const combinedStyle = {
+                    transform: `translateY(${
+                      (index - scrollProgress * tracksData.length) * 100 +
+                      verticalOffset
+                    }%)`,
+                    opacity: cardOpacity,
+                  };
+
+                  return (
+                    <div
+                      key={track.id}
+                      className={`absolute w-[42%] h-full flex flex-col justify-center ${textAlign} ${contentAlign} ${position} ${padding} ${firstCardMargin}`}
+                      style={combinedStyle}
+                    >
+                      <p
+                        className={`font-bold text-black text-4xl lg:text-6xl xl:text-7xl ${nostromoMedium.className}`}
+                      >
+                        {track.id}
+                      </p>
+                      <p
+                        className={`text-black/70 mt-2 text-base lg:text-xl xl:text-2xl ${nostromoLight.className}`}
+                      >
+                        {track.title}
+                      </p>
+                      <p
+                        className={`leading-relaxed text-black/60 mt-4 text-sm lg:text-base xl:text-lg ${nostromoLight.className}`}
+                      >
+                        {track.description}
+                        <a
+                          href="#"
+                          className="font-bold text-black/70 hover:text-black transition-colors duration-300 ml-1"
+                        >
+                          View More
+                        </a>
+                      </p>
+                    </div>
+                  );
+                })}
+              </div>
+            </div>
           </div>
-          
-          
         </div>
       </div>
     </div>
