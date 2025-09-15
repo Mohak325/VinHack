@@ -7,14 +7,14 @@ import CoinFlip from "../CoinFlip";
 import { orbitron, nostromoLight, nostromoMedium } from "../../fonts";
 
 const AboutVinhack = ({ isFlipping }) => {
-  const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start start", "end end"],
-  });
+	const targetRef = useRef(null);
+	const { scrollYProgress } = useScroll({
+		target: targetRef,
+		offset: ["start start", "end end"],
+	});
 
-  // --- ANIMATION MAPPINGS ---
-  // Map scroll progress (0 to 1) to CSS values
+	// --- ANIMATION MAPPINGS ---
+	// Map scroll progress (0 to 1) to CSS values
 
 	// Animations compressed into 20% of scroll (40%-60%) for maximum static time
 	// 1. Heading Animation - starts at 40% scroll, completes at 60%
@@ -38,7 +38,7 @@ const AboutVinhack = ({ isFlipping }) => {
 			<div className="sticky top-0 h-screen w-screen overflow-hidden max-w-full">
 				{/* Background handled by GridPlusBackground wrapper */}
 
-        {/* --- ANIMATED ELEMENTS --- */}
+				{/* --- ANIMATED ELEMENTS --- */}
 
 				{/* Left Column (Fades Out) */}
 				<motion.div
@@ -74,7 +74,7 @@ const AboutVinhack = ({ isFlipping }) => {
 				{/* Right Column (Fades Out) */}
 				<motion.div
 					style={{ opacity: sideColumnsOpacity }}
-					className={`absolute right-0 top-0 flex flex-col justify-between p-[2%] lg:p-[2.5%] xl:p-[3%] w-[25%] lg:w-[22%] xl:w-[20%] h-[75%] text-start overflow-hidden ${nostromo.className}`}
+					className={`absolute right-0 top-0 flex flex-col justify-between p-[2%] lg:p-[2.5%] xl:p-[3%] w-[25%] lg:w-[22%] xl:w-[20%] h-[75%] text-start overflow-hidden ${nostromoLight.className}`}
 				>
 					<div
 						className="text-2xl lg:text-3xl xl:text-4xl"
@@ -140,7 +140,7 @@ const AboutVinhack = ({ isFlipping }) => {
 				{/* This is the FIRST .02, which fades out */}
 				<motion.div
 					style={{ opacity: sideColumnsOpacity }} // Re-apply the fade-out opacity
-					className={`absolute right-0 top-[37.5%] p-[2.5%] w-[25%] h-[37.5%] text-center ${nostromo.className}`}
+					className={`absolute right-0 top-[37.5%] p-[2.5%] w-[25%] h-[37.5%] text-center ${nostromoMedium.className}`}
 				>
 					<div
 						className="text-4xl lg:text-5xl xl:text-6xl"
@@ -155,7 +155,7 @@ const AboutVinhack = ({ isFlipping }) => {
 					{/* This is the NEW .02, which fades in with the paragraph */}
 					<motion.div
 						style={{ opacity: paragraphOpacity }}
-						className={`text-center ${nostromo.className}`}
+						className={`text-center ${nostromoMedium.className}`}
 					>
 						<div className="text-5xl" style={{ fontWeight: 700 }}>
 							.01
@@ -187,4 +187,3 @@ const AboutVinhack = ({ isFlipping }) => {
 };
 
 export default AboutVinhack;
-
