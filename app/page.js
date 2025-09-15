@@ -11,6 +11,7 @@ import Tracks from "./components/Track";
 import { ruigslay, nostromoLight, nostromoMedium } from "./fonts";
 import AboutVinnovateit from "./components/about/AboutVinnovateit";
 import AboutVinnhack from "./components/about/AboutVinhack";
+import Timeline from "./components/TImeline";
 
 export default function Home() {
   const [loadingFinished, setLoadingFinished] = useState(false);
@@ -60,6 +61,7 @@ export default function Home() {
 
       {/* Remaining sections */}
       <Tracks />
+      <Timeline />
       <FaqSection />
       <Footer />
     </div>

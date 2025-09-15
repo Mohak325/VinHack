@@ -6,7 +6,7 @@ import GridPlusBackground from "./Grid";
 
 export default function FaqSection() {
   return (
-    <section className="relative w-full mt-150 py-10 bg-faq-pattern">
+    <section className="relative w-full bg-faq-pattern">
       <GridPlusBackground>
         <div className="relative max-w-6xl w-full mx-auto px-6 py-12 z-10">
         {/* Title */}
