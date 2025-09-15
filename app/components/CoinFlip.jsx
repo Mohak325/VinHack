@@ -10,37 +10,29 @@ const CoinFlip = ({ frontImg, backImg, isFlipping }) => {
 				className="relative w-full h-full"
 				style={{ transformStyle: "preserve-3d" }}
 				animate={{ rotateY: isFlipping ? 180 : 0 }}
-				transition={{ duration: 0.7, ease: "easeInOut" }}
+				transition={{ duration: 0.9, ease: "easeInOut" }}
 			>
-				{/* Front Face */}
 				<div
-					className="absolute w-full h-full bg-[#DAB89D] rounded-full border-8 border-black flex items-center justify-center"
+					className="absolute w-full h-full bg-[#DAB89D] rounded-full border-4 lg:border-6 xl:border-8 border-black flex items-center justify-center overflow-hidden"
 					style={{ backfaceVisibility: "hidden" }}
 				>
 					<Image
 						src={frontImg}
 						alt="Front Image"
-						width={400}
-						height={400}
-						className="p-8"
+						fill
+						className="object-cover"
 					/>
 				</div>
 
 				{/* Back Face */}
 				<div
-					className="absolute w-full h-full bg-[#DAB89D] rounded-full border-8 border-black flex items-center justify-center"
+					className="absolute w-full h-full bg-[#DAB89D] rounded-full border-4 lg:border-6 xl:border-8 border-black flex items-center justify-center overflow-hidden"
 					style={{
 						backfaceVisibility: "hidden",
 						transform: "rotateY(180deg)",
 					}}
 				>
-					<Image
-						src={backImg}
-						alt="Back Image"
-						width={400}
-						height={400}
-						className="p-8"
-					/>
+					<Image src={backImg} alt="Back Image" fill className="object-cover" />
 				</div>
 			</motion.div>
 		</div>

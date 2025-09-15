@@ -16,15 +16,16 @@ import { ruigslay, nostromoLight, nostromoMedium } from "./fonts";
 import AboutVinnovateit from "./components/about/AboutVinnovateit";
 import AboutVinnhack from "./components/about/AboutVinhack";
 import Timeline from "./components/TImeline";
+import GridPlusBackground from "./components/Grid";
 
 function MainContent({ fontClassNames, isVisible }) {
   const [isFlipping, setIsFlipping] = useState(false);
 
-  const containerRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: containerRef,
-    offset: ["start start", "end end"],
-  });
+	const containerRef = useRef(null);
+	const { scrollYProgress } = useScroll({
+		target: containerRef,
+		offset: ["start start", "end end"],
+	});
 
   useEffect(() => {
     return scrollYProgress.onChange((latest) => {
@@ -38,12 +39,16 @@ function MainContent({ fontClassNames, isVisible }) {
       <Hero {...fontClassNames} isVisible={isVisible} />
       <div className="w-full h-screen" />
 
-      {/* Scroll container for flipping effect */}
-      <div ref={containerRef}>
-        <AboutVinnhack isFlipping={isFlipping} />
-        <AboutVinnovateit isFlipping={isFlipping} />
-      </div>
-
+			<GridPlusBackground>
+				{/* Scroll container for flipping effect */}
+				<div ref={containerRef}>
+					<div className="w-full h-[50vh]" />
+					<AboutVinnhack isFlipping={isFlipping} />
+					<div className="w-full h-[50vh]" />
+					<AboutVinnovateit isFlipping={isFlipping} />
+					<div className="w-full h-[50vh]" />
+				</div>
+        </GridPlusBackground>
       {/* Remaining sections */}
       <Tracks />
       <Timeline />
