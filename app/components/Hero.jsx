@@ -20,7 +20,10 @@ const Hero = ({
   }, []);
 
   return (
-    <section className="relative w-full h-screen mx-auto flex items-center justify-center">
+    <section
+      id="hero"
+      className="relative w-full h-screen mx-auto flex items-center justify-center"
+    >
       {/* HeroContent will contain all the visual elements */}
       <HeroContent
         isVisible={isVisible}

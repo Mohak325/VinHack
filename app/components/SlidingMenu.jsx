@@ -35,15 +35,14 @@ const SlidingMenu = () => {
   }, [isMenuOpen]);
 
   const menuOptions = [
-    { name: "Home", href: "/#hero" },
-    { name: "What's VinHack", href: "/#about-vinhack" },
-    { name: "What's VinnovateIt", href: "/#about-vinnovateit" },
-    { name: "Tracks", href: "/#tracks" },
-    { name: "Timeline", href: "/#timeline" },
-    { name: "Sponsors", href: "/#sponsors" },
-    { name: "Code Of Conduct", href: "/#coc" },
-    { name: "Rules", href: "/#rules" },
-    { name: "FAQ", href: "/#faq" },
+    { name: "Home", href: "#hero" },
+    { name: "About VinHack", href: "#about-vinhack" },
+    { name: "About VinnovateIT", href: "#about-vinnovateit" },
+    { name: "Tracks", href: "#tracks" },
+    { name: "FAQ", href: "#faq" },
+    { name: "Code Of Conduct", href: "#coc" },
+    { name: "Rules", href: "#rules" },
+    { name: "Register", href: "#register" },
   ];
 
   return (

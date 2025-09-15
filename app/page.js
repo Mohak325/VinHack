@@ -1,27 +1,81 @@
 "use client";
-import { useState } from "react";
+
+import { useState, useRef, useEffect } from "react";
+import { useScroll } from "framer-motion";
+
 import LoadingScreen from "./components/Loading";
 import Hero from "./components/Hero";
-import { ruigslay, nostromoLight, nostromoMedium, orbitron } from "./fonts";
 import FaqSection from "./components/FAQ";
+import Footer from "./components/Footer";
+import Tracks from "./components/Track";
+import Coc from "./components/coc.jsx";
+import Rules from "./components/rules.jsx";
 import Border from "./components/Border";
+
+import { ruigslay, nostromoLight, nostromoMedium } from "./fonts";
+import AboutVinnovateit from "./components/about/AboutVinnovateit";
+import AboutVinnhack from "./components/about/AboutVinhack";
+
+function MainContent({ fontClassNames, isVisible }) {
+  const [isFlipping, setIsFlipping] = useState(false);
+
+  const containerRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: containerRef,
+    offset: ["start start", "end end"],
+  });
+
+  useEffect(() => {
+    return scrollYProgress.onChange((latest) => {
+      // Flip happens when scrolled past 50%
+      setIsFlipping(latest > 0.5);
+    });
+  }, [scrollYProgress]);
+
+  return (
+    <Border {...fontClassNames}>
+      <Hero {...fontClassNames} isVisible={isVisible} />
+      <div className="w-full h-screen" />
+
+      {/* Scroll container for flipping effect */}
+      <div ref={containerRef}>
+        <AboutVinnhack isFlipping={isFlipping} />
+        <AboutVinnovateit isFlipping={isFlipping} />
+      </div>
+
+      {/* Remaining sections */}
+      <Tracks />
+      <FaqSection />
+      <Coc />
+      <Rules />
+      <Footer />
+    </Border>
+  );
+}
 
 export default function Home() {
   // State to manage the loading screen's visibility and fade-out animation
-  const [isAppLoading, setIsAppLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
   // State to mount the main content after loading
   const [isHeroVisible, setIsHeroVisible] = useState(false);
+  // State to control the presence of the loading screen in the DOM
+  const [isLoaderPresent, setIsLoaderPresent] = useState(true);
 
   // This function is called by LoadingScreen when it's done
   const handleLoadingComplete = () => {
     // 1. Mount the Hero and other main components immediately.
     // They will render underneath the still-visible loading screen.
     setIsHeroVisible(true);
-
     // 2. Wait a moment, then trigger the fade-out of the loading screen.
     setTimeout(() => {
-      setIsAppLoading(false);
+      setIsLoading(false);
     }, 100);
+
+    // 3. After the fade-out animation (1000ms) is complete, remove the
+    // loading screen from the DOM.
+    setTimeout(() => {
+      setIsLoaderPresent(false);
+    }, 1100); // 100ms delay + 1000ms animation duration
   };
 
   const assetPaths = [
@@ -38,21 +92,20 @@ export default function Home() {
 
   return (
     <main className="relative bg-[#D5D1BE] text-white">
-      {isAppLoading && (
+      {isLoaderPresent && (
         <LoadingScreen
           onCompletion={handleLoadingComplete}
           assetPaths={assetPaths}
-          isFadingOut={!isAppLoading}
+          isFadingOut={!isLoading}
         />
       )}
 
       {isHeroVisible && (
-        <Border {...fontClassNames}>
-          <Hero {...fontClassNames} isVisible={isHeroVisible} />
-          <FaqSection />
-        </Border>
+        <MainContent
+          fontClassNames={fontClassNames}
+          isVisible={isHeroVisible}
+        />
       )}
     </main>
   );
 }
-
