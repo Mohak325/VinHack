@@ -10,13 +10,13 @@ import Footer from "./components/Footer";
 import Tracks from "./components/Track";
 import Coc from "./components/coc.jsx";
 import Rules from "./components/rules.jsx";
+import Border from "./components/Border";
 
 import { ruigslay, nostromoLight, nostromoMedium } from "./fonts";
 import AboutVinnovateit from "./components/about/AboutVinnovateit";
 import AboutVinnhack from "./components/about/AboutVinhack";
 
-export default function Home() {
-  const [loadingFinished, setLoadingFinished] = useState(false);
+function MainContent({ fontClassNames, isVisible }) {
   const [isFlipping, setIsFlipping] = useState(false);
 
   const containerRef = useRef(null);
@@ -32,27 +32,9 @@ export default function Home() {
     });
   }, [scrollYProgress]);
 
-  const assetPaths = [
-    "/assets/bottom_left_hand.svg",
-    "/assets/top_right_hand.svg",
-  ];
-
   return (
-    <div>
-      {/* Loading screen */}
-      <LoadingScreen
-        onCompletion={() => setLoadingFinished(true)}
-        assetPaths={assetPaths}
-      />
-
-      {/* Hero section */}
-      <Hero
-        isVisible={loadingFinished}
-        ruigslayClassName={ruigslay.className}
-        nostromoLightClassName={nostromoLight.className}
-        nostromoMediumClassName={nostromoMedium.className}
-      />
-
+    <Border {...fontClassNames}>
+      <Hero {...fontClassNames} isVisible={isVisible} />
       <div className="w-full h-screen" />
 
       {/* Scroll container for flipping effect */}
@@ -67,6 +49,63 @@ export default function Home() {
       <Coc />
       <Rules />
       <Footer />
-    </div>
+    </Border>
+  );
+}
+
+export default function Home() {
+  // State to manage the loading screen's visibility and fade-out animation
+  const [isLoading, setIsLoading] = useState(true);
+  // State to mount the main content after loading
+  const [isHeroVisible, setIsHeroVisible] = useState(false);
+  // State to control the presence of the loading screen in the DOM
+  const [isLoaderPresent, setIsLoaderPresent] = useState(true);
+
+  // This function is called by LoadingScreen when it's done
+  const handleLoadingComplete = () => {
+    // 1. Mount the Hero and other main components immediately.
+    // They will render underneath the still-visible loading screen.
+    setIsHeroVisible(true);
+    // 2. Wait a moment, then trigger the fade-out of the loading screen.
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 100);
+
+    // 3. After the fade-out animation (1000ms) is complete, remove the
+    // loading screen from the DOM.
+    setTimeout(() => {
+      setIsLoaderPresent(false);
+    }, 1100); // 100ms delay + 1000ms animation duration
+  };
+
+  const assetPaths = [
+    "/assets/bottom_left_hand.svg",
+    "/assets/top_right_hand.svg",
+  ];
+
+  // Pass font class names to components that need them
+  const fontClassNames = {
+    ruigslayClassName: ruigslay.className,
+    nostromoLightClassName: nostromoLight.className,
+    nostromoMediumClassName: nostromoMedium.className,
+  };
+
+  return (
+    <main className="relative bg-[#D5D1BE] text-white">
+      {isLoaderPresent && (
+        <LoadingScreen
+          onCompletion={handleLoadingComplete}
+          assetPaths={assetPaths}
+          isFadingOut={!isLoading}
+        />
+      )}
+
+      {isHeroVisible && (
+        <MainContent
+          fontClassNames={fontClassNames}
+          isVisible={isHeroVisible}
+        />
+      )}
+    </main>
   );
 }

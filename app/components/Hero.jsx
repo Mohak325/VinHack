@@ -1,75 +1,38 @@
 "use client";
 
-import React, { useState } from "react";
-import Notch from "./Notch";
+import React, { useState, useEffect } from "react";
 import HeroContent from "./HeroContent";
-import CircularMenu from "./CircularMenu";
-import FaqSection from "./FAQ";
-
 
 const Hero = ({
-  isVisible,
   ruigslayClassName,
   nostromoLightClassName,
+  orbitronClassName,
   nostromoMediumClassName,
 }) => {
-  const [coords, setCoords] = useState({ x: 0, y: 0 });
-  const [soundOn, setSoundOn] = useState(false);
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isVisible, setIsVisible] = useState(false);
 
-  const menuItems = [
-    { name: "ABOUT", href: "#about" },
-    { name: "SCHEDULE", href: "#schedule" },
-    { name: "PRIZES", href: "#prizes" },
-    { name: "SPONSORS", href: "#sponsors" },
-    { name: "FAQ", href: "#faq" },
-    { name: "CONTACT", href: "#contact" },
-  ];
+  useEffect(() => {
+    // Trigger the animation shortly after the component mounts
+    const timer = setTimeout(() => {
+      setIsVisible(true);
+    }, 100); // A brief delay ensures the transition is visible
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
-    <div
-      onMouseMove={(e) => setCoords({ x: e.clientX, y: e.clientY })}
-      className={`font-light absolute inset-0 bg-[#D5D1BE] text-black ${
-        isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
-      }`}
+    <section
+      id="hero"
+      className="relative w-full h-screen mx-auto flex items-center justify-center"
     >
-      {/* Black Border Notch */}
-      <Notch type="border" className="z-10" />
-
-      {/* Other Notches */}
-      <Notch
-        type="sound"
-        soundOn={soundOn}
-        onToggle={() => setSoundOn((s) => !s)}
-        fontClassName={nostromoLightClassName}
-      />
-      <Notch
-        type="menu"
-        onToggle={() => setIsMenuOpen(!isMenuOpen)}
-        fontClassName={nostromoLightClassName}
-      />
-      <Notch
-        type="coords"
-        coords={coords}
-        fontClassName={nostromoLightClassName}
-      />
-      <Notch type="discover" fontClassName={nostromoLightClassName} />
-
-      {/* Main Content */}
+      {/* HeroContent will contain all the visual elements */}
       <HeroContent
         isVisible={isVisible}
         ruigslayClassName={ruigslayClassName}
         nostromoLightClassName={nostromoLightClassName}
+        orbitronClassName={orbitronClassName}
+        nostromoMediumClassName={nostromoMediumClassName}
       />
-
-      {/* Circular Menu */}
-      <CircularMenu
-        isOpen={isMenuOpen}
-        onClose={() => setIsMenuOpen(false)}
-        items={menuItems}
-        fontClassName={nostromoMediumClassName}
-      />
-    </div>
+    </section>
   );
 };
 

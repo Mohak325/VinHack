@@ -4,6 +4,7 @@ import {
   nostromoLight,
   nostromoMedium,
   ruigslay,
+  gulimche,
 } from "./fonts";
 
 export const metadata = {
@@ -15,11 +16,10 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body
-        className={`${orbitron.variable} overflow-x-hidden ${nostromoLight.variable} ${nostromoMedium.variable} ${ruigslay.variable} font-sans`}
+        className={`overflow-x-hidden ${orbitron.variable} ${nostromoLight.variable} ${nostromoMedium.variable} ${ruigslay.variable} ${gulimche.variable} font-sans`}
       >
         {children}
       </body>
     </html>
   );
 }
-

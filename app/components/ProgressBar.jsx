@@ -15,8 +15,8 @@ const ProgressBar = ({ progress, loadingText }) => {
   }, [progress]);
 
   return (
-    <div className="border-2 border-[#E86100] p-8 mb-8 relative bg-black bg-opacity-50 w-full">
-      <div className="text-center relative bg-black px-2 mx-auto w-fit -top-5">
+    <div className="border-2 border-[#E86100] p-8 mb-8 relative bg-[#141312] bg-opacity-50 w-full">
+      <div className="text-center relative bg-[#141312] px-2 mx-auto w-fit -top-5">
         <span className="text-[#E86100] font-orbitron text-sm">
           {loadingText}
         </span>
