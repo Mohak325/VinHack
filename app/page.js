@@ -15,6 +15,7 @@ import Border from "./components/Border";
 import { ruigslay, nostromoLight, nostromoMedium } from "./fonts";
 import AboutVinnovateit from "./components/about/AboutVinnovateit";
 import AboutVinnhack from "./components/about/AboutVinhack";
+import Timeline from "./components/TImeline";
 
 function MainContent({ fontClassNames, isVisible }) {
   const [isFlipping, setIsFlipping] = useState(false);
@@ -45,6 +46,7 @@ function MainContent({ fontClassNames, isVisible }) {
 
       {/* Remaining sections */}
       <Tracks />
+      <Timeline />
       <FaqSection />
       <Coc />
       <Rules />
