@@ -1,49 +1,20 @@
 "use client";
 
 import Image from "next/image";
-import { Orbitron } from "next/font/google";
-import localFont from "next/font/local";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import CoinFlip from "../CoinFlip";
-
-const orbitron = Orbitron({ subsets: ["latin"] });
-
-const nostromo = localFont({
-	src: [
-		{
-			path: "../../fonts/Nostromo Regular/NostromoRegular-Light.otf",
-			weight: "300",
-		},
-		{
-			path: "../../fonts/Nostromo Regular/NostromoRegular-Medium.otf",
-			weight: "500",
-		},
-		{
-			path: "../../fonts/Nostromo Regular/NostromoRegular-Bold.otf",
-			weight: "700",
-		},
-		{
-			path: "../../fonts/Nostromo Regular/NostromoRegular-Heavy.otf",
-			weight: "800",
-		},
-		{
-			path: "../../fonts/Nostromo Regular/NostromoRegular-Black.otf",
-			weight: "900",
-		},
-	],
-	display: "swap",
-});
+import { orbitron, nostromoLight, nostromoMedium } from "../../fonts";
 
 const AboutVinnovateit = ({ isFlipping }) => {
-	const targetRef = useRef(null);
-	const { scrollYProgress } = useScroll({
-		target: targetRef,
-		offset: ["start start", "end end"],
-	});
+  const targetRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["start start", "end end"],
+  });
 
-	// --- ANIMATION MAPPINGS ---
-	// Map scroll progress (0 to 1) to CSS values
+  // --- ANIMATION MAPPINGS ---
+  // Map scroll progress (0 to 1) to CSS values
 
 	// Animations compressed into 20% of scroll (40%-60%) for maximum static time
 	// 1. Heading Animation - starts at 40% scroll, completes at 60%
