@@ -123,7 +123,6 @@ const Tracks = () => {
 
   let circleX, circleY;
   const isCurrentSideEven = currentCardFloat % 2 === 0;
-
   const topBound = -35;
   const bottomBound = 35;
   const verticalTravel = bottomBound - topBound;
@@ -164,7 +163,6 @@ const Tracks = () => {
   return (
     <div
       ref={containerRef}
-      id="tracks"
       className="relative w-full"
       style={{ height: `${containerHeightVh}vh` }}
     >
