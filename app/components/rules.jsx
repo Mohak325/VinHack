@@ -1,7 +1,16 @@
 "use client";
-import React from 'react';
-import Grid from './Grid.jsx';
-import NotchedPageWrapper from './notch_back.jsx'; // Import the wrapper
+import React from "react";
+import Grid from "./Grid.jsx";
+import NotchedPageWrapper from "./notch_back.jsx";
+import localFont from "next/font/local";
+
+// import Type12 font
+const type12 = localFont({
+  src: "../fonts/type12/Type12.woff2", // relative to this file
+  weight: "400",
+  style: "normal",
+  variable: "--font-type12",
+});
 
 const Rules = () => {
   const rules = [
@@ -14,34 +23,36 @@ const Rules = () => {
     "Judging based on novelty, feasibility & impact, tech implementation, design & UX, open-source usage, and pitching.",
     "Judges’ decisions are final.",
     "Respect all participants and organizers; misconduct leads to disqualification.",
-    "Teams must remain onsite throughout the hackathon."
+    "Teams must remain onsite throughout the hackathon.",
   ];
 
   return (
     <NotchedPageWrapper>
       <Grid>
         {/* Added pb-16 for extra padding at the bottom */}
-        <div id="rules" className="w-full max-w-6xl mx-auto p-6 sm:p-8 md:p-12 pb-12">
-          <h1 
-            className="text-center text-4xl sm:text-5xl md:text-7xl tracking-widest font-bold mt-12" 
-            style={{ 
-              fontFamily: '"Orbitron", sans-serif',
-              color: '#000'
-            }}
+        <div
+          id="rules"
+          className="w-full max-w-6xl mx-auto p-6 sm:p-8 md:p-12 pb-12"
+        >
+          {/* RULES in Type12 */}
+          <h1
+            className={`${type12.className} text-center text-4xl sm:text-5xl md:text-7xl tracking-widest font-bold mt-12`}
+            style={{ color: "#000" }}
           >
             RULES
           </h1>
+
           <ul className="list-none p-0 m-0 flex flex-col gap-4 md:gap-6 mt-12 px-4 md:px-10 ">
             {rules.map((rule, index) => (
-              <li 
-                key={index} 
-                className="text-base sm:text-lg md:text-xl" 
+              <li
+                key={index}
+                className="text-base sm:text-lg md:text-xl"
                 style={{
                   fontFamily: '"Poppins", sans-serif',
-                  fontWeight: 'bold',
-                  textAlign: 'left',
-                  lineHeight: '1.7',
-                  color: '#000'
+                  fontWeight: "bold",
+                  textAlign: "left",
+                  lineHeight: "1.7",
+                  color: "#000",
                 }}
               >
                 • {rule}
