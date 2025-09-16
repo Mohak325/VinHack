@@ -2,17 +2,22 @@ import React, { useState, useEffect } from "react";
 
 const ProgressBar = ({ progress, loadingText }) => {
   const [animatedProgress, setAnimatedProgress] = useState("00.00");
+  const [finalProgress, setFinalProgress] = useState(0);
 
   useEffect(() => {
-    if (progress < 100) {
+    setFinalProgress((p) => (progress > p ? progress : p));
+  }, [progress]);
+
+  useEffect(() => {
+    if (finalProgress < 100) {
       const decimals = Math.floor(Math.random() * 90 + 10);
       setAnimatedProgress(
-        `${Math.floor(progress).toFixed(0).padStart(2, "0")}.${decimals}`
+        `${Math.floor(finalProgress).toFixed(0).padStart(2, "0")}.${decimals}`
       );
     } else {
       setAnimatedProgress("100.00");
     }
-  }, [progress]);
+  }, [finalProgress]);
 
   return (
     <div className="border-2 border-[#E86100] p-8 mb-8 relative bg-[#141312] bg-opacity-50 w-full">
@@ -31,7 +36,7 @@ const ProgressBar = ({ progress, loadingText }) => {
         <div className="border border-[#E86100] h-6 relative overflow-hidden">
           <div
             className="h-full bg-gradient-to-r from-[#E86100] to-[#E86100] transition-all duration-100 ease-linear relative"
-            style={{ width: `${progress}%` }}
+            style={{ width: `${finalProgress >= 100 ? 100 : finalProgress}%` }}
           >
             <div className="absolute right-0 top-0 w-2 h-full bg-[#E86100] animate-pulse"></div>
           </div>
