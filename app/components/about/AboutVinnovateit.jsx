@@ -1,39 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { Orbitron } from "next/font/google";
-import localFont from "next/font/local";
 import { motion, useScroll, useTransform } from "framer-motion";
 import { useRef } from "react";
 import CoinFlip from "../CoinFlip";
-
-const orbitron = Orbitron({ subsets: ["latin"] });
-
-const nostromo = localFont({
-	src: [
-		{
-			path: "../../fonts/Nostromo Regular/NostromoRegular-Light.otf",
-			weight: "300",
-		},
-		{
-			path: "../../fonts/Nostromo Regular/NostromoRegular-Medium.otf",
-			weight: "500",
-		},
-		{
-			path: "../../fonts/Nostromo Regular/NostromoRegular-Bold.otf",
-			weight: "700",
-		},
-		{
-			path: "../../fonts/Nostromo Regular/NostromoRegular-Heavy.otf",
-			weight: "800",
-		},
-		{
-			path: "../../fonts/Nostromo Regular/NostromoRegular-Black.otf",
-			weight: "900",
-		},
-	],
-	display: "swap",
-});
+import { orbitron, nostromoLight, nostromoMedium } from "../../fonts";
 
 const AboutVinnovateit = ({ isFlipping }) => {
 	const targetRef = useRef(null);
@@ -101,7 +72,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
 				{/* Right Column (Fades Out) */}
 				<motion.div
 					style={{ opacity: sideColumnsOpacity }}
-					className={`absolute right-0 top-0 flex flex-col justify-between p-[2%] lg:p-[2.5%] xl:p-[3%] w-[25%] lg:w-[22%] xl:w-[20%] h-[75%] text-start overflow-hidden ${nostromo.className}`}
+					className={`absolute right-0 top-0 flex flex-col justify-between p-[2%] lg:p-[2.5%] xl:p-[3%] w-[25%] lg:w-[22%] xl:w-[20%] h-[75%] text-start overflow-hidden ${nostromoLight.className}`}
 				>
 					<div
 						className="text-2xl lg:text-3xl xl:text-4xl"
@@ -176,7 +147,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
 				{/* This is the FIRST .02, which fades out */}
 				<motion.div
 					style={{ opacity: sideColumnsOpacity }} // Re-apply the fade-out opacity
-					className={`absolute right-0 top-[37.5%] p-[2.5%] w-[25%] h-[37.5%] text-center ${nostromo.className}`}
+					className={`absolute right-0 top-[37.5%] p-[2.5%] w-[25%] h-[37.5%] text-center ${nostromoMedium.className}`}
 				>
 					<div
 						className="text-4xl lg:text-5xl xl:text-6xl"
@@ -191,7 +162,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
 					{/* This is the NEW .02, which fades in with the paragraph */}
 					<motion.div
 						style={{ opacity: paragraphOpacity }}
-						className={`text-center ${nostromo.className}`}
+						className={`text-center ${nostromoMedium.className}`}
 					>
 						<div
 							className="text-4xl lg:text-5xl xl:text-6xl"

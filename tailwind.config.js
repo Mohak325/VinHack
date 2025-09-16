@@ -9,8 +9,9 @@ module.exports = {
     extend: {
       fontFamily: {
         ruigslay: ["var(--font-ruigslay)", "sans-serif"],
-        nostromo: ["var(--font-nostromo)", "sans-serif"],
-        orbitron: ['Orbitron', ...fontFamily.sans], 
+        nostromo: ["var(--font-nostromo-medium)", "sans-serif"],
+        orbitron: ["var(--font-orbitron)", "sans-serif"],
+        gulimche: ["var(--font-gulimche)", "sans-serif"],
       },
     },
   },

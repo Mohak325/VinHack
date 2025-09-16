@@ -10,15 +10,16 @@ import Footer from "./components/Footer";
 import Tracks from "./components/Track";
 import Coc from "./components/coc.jsx";
 import Rules from "./components/rules.jsx";
+import Border from "./components/Border";
 
 import { ruigslay, nostromoLight, nostromoMedium } from "./fonts";
 import AboutVinnovateit from "./components/about/AboutVinnovateit";
 import AboutVinnhack from "./components/about/AboutVinhack";
+import Timeline from "./components/TImeline";
 import GridPlusBackground from "./components/Grid";
 
-export default function Home() {
-	const [loadingFinished, setLoadingFinished] = useState(false);
-	const [isFlipping, setIsFlipping] = useState(false);
+function MainContent({ fontClassNames, isVisible }) {
+  const [isFlipping, setIsFlipping] = useState(false);
 
 	const containerRef = useRef(null);
 	const { scrollYProgress } = useScroll({
@@ -26,41 +27,17 @@ export default function Home() {
 		offset: ["start start", "end end"],
 	});
 
-	useEffect(() => {
-		return scrollYProgress.onChange((latest) => {
-			// Adjusted for new container height (950vh total)
-			// VinHack section: 0% - ~52% (50vh + 400vh + 50vh spacer = 500vh out of 950vh)
-			// VinnovateIT section: ~52% - 100%
-			if (latest < 0.45) {
-				setIsFlipping(false); // Show VinHack content
-			} else if (latest > 0.55) {
-				setIsFlipping(true); // Show VinnovateIT content
-			}
-			// Between 0.45-0.55, maintain current state (smooth transition zone)
-		});
-	}, [scrollYProgress]);
+  useEffect(() => {
+    return scrollYProgress.onChange((latest) => {
+      // Flip happens when scrolled past 50%
+      setIsFlipping(latest > 0.5);
+    });
+  }, [scrollYProgress]);
 
-	const assetPaths = [
-		"/assets/bottom_left_hand.svg",
-		"/assets/top_right_hand.svg",
-	];
-
-	return (
-		<div>
-			{/* Loading screen */}
-			<LoadingScreen
-				onCompletion={() => setLoadingFinished(true)}
-				assetPaths={assetPaths}
-			/>
-
-			{/* Hero section */}
-			<Hero
-				isVisible={loadingFinished}
-				ruigslayClassName={ruigslay.className}
-				nostromoLightClassName={nostromoLight.className}
-				nostromoMediumClassName={nostromoMedium.className}
-			/>
-			<div className="w-full h-screen" />
+  return (
+    <Border {...fontClassNames}>
+      <Hero {...fontClassNames} isVisible={isVisible} />
+      <div className="w-full h-screen" />
 
 			<GridPlusBackground>
 				{/* Scroll container for flipping effect */}
@@ -71,12 +48,71 @@ export default function Home() {
 					<AboutVinnovateit isFlipping={isFlipping} />
 					<div className="w-full h-[50vh]" />
 				</div>
-				{/* Remaining sections */}
-				<Tracks />
-				<FaqSection />
-				<Footer />
-			</GridPlusBackground>
-		</div>
-	);
+        </GridPlusBackground>
+      {/* Remaining sections */}
+      <Tracks />
+      <Timeline />
+      <FaqSection />
+      <Coc />
+      <Rules />
+      <Footer />
+    </Border>
+  );
+}
 
+export default function Home() {
+  // State to manage the loading screen's visibility and fade-out animation
+  const [isLoading, setIsLoading] = useState(true);
+  // State to mount the main content after loading
+  const [isHeroVisible, setIsHeroVisible] = useState(false);
+  // State to control the presence of the loading screen in the DOM
+  const [isLoaderPresent, setIsLoaderPresent] = useState(true);
+
+  // This function is called by LoadingScreen when it's done
+  const handleLoadingComplete = () => {
+    // 1. Mount the Hero and other main components immediately.
+    // They will render underneath the still-visible loading screen.
+    setIsHeroVisible(true);
+    // 2. Wait a moment, then trigger the fade-out of the loading screen.
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 100);
+
+    // 3. After the fade-out animation (1000ms) is complete, remove the
+    // loading screen from the DOM.
+    setTimeout(() => {
+      setIsLoaderPresent(false);
+    }, 1100); // 100ms delay + 1000ms animation duration
+  };
+
+  const assetPaths = [
+    "/assets/bottom_left_hand.svg",
+    "/assets/top_right_hand.svg",
+  ];
+
+  // Pass font class names to components that need them
+  const fontClassNames = {
+    ruigslayClassName: ruigslay.className,
+    nostromoLightClassName: nostromoLight.className,
+    nostromoMediumClassName: nostromoMedium.className,
+  };
+
+  return (
+    <main className="relative bg-[#D5D1BE] text-white">
+      {isLoaderPresent && (
+        <LoadingScreen
+          onCompletion={handleLoadingComplete}
+          assetPaths={assetPaths}
+          isFadingOut={!isLoading}
+        />
+      )}
+
+      {isHeroVisible && (
+        <MainContent
+          fontClassNames={fontClassNames}
+          isVisible={isHeroVisible}
+        />
+      )}
+    </main>
+  );
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { orbitron } from "../fonts";
 
 const HeroContent = ({
   isVisible,
@@ -8,9 +9,17 @@ const HeroContent = ({
   nostromoLightClassName,
 }) => {
   return (
-    <div className="absolute inset-0 w-full h-full flex flex-col justify-center items-center">
+    <div className="relative w-full h-full flex flex-col justify-center items-center">
+      {/* Sponsor presents text */}
+      <div
+        className={`flex items-center justify-center gap-x-3 text-lg md:text-xl mb-4 ${orbitron.className} text-black`}
+      >
+        <img src="/assets/sponsor.png" alt="Sponsor" className="h-4 md:h-5" />
+        <span>presents</span>
+      </div>
+
       <h1
-        className={`text-[clamp(3rem,10vw,10rem)] leading-none relative z-20 ${ruigslayClassName}`}
+        className={`text-[clamp(3rem,10vw,10rem)] leading-none relative z-20 mx-auto text-black ${ruigslayClassName}`} // Added text-black
       >
         VinHack
       </h1>
@@ -28,7 +37,6 @@ const HeroContent = ({
           xmlns="http://www.w3.org/2000/svg"
           className="w-full h-full transition-transform duration-150 group-hover:scale-95"
         >
-          {/* SVG paths remain unchanged */}
           <path
             d="M7 1H278.999C282.313 1.00026 285 3.68673 285 7V92.2236C285 95.5374 282.314 98.2246 279 98.2246H7.00098C3.68724 98.2243 1.00004 95.5378 1 92.2246V7C1.00025 3.68641 3.68653 1 7 1Z"
             fill="#141312"
