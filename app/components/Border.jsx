@@ -144,9 +144,9 @@ const Notch = ({ type, fontClassName, className }) => {
                     {lines.map((line, i) => (
                       <div
                         key={i}
-                        className="bg-[#E86100] opacity-80 rounded-sm mx-px"
+                        className="bg-[#E86100] mx-0.5"
                         style={{
-                          width: `2px`,
+                          width: `3px`,
                           height: `${line.height}px`,
                         }}
                       />
