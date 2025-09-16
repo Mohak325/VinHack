@@ -6,10 +6,31 @@ import { orbitron } from "../fonts";
 
 export default function VITFormPage() {
   const [isHostel, setIsHostel] = useState(false);
+  const [formData, setFormData] = useState({
+    name: "",
+    regNo: "",
+    year: "",
+    phone: "",
+    accommodation: "",
+    hostelType: "",
+    block: "",
+    room: "",
+  });
+
   const router = useRouter();
 
-  const handleSubmit = (e) => {
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    if (name === "accommodation") {
+      setIsHostel(value === "hostel");
+    }
+  };
+
+  const handleSubmit = () => {
     e.preventDefault();
+    console.log("Form submitted:", formData);
     router.push("/teams");
   };
 
@@ -17,10 +38,7 @@ export default function VITFormPage() {
     hidden: { opacity: 0 },
     visible: {
       opacity: 1,
-      transition: {
-        duration: 0.6,
-        staggerChildren: 0.1,
-      },
+      transition: { duration: 0.6, staggerChildren: 0.1 },
     },
   };
 
@@ -29,10 +47,7 @@ export default function VITFormPage() {
     visible: {
       opacity: 1,
       y: 0,
-      transition: {
-        duration: 0.5,
-        ease: "easeOut",
-      },
+      transition: { duration: 0.5, ease: "easeOut" },
     },
   };
 
@@ -41,19 +56,13 @@ export default function VITFormPage() {
     visible: {
       opacity: 1,
       scale: 1,
-      transition: {
-        duration: 0.8,
-        ease: "easeOut",
-      },
+      transition: { duration: 0.8, ease: "easeOut" },
     },
   };
 
   return (
-    <div
-      className="w-full min-h-screen relative"
-      style={{ backgroundColor: "#000000" }}
-    >
-      {/* Grid lines background */}
+    <div className="w-full min-h-screen relative" style={{ backgroundColor: "#000000" }}>
+      {/* Background grid */}
       <motion.div
         className="absolute inset-0"
         style={{
@@ -68,7 +77,20 @@ export default function VITFormPage() {
         transition={{ duration: 1 }}
       />
 
-      {/* Content overlay */}
+      <div className="absolute inset-0 grid grid-cols-5 gap-8 p-8 opacity-50">
+        {/* Generate 30 plus symbols (5x6 grid) */}
+        {Array.from({ length: 30 }, (_, index) => (
+          <div key={index} className="flex items-center justify-center">
+            <div
+              className="text-md font-light select-none"
+              style={{ color: "#ea8244" }}
+            >
+              +
+            </div>
+          </div>
+        ))}
+      </div>
+
       <div className="relative z-10 flex flex-col items-center justify-center min-h-screen p-4">
         <motion.div
           variants={containerVariants}
@@ -91,24 +113,16 @@ export default function VITFormPage() {
               strokeWidth="2"
               viewBox="0 0 24 24"
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                d="M15 19l-7-7 7-7"
-              />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M15 19l-7-7 7-7" />
             </svg>
             Back to Categories
           </motion.button>
 
-          {/* Form Container */}
+          {/* Form */}
           <motion.div
             variants={formVariants}
             className="relative bg-black/80 backdrop-blur-sm border border-orange-500/30 shadow-2xl rounded-2xl p-8 hover:shadow-orange-500/20 transition-all duration-300"
           >
-            {/* Background glow effect */}
-            <div className="absolute inset-0 rounded-2xl bg-orange-500/5 opacity-50"></div>
-
-            {/* Title */}
             <motion.h2
               variants={itemVariants}
               className={`text-3xl font-bold mb-8 text-orange-500 text-center ${orbitron.className}`}
@@ -124,120 +138,111 @@ export default function VITFormPage() {
               {/* Full Name */}
               <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }}>
                 <input
-                  className="w-full bg-black/40 border border-orange-500/40 p-4 rounded-xl text-orange-100 placeholder-orange-300/60 
-                  focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 font-mono"
+                  name="name"
+                  value={formData.name}
+                  onChange={handleChange}
                   type="text"
                   placeholder="Full Name"
                   required
+                  className="w-full bg-black/40 border border-orange-500/40 p-4 rounded-xl text-orange-100 placeholder-orange-300/60 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 font-mono"
                 />
               </motion.div>
 
-              {/* Reg No */}
+              {/* Registration Number */}
               <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }}>
                 <input
-                  className="w-full bg-black/40 border border-orange-500/40 p-4 rounded-xl text-orange-100 placeholder-orange-300/60 
-                  focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 font-mono"
+                  name="regNo"
+                  value={formData.regNo}
+                  onChange={handleChange}
                   type="text"
                   placeholder="Registration Number"
                   required
+                  className="w-full bg-black/40 border border-orange-500/40 p-4 rounded-xl text-orange-100 placeholder-orange-300/60 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 font-mono"
                 />
               </motion.div>
 
               {/* Year */}
               <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }}>
                 <input
-                  className="w-full bg-black/40 border border-orange-500/40 p-4 rounded-xl text-orange-100 placeholder-orange-300/60 
-                  focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 font-mono"
+                  name="year"
+                  value={formData.year}
+                  onChange={handleChange}
                   type="number"
-                  placeholder="Year (1-6)"
+                  placeholder="Year of Study"
                   min={1}
                   max={6}
                   required
+                  className="w-full bg-black/40 border border-orange-500/40 p-4 rounded-xl text-orange-100 placeholder-orange-300/60 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 font-mono"
                 />
               </motion.div>
 
               {/* Phone */}
               <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }}>
                 <input
-                  className="w-full bg-black/40 border border-orange-500/40 p-4 rounded-xl text-orange-100 placeholder-orange-300/60 
-                  focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 font-mono"
+                  name="phone"
+                  value={formData.phone}
+                  onChange={handleChange}
                   type="tel"
                   placeholder="Phone Number"
                   required
+                  className="w-full bg-black/40 border border-orange-500/40 p-4 rounded-xl text-orange-100 placeholder-orange-300/60 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 font-mono"
                 />
               </motion.div>
 
               {/* Accommodation */}
               <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }}>
                 <select
-                  className="w-full bg-black/40 border border-orange-500/40 p-4 rounded-xl text-orange-100 
-                  focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 font-mono"
-                  onChange={(e) => setIsHostel(e.target.value === "hostel")}
+                  name="accommodation"
+                  value={formData.accommodation}
+                  onChange={handleChange}
+                  className="w-full bg-black/40 border border-orange-500/40 p-4 rounded-xl text-orange-100 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 font-mono"
                 >
-                  <option value="" className="bg-black text-orange-300">
-                    Select Accommodation
-                  </option>
-                  <option value="dayscholar" className="bg-black text-orange-300">
-                    Day Scholar
-                  </option>
-                  <option value="hostel" className="bg-black text-orange-300">
-                    Hostel
-                  </option>
+                  <option value="">Select Accommodation</option>
+                  <option value="dayscholar">Day Scholar</option>
+                  <option value="hostel">Hostel</option>
                 </select>
               </motion.div>
 
               {/* Hostel-specific fields */}
               <motion.div
                 initial={false}
-                animate={{
-                  height: isHostel ? "auto" : 0,
-                  opacity: isHostel ? 1 : 0,
-                }}
+                animate={{ height: isHostel ? "auto" : 0, opacity: isHostel ? 1 : 0 }}
                 transition={{ duration: 0.4, ease: "easeInOut" }}
                 className="overflow-hidden"
               >
                 <div className="flex flex-col gap-6">
-                  <motion.div
-                    variants={itemVariants}
-                    whileHover={{ scale: 1.02 }}
-                  >
+                  <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }}>
                     <select
-                      className="w-full bg-black/40 border border-orange-500/40 p-4 rounded-xl text-orange-100 
-                      focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 font-mono"
+                      name="hostelType"
+                      value={formData.hostelType}
+                      onChange={handleChange}
+                      className="w-full bg-black/40 border border-orange-500/40 p-4 rounded-xl text-orange-100 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 font-mono"
                     >
-                      <option value="" className="bg-black text-orange-300">
-                        LH/MH
-                      </option>
-                      <option value="lh" className="bg-black text-orange-300">
-                        LH (Ladies Hostel)
-                      </option>
-                      <option value="mh" className="bg-black text-orange-300">
-                        MH (Mens Hostel)
-                      </option>
+                      <option value="">LH/MH</option>
+                      <option value="lh">LH (Ladies Hostel)</option>
+                      <option value="mh">MH (Mens Hostel)</option>
                     </select>
                   </motion.div>
 
-                  <motion.div
-                    variants={itemVariants}
-                    whileHover={{ scale: 1.02 }}
-                  >
+                  <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }}>
                     <input
-                      className="w-full bg-black/40 border border-orange-500/40 p-4 rounded-xl text-orange-100 placeholder-orange-300/60 
-                      focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 font-mono"
+                      name="block"
+                      value={formData.block}
+                      onChange={handleChange}
                       type="text"
                       placeholder="Block Number"
+                      className="w-full bg-black/40 border border-orange-500/40 p-4 rounded-xl text-orange-100 placeholder-orange-300/60 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 font-mono"
                     />
                   </motion.div>
 
-                  <motion.div
-                    variants={itemVariants}
-                    whileHover={{ scale: 1.02 }}
-                  >
+                  <motion.div variants={itemVariants} whileHover={{ scale: 1.02 }}>
                     <input
-                      className="w-full bg-black/40 border border-orange-500/40 p-4 rounded-xl text-orange-100 placeholder-orange-300/60 
-                      focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 font-mono"
+                      name="room"
+                      value={formData.room}
+                      onChange={handleChange}
                       type="text"
                       placeholder="Room Number"
+                      className="w-full bg-black/40 border border-orange-500/40 p-4 rounded-xl text-orange-100 placeholder-orange-300/60 focus:border-orange-400 focus:outline-none focus:ring-2 focus:ring-orange-500/20 transition-all duration-300 font-mono"
                     />
                   </motion.div>
                 </div>
@@ -251,47 +256,12 @@ export default function VITFormPage() {
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                {/* Background glow */}
                 <div className="absolute inset-0 rounded-xl bg-orange-400 opacity-0 group-hover:opacity-20 transition-opacity duration-300 blur-xl"></div>
-
-                {/* Button content */}
                 <div className="relative z-10 flex items-center justify-center">
                   <span className="mr-2">Submit Registration</span>
-                  <motion.svg
-                    className="w-5 h-5"
-                    fill="none"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    viewBox="0 0 24 24"
-                    whileHover={{ x: 5 }}
-                    transition={{ duration: 0.2 }}
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M13 7l5 5m0 0l-5 5m5-5H6"
-                    />
-                  </motion.svg>
                 </div>
-
-                {/* Decorative elements */}
-                <div className="absolute top-2 right-2 text-black/20 text-sm">+</div>
-                <div className="absolute bottom-2 left-2 text-black/20 text-sm">+</div>
               </motion.button>
             </motion.form>
-          </motion.div>
-
-          {/* Footer decorative element */}
-          <motion.div
-            variants={itemVariants}
-            className="text-center mt-8 text-orange-300/60 text-sm font-mono"
-          >
-            <motion.div
-              animate={{ opacity: [0.5, 1, 0.5] }}
-              transition={{ duration: 2, repeat: Infinity }}
-            >
-              Ready to hack? Complete your registration above.
-            </motion.div>
           </motion.div>
         </motion.div>
       </div>
