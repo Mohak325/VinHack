@@ -104,11 +104,6 @@ export default function Footer() {
                 text="What are you waiting for?"
                 className={`mt-4 text-xl md:text-3xl text-[#D5D1BE] ${poppins.className}`}
               />
-              <ScrambleText
-                as="p"
-                text="REGISTER NOW!"
-                className={`mt-4 text-xl md:text-3xl font-semibold text-[#D5D1BE] ${poppins.className}`}
-              />
               <div className="mt-10 mb-8">
                 <a
                   href="https://gravitas.vit.ac.in/events/5fceeb67-a8ca-4ab9-9419-eb3f9b9d6b69"
