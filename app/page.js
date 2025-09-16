@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect, useCallback } from "react";
 import { useScroll } from "framer-motion";
 
 import LoadingScreen from "./components/Loading";
@@ -35,7 +35,6 @@ function MainContent({ fontClassNames, isVisible }) {
   return (
     <Border {...fontClassNames}>
       <Hero {...fontClassNames} isVisible={isVisible} />
-      <div className="w-full h-screen" />
 
       {/* Scroll container for flipping effect */}
       <div ref={containerRef}>
@@ -62,7 +61,7 @@ export default function Home() {
   const [isLoaderPresent, setIsLoaderPresent] = useState(true);
 
   // This function is called by LoadingScreen when it's done
-  const handleLoadingComplete = () => {
+  const handleLoadingComplete = useCallback(() => {
     // 1. Mount the Hero and other main components immediately.
     // They will render underneath the still-visible loading screen.
     setIsHeroVisible(true);
@@ -76,7 +75,7 @@ export default function Home() {
     setTimeout(() => {
       setIsLoaderPresent(false);
     }, 1100); // 100ms delay + 1000ms animation duration
-  };
+  }, []);
 
   const assetPaths = [
     "/assets/bottom_left_hand.svg",

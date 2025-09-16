@@ -130,17 +130,17 @@ const Notch = ({ type, fontClassName, className }) => {
               className="relative bottom-1 w-[95%] h-[80%] flex justify-center items-center"
               style={{
                 backgroundColor: "#8F3C00",
-                clipPath: "polygon(5% 0, 95% 0, 85% 100%, 15% 100%)",
+                clipPath: "polygon(3% 10%, 97% 10%, 86% 100%, 14% 100%)",
               }}
             >
               <button
                 onClick={() => onToggle("sound")}
-                className={`flex items-center justify-center w-full h-full hover:opacity-80 ${textClasses}`}
+                className={`flex pt-1 items-center justify-center w-full h-full hover:opacity-80 ${textClasses}`}
                 style={textColor}
                 type="button"
               >
                 <div className="flex items-center">
-                  <div className="flex justify-center items-center w-20 h-[16px]">
+                  <div className="flex justify-center items-center w-20 h-[25px]">
                     {lines.map((line, i) => (
                       <div
                         key={i}
