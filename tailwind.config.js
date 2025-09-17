@@ -1,3 +1,4 @@
+
 /** @type {import('tailwindcss').Config} */
 module.exports = {
   content: [
@@ -6,6 +7,7 @@ module.exports = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+
     screens: {
       'xs': '475px',
       'sm': '640px',
@@ -34,6 +36,7 @@ module.exports = {
         'clamp-lg': 'clamp(1.125rem, 2.5vw, 1.5rem)',
         'clamp-base': 'clamp(0.875rem, 2vw, 1rem)',
         'clamp-sm': 'clamp(0.75rem, 1.5vw, 0.875rem)',
+
       },
     },
   },

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -73,6 +74,7 @@ function MainContent({ fontClassNames, isVisible }) {
   );
 }
 
+
 export default function Home() {
   // State to manage the loading screen's visibility and fade-out animation
   const [isLoading, setIsLoading] = useState(true);
@@ -111,6 +113,7 @@ export default function Home() {
   };
 
   return (
+
     <main className="relative bg-[#D5D1BE] text-white">
       {isLoaderPresent && (
         <LoadingScreen
@@ -127,5 +130,6 @@ export default function Home() {
         />
       )}
     </main>
+
   );
 }

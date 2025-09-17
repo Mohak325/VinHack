@@ -2,15 +2,22 @@
 
 import { useRef, useState } from "react";
 import { orbitron } from "../fonts";
+import {Poppins } from 'next/font/google'
+import GridPlusBackground from "./Grid";
+
+const poppins = Poppins({
+  subsets: ['latin'],
+  weight: ['400', '500', '600', '700'], // pick the weights you need
+})
 
 export default function FaqSection() {
   return (
-    <section id="faq" className="relative w-full py-10 bg-faq-pattern">
-      <div className="relative max-w-6xl w-full mx-auto px-6 py-12 z-10">
+    <section className="relative w-full py-16 bg-gradient-to-br from-slate-50 to-slate-100">
+      <GridPlusBackground>
+        <div className="relative max-w-6xl w-full mx-auto px-6 py-12 z-10">
           {/* Title */}
-          <h1 className="text-center text-3xl font-bold mb-12 font-orbitron">
-            FAQS
-          </h1>
+          <h1 className="text-center text-4xl font-bold mb-16 text-slate-800 font-orbitron">FAQS</h1>
+
 
           {/* Grid Layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
@@ -18,11 +25,9 @@ export default function FaqSection() {
             <div className="space-y-10">
               {/* General FAQs */}
               <div>
-                <h2
-                  className={`text-center text-[28px] font-bold text-black mb-6 ${orbitron.className}`}
-                >
-                  GENERAL FAQS
-                </h2>
+
+                <h2 className={`text-center text-[28px] font-bold  text-slate-700 mb-6 ${orbitron.className}`}>GENERAL FAQS</h2>
+
                 <div className="space-y-4">
                   <FaqItem
                     question="What is a hackathon?"
@@ -49,11 +54,9 @@ export default function FaqSection() {
 
               {/* Hacking FAQs */}
               <div>
-                <h2
-                  className={`text-center text-[28px] font-bold text-black mb-6 ${orbitron.className}`}
-                >
-                  HACKING FAQS
-                </h2>
+
+                <h2 className={`text-center text-[28px] font-bold text-black mb-6 ${orbitron.className}`}>HACKING FAQS</h2>
+
                 <div className="space-y-4">
                   <FaqItem
                     question="What should I bring?"
@@ -75,11 +78,9 @@ export default function FaqSection() {
             <div className="space-y-10">
               {/* VinHack FAQs */}
               <div>
-                <h2
-                  className={`text-center text-[28px] font-bold text-black mb-6 ${orbitron.className}`}
-                >
-                  VINHACK FAQS
-                </h2>
+
+                <h2 className={`text-center text-[28px] font-bold text-black mb-6 ${orbitron.className}`}>VINHACK FAQS</h2>
+
                 <div className="space-y-4">
                   <FaqItem
                     question="What is the theme of VinHack?"
@@ -106,11 +107,9 @@ export default function FaqSection() {
 
               {/* Sign Up FAQs */}
               <div>
-                <h2
-                  className={`text-center text-[28px] font-bold text-black mb-6 ${orbitron.className}`}
-                >
-                  SIGN UP FAQS
-                </h2>
+
+                <h2 className={`text-center text-[28px] font-bold text-black mb-6 ${orbitron.className}`}>SIGN UP FAQS</h2>
+
                 <div className="space-y-4">
                   <FaqItem
                     question="Where can I register for VinHack?"
@@ -133,44 +132,49 @@ export default function FaqSection() {
             </div>
           </div>
         </div>
+
+      </GridPlusBackground>
+
+
     </section>
   );
 }
 
 function FaqItem({ question, answer }) {
-  const [open, setOpen] = useState(false);
-  const detailsRef = useRef(null);
+
+  const [isOpen, setIsOpen] = useState(false);
+  const contentRef = useRef(null);
+
+  const toggleOpen = () => {
+    setIsOpen((prev) => !prev);
+  };
 
   return (
-    <details
-      ref={detailsRef}
-      className="border border-gray-700 rounded-lg overflow-hidden group"
-      open={open}
-      onToggle={() => setOpen(detailsRef.current?.open)}
-    >
-      <summary
-        className={`font-poppins cursor-pointer px-3 py-2 text-base font-medium faq-no-arrow ${
-          open ? "bg-[#D5D1BE] text-black" : "bg-[#2B1E1E] text-white"
-        }`}
+    <div className="border border-gray-700 rounded-lg overflow-hidden ">
+      <button
+        onClick={toggleOpen}
+        className={`w-full text-left ${poppins.className} cursor-pointer px-3 py-2 text-base font-medium faq-no-arrow focus:outline-none transition-colors duration-300 ${isOpen ? "bg-[#D5D1BE] text-black" : "bg-[#2B1E1E] text-white"
+          }`}
         style={{ listStyle: "none" }}
+        aria-expanded={isOpen}
       >
         {question}
-      </summary>
-      {answer && (
-        <div
-          className={`font-poppins px-4 py-3 text-sm ${
-            open ? "bg-[#332015] text-white" : "bg-[#f5f5f5] text-black"
+      </button>
+      <div
+        ref={contentRef}
+        className={`transition-all duration-300 ease-in-out overflow-hidden ${isOpen
+            ? "max-h-96 opacity-100 bg-[#332015] text-white"
+            : "max-h-0 opacity-0 bg-[#f5f5f5] text-black"
           }`}
-        >
-          {answer}
-        </div>
-      )}
-      <style jsx>{`
-        summary::-webkit-details-marker,
-        summary::marker {
-          display: none;
-        }
-      `}</style>
-    </details>
+        style={{
+          maxHeight: isOpen ? `${contentRef.current?.scrollHeight || 0}px` : "0px",
+        }}
+>
+      <div className={`px-4 py-3 ${poppins.className} text-sm`}>
+        {answer}
+      </div>
+    </div>
+    </div >
+
   );
 }
