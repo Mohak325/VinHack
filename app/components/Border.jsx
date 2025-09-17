@@ -123,7 +123,7 @@ const Notch = ({ type, fontClassName, className }) => {
       return (
         <div className={`${baseClasses} ${className}`}>
           <div
-            className={`${baseClasses} top-4 left-1/2 -translate-x-1/2 h-8 md:h-10 w-50 md:w-64 bg-black`}
+            className={`${baseClasses} lg:top-4 sm:top-3 top-2 left-1/2 -translate-x-1/2 h-8 md:h-10 w-50 md:w-64 bg-black`}
             style={{ clipPath: "polygon(0 0, 100% 0, 85% 100%, 15% 100%)" }}
           >
             <div
@@ -164,7 +164,7 @@ const Notch = ({ type, fontClassName, className }) => {
     case "menu":
       return (
         <div
-          className={`${baseClasses} top-1/2 right-3 -translate-y-1/2 w-7 h-72 bg-black`}
+          className={`${baseClasses} top-1/2 right-3 w-5 md:w-7 -translate-y-1/2 w-7 h-72 bg-black`}
           style={{ clipPath: "polygon(0 15%, 100% 0, 100% 100%, 0 85%)" }}
         >
           <button
@@ -186,7 +186,7 @@ const Notch = ({ type, fontClassName, className }) => {
     case "coords":
       return (
         <div
-          className={`${baseClasses} top-1/2 left-3 -translate-y-1/2 w-7 h-72 bg-black`}
+          className={`${baseClasses} top-1/2 left-3 w-5 md:w-7 -translate-y-1/2 h-72 bg-black`}
           style={{ clipPath: "polygon(0 0, 100% 15%, 100% 85%, 0 100%)" }}
         >
           <div
@@ -204,7 +204,7 @@ const Notch = ({ type, fontClassName, className }) => {
     case "discover":
       return (
         <div
-          className={`${baseClasses} bottom-3.5 left-1/2 -translate-x-1/2 h-5 md:h-7 w-40 bg-black rounded-t-xl`}
+          className={`${baseClasses} lg:bottom-4 sm:bottom-3 bottom-2 left-1/2 -translate-x-1/2 h-5 md:h-7 w-40 bg-black rounded-t-xl`}
           style={{
             clipPath: "polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)",
           }}
@@ -233,7 +233,7 @@ const Border = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const cornerNotchColor = "#000000";
-  const cornerNotchSize = "20px"; // Matched to border size
+  const cornerNotchSize = "12px"; // Matched to border size
 
   return (
     <BorderContext.Provider
@@ -244,35 +244,35 @@ const Border = ({
         className="relative w-full h-full"
       >
         {/* Borders */}
-        <div className="fixed top-0 left-0 w-full h-[20px] bg-black z-52 pointer-events-none"></div>
-        <div className="fixed bottom-0 left-0 w-full h-[20px] bg-black z-52 pointer-events-none"></div>
-        <div className="fixed top-0 left-0 w-[20px] h-full bg-black z-52 pointer-events-none"></div>
-        <div className="fixed top-0 right-0 w-[20px] h-full bg-black z-52 pointer-events-none"></div>
+        <div className="fixed top-0 left-0 w-full lg:h-5 sm:h-4 h-3 bg-black z-52 pointer-events-none"></div>
+        <div className="fixed bottom-0 left-0 w-full lg:h-5 sm:h-4 h-3 bg-black z-52 pointer-events-none"></div>
+        <div className="fixed top-0 left-0 lg:w-5 sm:w-4 w-3 h-full bg-black z-52 pointer-events-none"></div>
+        <div className="fixed top-0 right-0 lg:w-5 sm:w-4 w-3 h-full bg-black z-52 pointer-events-none"></div>
 
         {/* --- ADDED: Corner Notches --- */}
         <div
-          className="fixed top-[20px] left-[20px] w-0 h-0 z-52 pointer-events-none"
+          className="fixed lg:top-5 sm:top-4 top-3 lg:left-5 sm:left-4 left-3 w-0 h-0 z-52 pointer-events-none"
           style={{
             borderTop: `${cornerNotchSize} solid ${cornerNotchColor}`,
             borderRight: `${cornerNotchSize} solid transparent`,
           }}
         />
         <div
-          className="fixed top-[20px] right-[20px] w-0 h-0 z-52 pointer-events-none"
+          className="fixed lg:top-5 sm:top-4 top-3 lg:right-5 sm:right-4 right-3 w-0 h-0 z-52 pointer-events-none"
           style={{
             borderTop: `${cornerNotchSize} solid ${cornerNotchColor}`,
             borderLeft: `${cornerNotchSize} solid transparent`,
           }}
         />
         <div
-          className="fixed bottom-[20px] left-[20px] w-0 h-0 z-52 pointer-events-none"
+          className="fixed lg:bottom-5 sm:bottom-4 bottom-3 lg:left-5 sm:left-4 left-3 w-0 h-0 z-52 pointer-events-none"
           style={{
             borderBottom: `${cornerNotchSize} solid ${cornerNotchColor}`,
             borderRight: `${cornerNotchSize} solid transparent`,
           }}
         />
         <div
-          className="fixed bottom-[20px] right-[20px] w-0 h-0 z-52 pointer-events-none"
+          className="fixed lg:bottom-5 sm:bottom-4 bottom-3 lg:right-5 sm:right-4 right-3 w-0 h-0 z-52 pointer-events-none"
           style={{
             borderBottom: `${cornerNotchSize} solid ${cornerNotchColor}`,
             borderLeft: `${cornerNotchSize} solid transparent`,
