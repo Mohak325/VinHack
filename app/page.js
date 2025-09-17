@@ -16,7 +16,7 @@ import Border from "./components/Border";
 import { ruigslay, nostromoLight, nostromoMedium } from "./fonts";
 import AboutVinnovateit from "./components/about/AboutVinnovateit";
 import AboutVinnhack from "./components/about/AboutVinhack";
-import Timeline from "./components/TImeline";
+// import Timeline from "./components/TImeline";
 import { GridPlusBackground } from "./components/Grid";
 
 import Marquees from "./components/Marquee";
@@ -65,7 +65,7 @@ function MainContent({ fontClassNames, isVisible }) {
       </GridPlusBackground>
       {/* Remaining sections */}
       <>
-        <Timeline />
+        {/* <Timeline /> */}
         <Coc />
         <Rules />
         <Footer />
