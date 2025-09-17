@@ -1,27 +1,4 @@
-
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Poppins:wght@400;700&display=swap');
-/* Poppins font utility for Tailwind */
-.font-poppins {
-  font-family: 'Poppins', Arial, Helvetica, sans-serif !important;
-}
 @import "tailwindcss";
-<<<<<<< Updated upstream
-/* Orbitron font utility for Tailwind */
-.font-orbitron {
-  font-family: 'Orbitron', Arial, Helvetica, sans-serif !important;
-=======
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-
-/* Add Nostromo Regular via @font-face (needs the file in /public/fonts) */
-@font-face {
-  font-family: 'Nostromo Regular';
-  src: url('/fonts/NostromoRegular.woff2') format('woff2'),
-       url('/fonts/NostromoRegular.woff') format('woff');
-  font-weight: normal;
-  font-style: normal;
->>>>>>> Stashed changes
-}
 
 
 
@@ -115,5 +92,3 @@ body::-webkit-scrollbar-button {
 .animation-delay-200 {
   animation-delay: 0.2s;
 }
-
-
