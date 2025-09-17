@@ -1,178 +1,264 @@
 "use client";
 
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useRef, useEffect } from "react";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CoinFlip from "../CoinFlip";
 import { orbitron, nostromoLight, nostromoMedium } from "../../fonts";
 
+gsap.registerPlugin(ScrollTrigger);
+
 const AboutVinhack = ({ isFlipping }) => {
   const targetRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: targetRef,
-    offset: ["start start", "end end"],
-  });
+  const headingRef = useRef(null);
+  const circleRef = useRef(null);
+  const sideColumnsLeftRef = useRef(null);
+  const sideColumnsRightRef = useRef(null);
+  const paragraphRef = useRef(null);
+  const staticDotRef = useRef(null);
+  const newDotRef = useRef(null);
 
-  // --- ANIMATION MAPPINGS ---
-  // Map scroll progress (0 to 1) to CSS values
+  useEffect(() => {
+    // guard
+    if (!targetRef.current) return;
 
-  // 1. Heading ("About Vinnovateit") Animation
-  // Animate the 'top' property from a start percentage to an end percentage.
-  const headingTop = useTransform(scrollYProgress, [0, 1], ["85%", "10%"]);
-  // Add an explicit 'left' transform to ensure it stays on the left.
-  const headingLeft = useTransform(scrollYProgress, [0, 1], ["5%", "5%"]); // Stays at 5% from the left
+    const ctx = gsap.context(() => {
+      const mm = gsap.matchMedia();
 
-  // 2. Circle Animation
-  const circleX = useTransform(scrollYProgress, [0, 1], ["0%", "55%"]);
-  const circleScale = useTransform(scrollYProgress, [0, 1], [1, 0.6]);
+      // DESKTOP timeline (>= 768px)
+      mm.add("(min-width: 768px)", () => {
+        const scrollLen = window.innerHeight * 3.2; 
+        const stickyEl = targetRef.current.querySelector(".sticky-container");
 
-  // 3. Left & Right Column Fade Out
-  const sideColumnsOpacity = useTransform(scrollYProgress, [0, 0.3], [1, 0]);
+        const tl = gsap.timeline({
+          defaults: { ease: "power1.out" },
+          scrollTrigger: {
+            trigger: targetRef.current,
+            start: "top top",
+            end: `+=${scrollLen}`,
+            scrub: true,
+            pin: stickyEl,
+            pinSpacing: true,
+          },
+        });
 
-  // 4. New Paragraph Fade In
-  const paragraphOpacity = useTransform(scrollYProgress, [0.4, 0.7], [0, 1]);
+        gsap.set([paragraphRef.current, newDotRef.current], { opacity: 0 });
+        gsap.set(
+          [sideColumnsLeftRef.current, sideColumnsRightRef.current, staticDotRef.current],
+          { opacity: 1 }
+        );
+
+        tl.to(headingRef.current, { 
+            y: "-65vh",   // higher than before (-45vh → -65vh)
+            duration: 1 
+          }, 0)
+          .to(
+            circleRef.current,
+            {
+              // diagonal rightward (positive x), slight upward for depth
+              x: "35%",
+              y: "-15%",
+              scale: 0.75,
+              duration: 1,
+            },
+            0
+          )
+          .to(
+            [sideColumnsLeftRef.current, sideColumnsRightRef.current, staticDotRef.current],
+            { opacity: 0, duration: 0.8 },
+            0.25
+          )
+          .to([paragraphRef.current, newDotRef.current], { opacity: 1, duration: 0.9 }, 0.6);
+
+        return () => {
+          tl.kill();
+        };
+      });
+
+      // MOBILE timeline (< 768px) - much gentler movement and no clipping
+      mm.add("(max-width: 767px)", () => {
+        const scrollLen = window.innerHeight * 1.5; // shorter on mobile
+        const stickyEl = targetRef.current.querySelector(".sticky-container");
+
+        const tl = gsap.timeline({
+          defaults: { ease: "none" },
+          scrollTrigger: {
+            trigger: targetRef.current,
+            start: "top top",
+            end: `+=${scrollLen}`,
+            scrub: true,
+            pin: stickyEl,
+            pinSpacing: true,
+          },
+        });
+
+        gsap.set([paragraphRef.current, newDotRef.current], { opacity: 0 });
+        gsap.set([sideColumnsLeftRef.current, sideColumnsRightRef.current, staticDotRef.current], { opacity: 0 }); // hidden on mobile anyway
+
+        tl.to(headingRef.current, { y: "-28vh", duration: 1 }, 0) // smaller upward movement
+          .to(
+            circleRef.current,
+            {
+              // keep coin mostly centered on mobile — only slight upward motion and small scale
+              x: "0%",
+              y: "-10%",
+              scale: 0.88,
+              duration: 1,
+            },
+            0
+          )
+          .to([paragraphRef.current, newDotRef.current], { opacity: 1, duration: 0.7 }, 0.3);
+
+        return () => {
+          tl.kill();
+        };
+      });
+
+      // Refresh on resize to keep ScrollTrigger calculations accurate
+      const handleResize = () => {
+        ScrollTrigger.refresh();
+      };
+      window.addEventListener("resize", handleResize);
+
+      return () => {
+        window.removeEventListener("resize", handleResize);
+        mm.revert(); // revert matchMedia registrations and ScrollTriggers created by it
+      };
+    }, targetRef);
+
+    return () => ctx.revert();
+  }, [isFlipping]);
 
   return (
     // The main scrollable container
-    <section id="about-vinhack" ref={targetRef} className="relative h-[300vh]">
+    <section ref={targetRef} className="relative h-[400vh]">
       {/* The sticky container that holds all content */}
-      <div className="sticky top-0 h-screen w-full overflow-hidden">
-        {/* Background */}
-        <div className="absolute inset-0 bg-[#fcd8b9]"></div>
-
+      {/* NOTE: changed overflow-hidden -> overflow-visible so animations don't get clipped */}
+      <div className="sticky-container sticky top-0 h-screen w-full overflow-visible">
         {/* --- ANIMATED ELEMENTS --- */}
 
         {/* Left Column (Fades Out) */}
-        <motion.div
-          style={{ opacity: sideColumnsOpacity }}
-          className={`absolute flex flex-col justify-between w-[25%] h-[75%] px-[2%] pt-[0.3%] ${orbitron.className}`}
+        <div
+          ref={sideColumnsLeftRef}
+          className={`absolute flex flex-col justify-between 
+            w-[40%] sm:w-[30%] md:w-[22%] 
+            h-[60%] sm:h-[70%] 
+            px-[4%] sm:px-[2%] pt-[2%] 
+            text-xs sm:text-sm md:text-base 
+            overflow-hidden ${orbitron.className}`}
         >
-          <div>STYLE = UTF - 1</div>
-          <div>ENERGY-PULSE: VIBRANT ORANGE</div>
-          <div className="flex flex-row justify-end gap-4">
+          <div className="text-black">STYLE = UTF - 1</div>
+          <div className="text-black">ENERGY-PULSE: VIBRANT ORANGE</div>
+          <div className="flex flex-row justify-end gap-2 sm:gap-4">
             {Array.from({ length: 5 }).map((_, i) => (
               <Image
                 key={i}
                 src="/X.svg"
                 alt={`X ${i}`}
-                width={20}
-                height={20}
+                width={14}
+                height={14}
+                className="sm:w-5 sm:h-5"
               />
             ))}
           </div>
-          <div>CODE-ESSENCE: CREATIVE CHAOS</div>
-          <div>
+          <div className="text-black">CODE-ESSENCE: CREATIVE CHAOS</div>
+          <div className="flex justify-center">
             <Image
-              className="pt-[5%] px-[20%] w-full"
+              className="w-2/3 sm:w-full"
               src="/p1.svg"
               alt="P1 Graphic"
-              width={250}
-              height={250}
+              width={180}
+              height={180}
             />
           </div>
-        </motion.div>
+        </div>
 
         {/* Right Column (Fades Out) */}
-        <motion.div
-          style={{ opacity: sideColumnsOpacity }}
-          className={`absolute right-0 top-0 flex flex-col justify-between p-[2.5%] w-[25%] h-[75%] text-start ${nostromoMedium.className}`}
+        <div
+          ref={sideColumnsRightRef}
+          className={`absolute right-0 top-0 flex flex-col justify-between 
+            p-[4%] sm:p-[2.5%] 
+            w-[40%] sm:w-[30%] md:w-[22%] 
+            h-[60%] sm:h-[75%] 
+            text-start overflow-hidden ${nostromoLight.className}`}
         >
-          <div className="text-[2em]" style={{ fontWeight: 300 }}>
+          <div className="text-lg sm:text-2xl md:text-3xl text-black" style={{ fontWeight: 300 }}>
             <div>DISRUPT.</div>
             <div>CREATE.</div>
             <div>DOMINATE.</div>
           </div>
-        </motion.div>
+        </div>
 
-        {/* New Paragraph (Fades In) */}
-        <motion.div
-          style={{ opacity: paragraphOpacity }}
-          className="absolute top-[25%] bottom-[10%] left-[5%] w-[50%] flex flex-col justify-between"
+        {/* Text Content - Different positioning for mobile vs desktop */}
+        <div
+          ref={paragraphRef}
+          style={{ opacity: 0 }}
+          className="absolute 
+            top-[65%] left-[5%] w-[90%]
+            md:top-[25%] md:left-[5%] md:w-[50%] lg:w-[45%] xl:w-[42%] 
+            md:bottom-[10%] flex flex-col justify-between overflow-visible"
         >
           <div
-            className="text-[#EA8244] text-justify text-2xl p-4"
+            className="text-[#EA8244] text-justify text-sm sm:text-base lg:text-lg xl:text-xl 2xl:text-2xl p-2 sm:p-3 lg:p-4 xl:p-5 leading-tight sm:leading-relaxed lg:leading-relaxed xl:leading-loose overflow-hidden"
             style={{ fontWeight: 600 }}
           >
-            VinHack is a 36 hour hybrid hackathon that encourages collaboration,
-            learning and innovation through brainstorming groundbreaking ideas
-            and generating prototypes that solve real world problems. Conducted
-            in 3 rounds, teams of 1-4 members will be provided with an ideal
-            platform to analyse the problem statements and develop algorithms to
-            implement their solutions. VinHack also incorporates guest speaker
-            sessions and fun games to push our coders to achieve their greatest
-            potentials and expand their technical knowledge and skills.The event
-            will culminate with prizes for winners in various categories.
+            VinHack is a 36-hour hybrid hackathon that fosters collaboration, learning, and innovation. In teams of four, participants will tackle real-world problem statements across three rounds, developing impactful solutions and showcasing their applications. Alongside coding, VinHack features guest talks, workshops, and fun activities to inspire creativity and enhance technical skills. The event concludes with exciting prizes across multiple categories.
           </div>
-        </motion.div>
+        </div>
 
-        {/* Circle (Moves & Scales) */}
-        <motion.div
-          style={{ x: circleX, scale: circleScale }}
-          className="absolute top-[5%] left-[25%] w-[50%] h-[75%]"
+        {/* Circle (Moves & Scales) - Centered initially across all screens */}
+        <div
+          ref={circleRef}
+          className="absolute 
+            top-[25%] left-[50%] -translate-x-1/2 w-[70%] h-[35%]
+            md:top-[20%] md:w-[50%] md:h-[60%]
+            flex justify-center items-center overflow-visible"
         >
-          <CoinFlip
-            frontImg="/vinnhack_text.svg"
-            backImg="/vinnovateit_text.svg"
-            isFlipping={isFlipping}
-          />
-        </motion.div>
+          <div className="h-full w-auto aspect-square max-w-full max-h-full">
+            <CoinFlip
+              frontImg="/assets/vinhack_pic.jpeg"
+              backImg="/VinHack_logo.png"
+              isFlipping={isFlipping}
+            />
+          </div>
+        </div>
 
         {/* Heading (Moves & Scales) */}
-        <motion.div
-          style={{ top: headingTop, left: headingLeft }} // Control both top and left
-          // Remove positioning from className, as it's now fully controlled by style
-          className="absolute w-2/3"
-        >
+        <div ref={headingRef} className="absolute top-[85%] left-[5%] w-2/3 lg:w-3/5 xl:w-1/2 overflow-hidden">
           <Image
-            src="/vinnhack_text.svg"
-            alt="Vinnhack Text"
+            src="/vinhack_text.svg"
+            alt="Vinhack Text"
             width={400}
             height={100}
-            className="w-full h-auto object-contain"
+            className="w-full h-auto object-contain max-w-full max-h-full"
           />
-        </motion.div>
+        </div>
 
         {/* --- STATIC ELEMENTS --- */}
-        {/* This is the FIRST .02, which fades out */}
-        <motion.div
-          style={{ opacity: sideColumnsOpacity }} // Re-apply the fade-out opacity
-          className={`absolute right-0 top-[37.5%] p-[2.5%] w-[25%] h-[37.5%] text-center ${nostromoLight.className}`}
+        <div
+          ref={staticDotRef}
+          className={`absolute right-0 top-[37.5%] p-[2.5%] w-[25%] h-[37.5%] text-center ${nostromoMedium.className} hidden md:block`}
         >
-          <div className="text-5xl" style={{ fontWeight: 700 }}>
+          <div className="text-4xl lg:text-5xl xl:text-6xl text-black" style={{ fontWeight: 700 }}>
             .01
           </div>
-        </motion.div>
+        </div>
 
-        {/* Container for the cards and the NEW .02 */}
-        <div className="absolute bottom-0 right-0 flex w-1/3 h-[25%] items-center justify-center gap-10 p-0">
-          {/* This is the NEW .02, which fades in with the paragraph */}
-          <motion.div
-            style={{ opacity: paragraphOpacity }}
-            className={`text-center ${nostromoLight.className}`}
-          >
-            <div className="text-5xl" style={{ fontWeight: 700 }}>
+        {/* Container for the cards and the NEW .01 */}
+        <div
+          className="absolute bottom-0 right-0 flex 
+            w-full h-[15%] 
+            md:w-1/3 md:h-[25%] 
+            items-center justify-center gap-2 md:gap-4 lg:gap-6 xl:gap-10 p-0 overflow-hidden"
+        >
+          <div ref={newDotRef} style={{ opacity: 0 }} className={`text-center ${nostromoMedium.className}`}>
+            <div className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl text-black" style={{ fontWeight: 700 }}>
               .01
             </div>
-          </motion.div>
+          </div>
 
-          <div className="flex items-center justify-center w-1/4 h-2/3 p-0">
-            <Image
-              src="/card.svg"
-              alt="Card Graphic 1"
-              width={100}
-              height={150}
-              className="flex w-full h-full object-contain"
-            />
-          </div>
-          <div className="flex items-center justify-center w-1/4 h-2/3 p-0">
-            <Image
-              src="/card.svg"
-              alt="Card Graphic 2"
-              width={100}
-              height={150}
-              className="w-full h-full object-contain"
-            />
-          </div>
+          
         </div>
       </div>
     </section>

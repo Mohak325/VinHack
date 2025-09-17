@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Grid from "./Grid.jsx";
+import { GridPlusBackground } from "./Grid.jsx";
 
 const Coc = () => {
   const rules = [
@@ -12,7 +12,7 @@ const Coc = () => {
   ];
 
   return (
-    <Grid>
+    <GridPlusBackground>
       <div
         id="coc"
         className="w-full max-w-6xl mx-auto p-6 sm:p-8 md:p-12 pb-16"
@@ -46,7 +46,7 @@ const Coc = () => {
           ))}
         </ul>
       </div>
-    </Grid>
+    </GridPlusBackground>
   );
 };
 

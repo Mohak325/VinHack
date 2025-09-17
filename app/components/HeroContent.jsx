@@ -33,7 +33,9 @@ const HeroContent = ({
         className=" inline-block pt-3 z-20 group"
       >
         <GlowButton className={` ${nostromoMedium.className}`}>
-          <span className="text-[clamp(1rem,2.5vw,1.125rem)] leading-none">REGISTER NOW</span>
+          <span className="text-[clamp(1rem,2.5vw,1.125rem)] leading-none">
+            REGISTER NOW
+          </span>
         </GlowButton>
       </a>
 
