@@ -297,13 +297,26 @@ const CardBorderSVG = ({ imageUrl, altText = 'Event image', strokeColor = 'white
  */
 const TimelineGrid = ({ children }) => {
   return (
-    <div className="w-full min-h-screen relative bg-black text-[#D5D1BE] font-mono p-4 sm:p-8">
+    <div className="w-full min-h-screen relative bg-black text-[#D5D1BE] font-mono p-2 sm:p-4 md:p-8">
       <div className="absolute inset-0 opacity-40"
+        style={{
+          backgroundImage: `linear-gradient(to right, #4A2E00 1px, transparent 1px), linear-gradient(to bottom, #4A2E00 1px, transparent 1px)`,
+          backgroundSize: '20px 20px', // Smaller on mobile
+        }}/>
+      {/* Medium screens and up */}
+      <div className="absolute inset-0 opacity-40 hidden md:block"
         style={{
           backgroundImage: `linear-gradient(to right, #4A2E00 1px, transparent 1px), linear-gradient(to bottom, #4A2E00 1px, transparent 1px)`,
           backgroundSize: '40px 40px',
         }}/>
       <div className="absolute inset-0 opacity-40"
+        style={{
+          backgroundImage: `radial-gradient(#8F3C00 1px, transparent 1px)`,
+          backgroundSize: '20px 20px', // Smaller on mobile
+          backgroundPosition: '10px 10px'
+        }}/>
+      {/* Medium screens and up */}
+      <div className="absolute inset-0 opacity-40 hidden md:block"
         style={{
           backgroundImage: `radial-gradient(#8F3C00 1px, transparent 1px)`,
           backgroundSize: '40px 40px',
@@ -326,30 +339,30 @@ const TimelineSection = ({ day, dayNumber, events }) => {
   const x = useTransform(scrollYProgress, [0, 1], ["0%", `-${100 * (events.length)}%`]);
 
   return (
-    <main className="flex gap-8">
-      {/* Sticky Sidebar */}
-      <div className="sticky top-1/4 h-screen py-8 pl-16">
-        <h2 className="text-4xl text-gray-300 mb-8 whitespace-nowrap">[DAY {day}]</h2>
-        <p className="text-2xl text-gray-400">[{dayNumber}]</p>
+    <main className="flex flex-col md:flex-row gap-4 md:gap-8">
+      {/* Sticky Sidebar - Mobile: horizontal at top, Desktop: vertical on side */}
+      <div className="md:sticky md:top-1/4 md:h-screen py-4 md:py-8 px-4 md:pl-16">
+        <h2 className="text-2xl md:text-4xl text-gray-300 mb-2 md:mb-8 whitespace-nowrap">[DAY {day}]</h2>
+        <p className="text-lg md:text-2xl text-gray-400">[{dayNumber}]</p>
       </div>
 
       {/* Horizontal Scrolling Section */}
-      <div ref={scrollRef} className="relative h-[300vh] w-full">
+      <div ref={scrollRef} className="relative h-[200vh] md:h-[300vh] w-full">
         <div className="sticky top-1/4 h-screen">
           <motion.div style={{ x }} className="flex h-full items-center">
             {events.map((event) => (
-              <div key={event.id} className="w-screen flex-shrink-0 flex justify-center">
-                 <div className="flex flex-col md:flex-row gap-8 items-start w-full max-w-4xl">
-                      <div className="w-[250px] h-[350px] flex-shrink-0 relative">
+              <div key={event.id} className="w-screen flex-shrink-0 flex justify-center px-4">
+                 <div className="flex flex-col lg:flex-row gap-4 md:gap-8 items-start w-full max-w-4xl">
+                      <div className="w-full max-w-[200px] md:max-w-[250px] h-[280px] md:h-[350px] flex-shrink-0 relative mx-auto lg:mx-0">
                           <CardBorderSVG imageUrl={event.image} altText={event.eventName} />
                       </div>
-                      <div className="pt-0 md:pt-4">
-                          <p className="text-gray-300">[{event.date} 9:00 AM] {'{'}</p>
-                          <p className="pl-8 my-2 text-cyan-400">{event.eventName}</p>
-                          <p className="mt-8 text-gray-300">[DESCRIPTION] {'{'}</p>
-                          <p className="pl-8 mt-2 text-gray-500">{event.description}</p>
-                          <p className="text-gray-300 mt-2">{'}'}</p>
-                          <p className="text-gray-300 mt-2">{'}'}</p>
+                      <div className="pt-0 md:pt-4 text-center lg:text-left">
+                          <p className="text-gray-300 text-sm md:text-base">[{event.date} 9:00 AM] {'{'}</p>
+                          <p className="pl-4 md:pl-8 my-2 text-cyan-400 text-sm md:text-base font-medium">{event.eventName}</p>
+                          <p className="mt-4 md:mt-8 text-gray-300 text-sm md:text-base">[DESCRIPTION] {'{'}</p>
+                          <p className="pl-4 md:pl-8 mt-2 text-gray-500 text-xs md:text-sm leading-relaxed">{event.description}</p>
+                          <p className="text-gray-300 mt-2 text-sm md:text-base">{'}'}</p>
+                          <p className="text-gray-300 mt-2 text-sm md:text-base">{'}'}</p>
                       </div>
                   </div>
               </div>
@@ -380,12 +393,12 @@ const Timeline = () => {
       <Notch type="menu" onToggle={() => alert('Menu toggled!')} fontClassName="font-mono" />
       
       <TimelineGrid>
-        <header className="sticky top-0 z-20 flex justify-between items-start mb-16 flex-wrap bg-black py-4">
+        <header className="sticky top-0 z-20 flex flex-col sm:flex-row justify-between items-start mb-8 md:mb-16 bg-black py-4 gap-4">
           {/* 3. Apply the font via className and remove the inline style */}
-          <h1 className={`text-5xl md:text-7xl font-bold tracking-[0.2em] md:tracking-[0.4em] text-gray-200 ${type12.className}`}>
+          <h1 className={`text-3xl sm:text-5xl md:text-7xl font-bold tracking-[0.1em] sm:tracking-[0.2em] md:tracking-[0.4em] text-gray-200 ${type12.className}`}>
             TIMELINE
           </h1>
-          <div className="hidden sm:block">
+          <div className="block sm:hidden md:block">
             <CrosshairSVG />
           </div>
         </header>

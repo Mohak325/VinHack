@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-// Grid.jsx is no longer imported, as the component is defined locally below.
 
 // 1. Import your custom fonts directly into this file.
 //    (Ensure the path '../lib/fonts' is correct for your project structure)
@@ -9,38 +8,6 @@ import { orbitron, nostromoLight, nostromoMedium, ruigslay } from '../fonts';
 import localFont from 'next/font/local';
 
 const type12 = localFont({ src: '../fonts/Type12.ttf' });
-
-// Local Grid component from our previous fix to ensure it's visible.
-const GridPlusBackground = () => {
-  return (
-    <div className="absolute inset-0 pointer-events-none">
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, #c0bdab 1px, transparent 1px),
-            linear-gradient(to bottom, #c0bdab 1px, transparent 1px)
-          `,
-          backgroundSize: "40px 40px",
-        }}
-      ></div>
-      <div className="absolute inset-0 grid grid-cols-5 gap-8 p-8">
-        {Array.from({ length: 30 }, (_, index) => (
-          <div key={index} className="flex items-center justify-center">
-            <div
-              className="text-md font-light select-none"
-              style={{ color: "#ea8244" }}
-            >
-              +
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-
 
 // --- The image paths are now updated with smaller, optimized stock photos ---
 const tracksData = [
@@ -164,64 +131,56 @@ const Tracks = () => {
     >
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
         <div className="relative w-full h-full p-4 sm:p-8 md:p-12">
-          {/* Main frame and background */}
-          <div className="absolute inset-0 bg-black"></div>
+          <div className="relative w-full h-full z-10">
+            {/* TRACKS title */}
+            <div className="absolute top-0 left-0 w-full pt-16 sm:pt-20 text-center z-20 pointer-events-none transition-opacity duration-300" style={{ opacity: titleOpacity }}>
+              <h2 className={`text-5xl sm:text-6xl lg:text-8xl font-black tracking-widest text-black ${type12.className}`}>TRACKS</h2>
+            </div>
 
-          <div className="absolute inset-0 bg-[#E6DCD1]">
-            <GridPlusBackground />
+            {/* Animated circle */}
+            <div className="absolute w-48 h-48 md:w-64 md:h-64 z-10" style={circleStyle}>
+              <div 
+                className="w-full h-full rounded-full border-4 border-black transition-all duration-300"
+                style={circleBgStyle}
+              ></div>
+            </div>
 
-
-              <div className="relative w-full h-full z-10">
-                  {/* TRACKS title */}
-                  <div className="absolute top-0 left-0 w-full pt-16 sm:pt-20 text-center z-20 pointer-events-none transition-opacity duration-300" style={{ opacity: titleOpacity }}>
-                      <h2 className={`text-5xl sm:text-6xl lg:text-8xl font-black tracking-widest text-black ${type12.className}`}>TRACKS</h2>
-                  </div>
-
-                  {/* Animated circle */}
-                  <div className="absolute w-48 h-48 md:w-64 md:h-64 z-10" style={circleStyle}>
-                      <div 
-                        className="w-full h-full rounded-full border-4 border-black transition-all duration-300"
-                        style={circleBgStyle}
-                      ></div>
-                  </div>
-
-                  {/* Initial static text for the first card */}
-                  <div
-                    className="absolute w-[42%] text-leftt pr-4"
-                    style={{
-                      top: '50%',
-                      left: '75%',
-                      transform: 'translate(-160%, -50%)',
-                      opacity: introOpacity,
-                      pointerEvents: introOpacity > 0 ? 'auto' : 'none',
-                    }}
-                    >
-                <p
-                  className={`font-bold text-black text-4xl lg:text-6xl xl:text-7xl ${nostromoMedium.className}`}
+            {/* Initial static text for the first card */}
+            <div
+              className="absolute w-[42%] text-leftt pr-4"
+              style={{
+                top: '50%',
+                left: '75%',
+                transform: 'translate(-160%, -50%)',
+                opacity: introOpacity,
+                pointerEvents: introOpacity > 0 ? 'auto' : 'none',
+              }}
+            >
+              <p
+                className={`font-bold text-black text-4xl lg:text-6xl xl:text-7xl ${nostromoMedium.className}`}
+              >
+                {firstCard.id}
+              </p>
+              <p
+                className={`text-black/70 mt-2 text-base lg:text-xl xl:text-2xl ${nostromoLight.className}`}
+              >
+                {firstCard.title}
+              </p>
+              <p
+                className={`leading-relaxed text-black/60 mt-4 text-sm lg:text-base xl:text-lg ${nostromoLight.className}`}
+              >
+                {firstCard.description}
+                <a
+                  href="#"
+                  className="font-bold text-black/70 hover:text-black transition-colors duration-300 ml-1"
                 >
-                  {firstCard.id}
-                </p>
-                <p
-                  className={`text-black/70 mt-2 text-base lg:text-xl xl:text-2xl ${nostromoLight.className}`}
-                >
-                  {firstCard.title}
-                </p>
-                <p
-                  className={`leading-relaxed text-black/60 mt-4 text-sm lg:text-base xl:text-lg ${nostromoLight.className}`}
-                >
-                  {firstCard.description}
-                  <a
-                    href="#"
-                    className="font-bold text-black/70 hover:text-black transition-colors duration-300 ml-1"
+                  View More
+                </a>
+              </p>
+            </div>
 
-                  >
-                    View More
-                  </a>
-                </p>
-              </div>
-
-              {/* Track content */}
-              <div className="relative w-full h-full z-10">
+            {/* Track content */}
+            <div className="relative w-full h-full z-10">
                 {tracksData.map((track, index) => {
                   const isCardEven = index % 2 === 0;
                   const textAlign = isCardEven ? "text-left" : "text-right";
@@ -273,7 +232,6 @@ const Tracks = () => {
                     </div>
                   );
                 })}
-              </div>
             </div>
           </div>
         </div>
