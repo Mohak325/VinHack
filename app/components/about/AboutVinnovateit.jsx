@@ -159,7 +159,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
 
 	return (
 		// The main scrollable container
-		<section ref={targetRef} className="relative h-[400vh]">
+		<section ref={targetRef} className="relative h-[250vh] md:h-[300vh] lg:h-[400vh]">
 			{/* The sticky container that holds all content */}
 			{/* NOTE: changed overflow-hidden -> overflow-visible so animations don't get clipped */}
 			<div className="sticky-container sticky top-0 h-screen w-full overflow-visible">

@@ -47,7 +47,7 @@ function MainContent({ fontClassNames, isVisible }) {
   return (
     <Border {...fontClassNames}>
       <Hero {...fontClassNames} isVisible={isVisible} />
-      <div className="w-full h-[20vh] md:h-[30vh]" />
+      <div className="w-full h-[5vh] md:h-[10vh]" />
 
       <GridPlusBackground>
         {/* Scroll container for flipping effect */}
