@@ -43,7 +43,7 @@ const AboutVinhack = ({ isFlipping }) => {
 				{/* Left Column (Fades Out) */}
 				<motion.div
 					style={{ opacity: sideColumnsOpacity }}
-					className={`absolute flex flex-col justify-between w-[25%] lg:w-[22%] xl:w-[20%] h-[75%] px-[1.5%] lg:px-[2%] pt-[0.3%] text-xs lg:text-sm xl:text-base overflow-hidden ${orbitron.className}`}
+					className={`absolute flex flex-col justify-between w-[25%] lg:w-[22%] xl:w-[20%] h-[75%] px-[1.5%] lg:px-[2%] pt-[3%] text-xs lg:text-sm xl:text-base text-black overflow-hidden ${orbitron.className}`}
 				>
 					<div>STYLE = UTF - 1</div>
 					<div>ENERGY-PULSE: VIBRANT ORANGE</div>
@@ -74,7 +74,7 @@ const AboutVinhack = ({ isFlipping }) => {
 				{/* Right Column (Fades Out) */}
 				<motion.div
 					style={{ opacity: sideColumnsOpacity }}
-					className={`absolute right-0 top-0 flex flex-col justify-between p-[2%] lg:p-[2.5%] xl:p-[3%] w-[25%] lg:w-[22%] xl:w-[20%] h-[75%] text-start overflow-hidden ${nostromoLight.className}`}
+					className={`absolute right-0 top-0 flex flex-col justify-between p-[2%] lg:p-[2.5%] xl:p-[3%] w-[25%] lg:w-[22%] xl:w-[20%] h-[75%] text-start text-black overflow-hidden ${nostromoLight.className}`}
 				>
 					<div
 						className="text-2xl lg:text-3xl xl:text-4xl"
@@ -150,7 +150,7 @@ const AboutVinhack = ({ isFlipping }) => {
 				{/* This is the FIRST .02, which fades out */}
 				<motion.div
 					style={{ opacity: sideColumnsOpacity }} // Re-apply the fade-out opacity
-					className={`absolute right-0 top-[37.5%] p-[2.5%] w-[25%] h-[37.5%] text-center ${nostromoMedium.className}`}
+					className={`absolute right-0 top-[37.5%] p-[2.5%] w-[25%] h-[37.5%] text-center text-black ${nostromoMedium.className}`}
 				>
 					<div
 						className="text-4xl lg:text-5xl xl:text-6xl"
@@ -161,11 +161,11 @@ const AboutVinhack = ({ isFlipping }) => {
 				</motion.div>
 
 				{/* Container for the cards and the NEW .02 */}
-				<div className="absolute bottom-0 right-0 flex w-1/3 h-[25%] items-center justify-center gap-4 lg:gap-6 xl:gap-10 p-0 overflow-hidden">
+				<div className="absolute bottom-0 right-0 flex w-1/3 h-[25%] items-center justify-center gap-4 lg:gap-6 xl:gap-10 pb-4 pl-6 overflow-hidden">
 					{/* This is the NEW .02, which fades in with the paragraph */}
 					<motion.div
 						style={{ opacity: paragraphOpacity }}
-						className={`text-center ${nostromoMedium.className}`}
+						className={`text-center text-black ${nostromoMedium.className}`}
 					>
 						<div className="text-5xl" style={{ fontWeight: 700 }}>
 							.01
