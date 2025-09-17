@@ -48,6 +48,36 @@ body::-webkit-scrollbar-button {
   .preserve-3d {
     transform-style: preserve-3d;
   }
+  
+  /* Mobile-specific utilities */
+  .safe-area-inset {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  
+  .mobile-border-spacing {
+    padding: 10px;
+  }
+  
+  @media (min-width: 768px) {
+    .mobile-border-spacing {
+      padding: 20px;
+    }
+  }
+  
+  /* Responsive text utilities */
+  .text-responsive-hero {
+    font-size: clamp(2.5rem, 8vw, 10rem);
+    line-height: 0.9;
+  }
+  
+  .text-responsive-lg {
+    font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+  }
+  
+  .text-responsive-base {
+    font-size: clamp(0.875rem, 2vw, 1rem);
+  }
 }
 
 @keyframes blink {

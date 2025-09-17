@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import Grid from "./Grid.jsx";
+import { GridPlusBackground  } from "./Grid.jsx";
 
 const Rules = () => {
   const rules = [
@@ -17,7 +17,7 @@ const Rules = () => {
   ];
 
   return (
-    <Grid>
+    <GridPlusBackground>
       {/* Added pb-16 for extra padding at the bottom */}
       <div
         id="rules"
@@ -50,7 +50,7 @@ const Rules = () => {
           ))}
         </ul>
       </div>
-    </Grid>
+    </GridPlusBackground>
   );
 };
 

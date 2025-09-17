@@ -13,8 +13,56 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Submission {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
-  name  String
-  email String
+model VITStudent {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  name          String
+  regNo         String   @unique
+  year          Int
+  phone         String
+  accommodation String // "dayscholar" or "hostel"
+  hostelType    String? // "lh" or "mh" (optional, only for hostel students)
+  block         String? // optional, only for hostel students
+  room          String? // optional, only for hostel students
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  teamId String? @map("team_id") @db.ObjectId
+  team   Team?   @relation(fields: [teamId], references: [id])
+
+  @@map("vit_students")
+}
+
+model externalParticipant {
+  id          String   @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  collegeName String   @map("college_name")
+  year        Int
+  phone       String
+  branch      String
+  city        String
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  // Add team relationships if needed
+  teamId String? @map("team_id") @db.ObjectId
+  team   Team?   @relation(fields: [teamId], references: [id])
+
+  @@index([collegeName])
+  @@index([city])
+  @@map("external_participants")
+}
+
+model Team {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  name      String
+  category  String
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  // Relations
+
+  externalParticipants externalParticipant[]
+  vitStudents          VITStudent[]
+
+  @@map("teams")
 }

@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useState, useRef, useEffect } from "react";
@@ -15,11 +16,14 @@ import Border from "./components/Border";
 import { ruigslay, nostromoLight, nostromoMedium } from "./fonts";
 import AboutVinnovateit from "./components/about/AboutVinnovateit";
 import AboutVinnhack from "./components/about/AboutVinhack";
-import Timeline from "./components/TImeline";
-import GridPlusBackground from "./components/Grid";
+// import Timeline from "./components/TImeline";
+import { GridPlusBackground } from "./components/Grid";
+
+import Marquees from "./components/Marquee";
 
 function MainContent({ fontClassNames, isVisible }) {
   const [isFlipping, setIsFlipping] = useState(false);
+  const [isMounted, setIsMounted] = useState(false);
 
 	const containerRef = useRef(null);
 	const { scrollYProgress } = useScroll({
@@ -28,37 +32,48 @@ function MainContent({ fontClassNames, isVisible }) {
 	});
 
   useEffect(() => {
+    setIsMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!isMounted) return;
+    
     return scrollYProgress.onChange((latest) => {
       // Flip happens when scrolled past 50%
       setIsFlipping(latest > 0.5);
     });
-  }, [scrollYProgress]);
+  }, [scrollYProgress, isMounted]);
 
   return (
     <Border {...fontClassNames}>
       <Hero {...fontClassNames} isVisible={isVisible} />
-      <div className="w-full h-screen" />
+      <div className="w-full h-[20vh] md:h-[30vh]" />
 
-			<GridPlusBackground>
-				{/* Scroll container for flipping effect */}
-				<div ref={containerRef}>
-					<div className="w-full h-[50vh]" />
-					<AboutVinnhack isFlipping={isFlipping} />
-					<div className="w-full h-[50vh]" />
-					<AboutVinnovateit isFlipping={isFlipping} />
-					<div className="w-full h-[50vh]" />
-				</div>
-        </GridPlusBackground>
+      <GridPlusBackground>
+        {/* Scroll container for flipping effect */}
+        <div ref={containerRef}>
+          <div className="w-full h-[15vh] md:h-[25vh]" />
+          <AboutVinnhack isFlipping={isFlipping} />
+          <div className="w-full h-[15vh] md:h-[25vh]" />
+          <AboutVinnovateit isFlipping={isFlipping} />
+          <div className="w-full h-[15vh] md:h-[25vh]" />
+        </div>
+        {/* Tracks section */}
+        <Tracks />
+        {/* FAQ section */}
+        <FaqSection />
+      </GridPlusBackground>
       {/* Remaining sections */}
-      <Tracks />
-      <Timeline />
-      <FaqSection />
-      <Coc />
-      <Rules />
-      <Footer />
+      <>
+        {/* <Timeline /> */}
+        <Coc />
+        <Rules />
+        <Footer />
+      </>
     </Border>
   );
 }
+
 
 export default function Home() {
   // State to manage the loading screen's visibility and fade-out animation
@@ -98,6 +113,7 @@ export default function Home() {
   };
 
   return (
+
     <main className="relative bg-[#D5D1BE] text-white">
       {isLoaderPresent && (
         <LoadingScreen
@@ -114,5 +130,6 @@ export default function Home() {
         />
       )}
     </main>
+
   );
 }

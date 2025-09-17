@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useRef } from "react";
-// Grid.jsx is no longer imported, as the component is defined locally below.
+import { motion } from "framer-motion";
 
 // 1. Import your custom fonts directly into this file.
 //    (Ensure the path '../lib/fonts' is correct for your project structure)
@@ -10,69 +10,42 @@ import localFont from 'next/font/local';
 
 const type12 = localFont({ src: '../fonts/Type12.ttf' });
 
-// Local Grid component from our previous fix to ensure it's visible.
-const GridPlusBackground = () => {
-  return (
-    <div className="absolute inset-0 pointer-events-none">
-      <div
-        className="absolute inset-0"
-        style={{
-          backgroundImage: `
-            linear-gradient(to right, #c0bdab 1px, transparent 1px),
-            linear-gradient(to bottom, #c0bdab 1px, transparent 1px)
-          `,
-          backgroundSize: "40px 40px",
-        }}
-      ></div>
-      <div className="absolute inset-0 grid grid-cols-5 gap-8 p-8">
-        {Array.from({ length: 30 }, (_, index) => (
-          <div key={index} className="flex items-center justify-center">
-            <div
-              className="text-md font-light select-none"
-              style={{ color: "#ea8244" }}
-            >
-              +
-            </div>
-          </div>
-        ))}
-      </div>
-    </div>
-  );
-};
-
-
-
-// --- The image paths are now updated with smaller, optimized stock photos ---
 const tracksData = [
   {
     id: '.01',
-    title: 'Lorem ipsum dolor sit amet',
-    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam....',
-    imageUrl: 'https://images.unsplash.com/photo-1557683316-973673baf926?q=80&w=500&auto=format&fit=crop',
+    title: 'Innovate for Impact',
+    description: 'Step into the world where ideas ignite revolutions! Innovate for Impact challenges you to think like entrepreneurs…dream big, solve pressing problems, and create solutions that spark meaningful change. From engineering solutions for education, healthcare, or social justice to sustainable business models, this track empowers you to craft ventures that don\'t just survive but thrive, leaving a legacy of impact.',
+    imageUrl: '/assets/tracks/track1.png',
   },
   {
     id: '.02',
-    title: 'Vestibulum sed arcu non odio',
-    description: 'Euismod lacinia at quis risus. Sed vulputate mi sit amet mauris. Velit sed ullamcorper morbi tincidunt ornare massa eget. Ut enim ad minim veniam....',
-    imageUrl: 'https://images.unsplash.com/photo-1494500764479-0c8f2919a3d8?q=80&w=500&auto=format&fit=crop',
+    title: 'GraviTech',
+    description: 'Most ideas stay on Earth. Yours won\'t. GraviTech challenges you to design technologies that reach into the cosmos, systems that could one day power satellites, space habitats, or interplanetary travel. Navigate the unknown, interpret celestial data, or build autonomous explorers. This is not about looking up at the stars, it\'s about building the tools to live among them.',
+    imageUrl: '/assets/tracks/track2.png',
   },
   {
     id: '.03',
-    title: 'Integer enim neque volutpat',
-    description: 'Ac tincidunt vitae semper quis. Nunc sed velit dignissim sodales ut eu sem. Amet justo donec enim diam vulputate ut. Ut enim ad minim veniam....',
-    imageUrl: 'https://images.unsplash.com/photo-1457460866886-40ef8d4b42a0?q=80&w=500&auto=format&fit=crop',
+    title: 'TaskMaster',
+    description: 'Behind every great innovation lies the power of productivity. TaskMaster is your chance to forge tools that don\'t just make work faster, they redefine how it\'s done. Build adaptive assistants, predictive task engines, or collaboration frameworks that feel seamless and intuitive. Your mission: craft technologies that empower creators, builders, and dreamers to achieve more than ever imagined.',
+    imageUrl: '/assets/tracks/track3.png',
   },
   {
     id: '.04',
-    title: 'Pellentesque habitant morbi',
-    description: 'Tristique senectus et netus et. Egestas purus viverra accumsan in nisl. At quis risus sed vulputate odio ut enim. Ut enim ad minim veniam....',
-    imageUrl: 'https://images.unsplash.com/photo-1552854728-6b8b35520a04?q=80&w=500&auto=format&fit=crop',
+    title: 'InfiniLoop',
+    description: 'Innovation means nothing if it can\'t scale. InfiniLoop challenges you to engineer systems that stand the test of time, growth, and demand. From cloud-native solutions to high-performance architectures, your mission is to design technologies that grow seamlessly, no matter how big the challenge. Build for the infinite loop of tomorrow.',
+    imageUrl: '/assets/tracks/track4.png',
   },
   {
     id: '.05',
-    title: 'Massa ultricies mi quis',
-    description: 'Hendrerit dolor magna. Et netus et malesuada fames ac turpis. Amet consectetur adipiscing elit duis tristique. Ut enim ad minim veniam....',
-    imageUrl: 'https://images.unsplash.com/photo-1604147706283-d7119b5b822c?q=80&w=500&auto=format&fit=crop',
+    title: 'CyberForge',
+    description: 'This is where imagination takes physical form. CyberForge challenges you to bring robotics into realms once thought impossible. From self-thinking drones to human-assistive machines, craft systems that blur the line between automation and intelligence. Infuse advanced perception, adaptive control, and decision-making into your creations, and forge machines that could change how we live, work, and explore.',
+    imageUrl: '/assets/tracks/track5.png',
+  },
+  {
+    id: '.06',
+    title: 'Finovate',
+    description: 'Finance has been reinvented many times, from coins to credit cards. Now it\'s your turn. Finovate calls on you to reimagine how money flows in the age of AI and blockchain. Create decentralized systems or investment engines that outthink humans. Build the tools that will define the next era of financial innovation.',
+    imageUrl: '/assets/tracks/track6.png',
   }
 ];
 
@@ -80,12 +53,23 @@ const Tracks = () => {
   const [scrollProgress, setScrollProgress] = useState(0);
   const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const [soundOn, setSoundOn] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
   const containerRef = useRef(null);
 
   const finalAnimationTarget =
     (tracksData.length - 1 + 0.15) / tracksData.length;
   const containerHeightVh =
     100 + (tracksData.length - 1) * 100 * finalAnimationTarget;
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -97,22 +81,79 @@ const Tracks = () => {
       setScrollProgress(animationProgress);
     };
 
-    window.addEventListener("scroll", handleScroll, { passive: true });
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, [finalAnimationTarget]);
+    if (!isMobile) {
+      window.addEventListener("scroll", handleScroll, { passive: true });
+      return () => {
+        window.removeEventListener("scroll", handleScroll);
+      };
+    }
+  }, [finalAnimationTarget, isMobile]);
 
   useEffect(() => {
     const handleMouseMove = (event) => {
       setMousePos({ x: event.clientX, y: event.clientY });
     };
-    window.addEventListener("mousemove", handleMouseMove);
-    return () => {
-      window.removeEventListener("mousemove", handleMouseMove);
-    };
-  }, []);
+    if (!isMobile) {
+      window.addEventListener("mousemove", handleMouseMove);
+      return () => {
+        window.removeEventListener("mousemove", handleMouseMove);
+      };
+    }
+  }, [isMobile]);
 
+  // Mobile View
+  if (isMobile) {
+    return (
+      <div className="w-full bg-white py-16">
+        <motion.div
+          initial={{ opacity: 0, y: 50 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8 }}
+          viewport={{ once: true }}
+          className="text-center mb-16"
+        >
+          <h2 className={`text-5xl font-black tracking-widest text-black ${type12.className}`}>
+            TRACKS
+          </h2>
+        </motion.div>
+
+        <div className="px-4 space-y-12">
+          {tracksData.map((track, index) => (
+            <motion.div
+              key={track.id}
+              initial={{ opacity: 0, y: 50 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: index * 0.1 }}
+              viewport={{ once: true, margin: "-100px" }}
+              className="bg-white rounded-lg shadow-lg overflow-hidden"
+            >
+              <div className="aspect-video w-full overflow-hidden">
+                <img
+                  src={track.imageUrl}
+                  alt={track.title}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <div className="p-6">
+                <p className={`font-bold text-black text-3xl mb-2 ${nostromoMedium.className}`}>
+                  {track.id}
+                </p>
+                <p className={`text-black/80 text-xl mb-4 ${nostromoLight.className}`}>
+                  {track.title}
+                </p>
+                <p className={`leading-relaxed text-black/70 text-base ${nostromoLight.className}`}>
+                  {track.description}
+                </p>
+                
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
+  // Desktop View (original animation)
   const progressTotal = scrollProgress * tracksData.length;
   const currentCardFloat = Math.floor(progressTotal);
   const progressWithinCard = progressTotal - currentCardFloat;
@@ -164,64 +205,56 @@ const Tracks = () => {
     >
       <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
         <div className="relative w-full h-full p-4 sm:p-8 md:p-12">
-          {/* Main frame and background */}
-          <div className="absolute inset-0 bg-black"></div>
+          <div className="relative w-full h-full z-10">
+            {/* TRACKS title */}
+            <div className="absolute top-0 left-0 w-full pt-16 sm:pt-20 text-center z-20 pointer-events-none transition-opacity duration-300" style={{ opacity: titleOpacity }}>
+              <h2 className={`text-5xl sm:text-6xl lg:text-8xl font-black tracking-widest text-black ${type12.className}`}>TRACKS</h2>
+            </div>
 
-          <div className="absolute inset-0 bg-[#E6DCD1]">
-            <GridPlusBackground />
+            {/* Animated circle */}
+            <div className="absolute w-48 h-48 md:w-64 md:h-64 z-10" style={circleStyle}>
+              <div 
+                className="w-full h-full rounded-full border-4 border-black transition-all duration-300"
+                style={circleBgStyle}
+              ></div>
+            </div>
 
-
-              <div className="relative w-full h-full z-10">
-                  {/* TRACKS title */}
-                  <div className="absolute top-0 left-0 w-full pt-16 sm:pt-20 text-center z-20 pointer-events-none transition-opacity duration-300" style={{ opacity: titleOpacity }}>
-                      <h2 className={`text-5xl sm:text-6xl lg:text-8xl font-black tracking-widest text-black ${type12.className}`}>TRACKS</h2>
-                  </div>
-
-                  {/* Animated circle */}
-                  <div className="absolute w-48 h-48 md:w-64 md:h-64 z-10" style={circleStyle}>
-                      <div 
-                        className="w-full h-full rounded-full border-4 border-black transition-all duration-300"
-                        style={circleBgStyle}
-                      ></div>
-                  </div>
-
-                  {/* Initial static text for the first card */}
-                  <div
-                    className="absolute w-[42%] text-leftt pr-4"
-                    style={{
-                      top: '50%',
-                      left: '75%',
-                      transform: 'translate(-160%, -50%)',
-                      opacity: introOpacity,
-                      pointerEvents: introOpacity > 0 ? 'auto' : 'none',
-                    }}
-                    >
-                <p
-                  className={`font-bold text-black text-4xl lg:text-6xl xl:text-7xl ${nostromoMedium.className}`}
+            {/* Initial static text for the first card */}
+            <div
+              className="absolute w-[42%] text-left pr-4"
+              style={{
+                top: '50%',
+                left: '75%',
+                transform: 'translate(-160%, -50%)',
+                opacity: introOpacity,
+                pointerEvents: introOpacity > 0 ? 'auto' : 'none',
+              }}
+            >
+              <p
+                className={`font-bold text-black text-4xl lg:text-6xl xl:text-7xl ${nostromoMedium.className}`}
+              >
+                {firstCard.id}
+              </p>
+              <p
+                className={`text-black/70 mt-2 text-base lg:text-xl xl:text-2xl ${nostromoLight.className}`}
+              >
+                {firstCard.title}
+              </p>
+              <p
+                className={`leading-relaxed text-black/60 mt-4 text-sm lg:text-base xl:text-lg ${nostromoLight.className}`}
+              >
+                {firstCard.description}
+                <a
+                  href="#"
+                  className="font-bold text-black/70 hover:text-black transition-colors duration-300 ml-1"
                 >
-                  {firstCard.id}
-                </p>
-                <p
-                  className={`text-black/70 mt-2 text-base lg:text-xl xl:text-2xl ${nostromoLight.className}`}
-                >
-                  {firstCard.title}
-                </p>
-                <p
-                  className={`leading-relaxed text-black/60 mt-4 text-sm lg:text-base xl:text-lg ${nostromoLight.className}`}
-                >
-                  {firstCard.description}
-                  <a
-                    href="#"
-                    className="font-bold text-black/70 hover:text-black transition-colors duration-300 ml-1"
+                  View More
+                </a>
+              </p>
+            </div>
 
-                  >
-                    View More
-                  </a>
-                </p>
-              </div>
-
-              {/* Track content */}
-              <div className="relative w-full h-full z-10">
+            {/* Track content */}
+            <div className="relative w-full h-full z-10">
                 {tracksData.map((track, index) => {
                   const isCardEven = index % 2 === 0;
                   const textAlign = isCardEven ? "text-left" : "text-right";
@@ -263,17 +296,10 @@ const Tracks = () => {
                         className={`leading-relaxed text-black/60 mt-4 text-sm lg:text-base xl:text-lg ${nostromoLight.className}`}
                       >
                         {track.description}
-                        <a
-                          href="#"
-                          className="font-bold text-black/70 hover:text-black transition-colors duration-300 ml-1"
-                        >
-                          View More
-                        </a>
                       </p>
                     </div>
                   );
                 })}
-              </div>
             </div>
           </div>
         </div>
