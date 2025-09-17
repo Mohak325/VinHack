@@ -254,11 +254,19 @@ const AboutVinhack = ({ isFlipping }) => {
             md:top-[20%] md:w-[50%] md:h-[60%]
             flex justify-center items-center overflow-visible"
 				>
-					<div className="h-full w-auto aspect-square max-w-full max-h-full">
+					<div className="h-full w-auto aspect-square max-w-full max-h-full relative">
 						<CoinFlip
 							frontImg="/assets/vinhack_pic.jpeg"
 							backImg="/VinHack_logo.png"
 							isFlipping={isFlipping}
+						/>
+						{/* Circle Border Overlay */}
+						<Image
+							src="/circle_border.svg"
+							alt="Circle Border"
+							fill
+							className="absolute top-0 left-0 w-full h-full pointer-events-none scale-110"
+							style={{ zIndex: 10 }}
 						/>
 					</div>
 				</div>
