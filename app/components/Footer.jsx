@@ -1,0 +1,206 @@
+"use client";
+import React, { useState, useEffect } from "react";
+import Image from "next/image";
+import { Poppins } from "next/font/google";
+import GlowButton from "./GlowButton.jsx";
+import ScrambleText from "./ScrambleText.jsx";
+import { ruigslay, nostromoLight, nostromoMedium } from "../fonts";
+import {
+  FaInstagram,
+  FaTwitter,
+  FaGithub,
+  FaLinkedin,
+  FaYoutube,
+  FaFacebook,
+} from "react-icons/fa";
+
+const poppins = Poppins({ subsets: ["latin"], weight: ["400", "600"] });
+
+const formatNum = (num) => num.toString().padStart(4, "0").split("");
+
+export default function Footer() {
+  const [soundOn, setSoundOn] = useState(true);
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
+
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setCoords({ x: e.clientX, y: e.clientY });
+    };
+    window.addEventListener("mousemove", handleMouseMove);
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  const handleToggleSound = () => setSoundOn(!soundOn);
+  const handleToggleMenu = () => setMenuOpen(!menuOpen);
+
+  const tokenizeCoords = (x, y) => {
+    return ["X.", ...formatNum(x), "//", "Y.", ...formatNum(y)];
+  };
+
+  const animationStyles = `
+    @keyframes fadeInFromBack {
+      from { opacity: 0; transform: scale(0.95); }
+      to { opacity: 1; transform: scale(1); }
+    }
+    .animate-main-content {
+      animation: fadeInFromBack 1.2s ease-out forwards;
+      opacity: 0; /* Start hidden */
+    }
+    .hide-scrollbar::-webkit-scrollbar { display: none; }
+    .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+  `;
+
+  return (
+    <section
+      id="register"
+      className="relative bg-black text-white font-sans"
+      // --- STYLE RESTORED HERE ---
+      style={{
+        backgroundImage: `url("data:image/svg+xml,%3csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3e%3cg stroke='%23F5B37F' stroke-width='1'%3e%3cpath d='M 50 47 V 53 M 47 50 H 53'/%3e%3c/g%3e%3c/svg%3e")`,
+        backgroundSize: "100px 100px",
+      }}
+    >
+      <style>{animationStyles}</style>
+
+      <div className="relative w-full min-h-screen p-4">
+        {/* Your original border and notch structure */}
+        <div
+          className="absolute inset-0"
+          style={{
+            clipPath:
+              "polygon(0% 30px, 30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0% calc(100% - 30px))",
+          }}
+        ></div>
+        <div className="absolute top-0 left-0 w-[30px] h-[30px] bg-black"></div>
+        <div className="absolute top-0 right-0 w-[30px] h-[30px] bg-black"></div>
+        <div className="absolute bottom-0 left-0 w-[30px] h-[30px] bg-black"></div>
+        <div className="absolute bottom-0 right-0 w-[30px] h-[30px] bg-black"></div>
+
+        <div
+          className="relative w-full h-full flex flex-col items-center justify-start pt-16 hide-scrollbar overflow-y-auto"
+          style={{
+            minHeight: "calc(100vh - 2rem)",
+            clipPath:
+              "polygon(0% 30px, 30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0% calc(100% - 30px))",
+          }}
+        >
+          <div className="animate-main-content w-full">
+            <main className="flex flex-col items-center justify-center text-center px-4 sm:px-6 py-20">
+              <ScrambleText
+                as="h1"
+                text="VinHack"
+                className={`text-7xl sm:text-8xl md:text-[11rem] text-orange-500 ${ruigslay.className}`}
+              />
+              <ScrambleText
+                as="h2"
+                text="HAVEN’T REGISTERED YET?"
+                className={`text-2xl md:text-4xl font-bold mt-6 text-orange-500 ${nostromoMedium.className}`}
+              />
+              <ScrambleText
+                as="p"
+                text="What are you waiting for?"
+                className={`mt-4 text-xl md:text-3xl text-[#D5D1BE] ${poppins.className}`}
+              />
+              <ScrambleText
+                as="p"
+                text="REGISTER NOW!"
+                className={`mt-4 text-xl md:text-3xl font-semibold text-[#D5D1BE] ${poppins.className}`}
+              />
+              <div className="mt-10 mb-8">
+                <a
+                  href="https://gravitas.vit.ac.in/events/5fceeb67-a8ca-4ab9-9419-eb3f9b9d6b69"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                >
+                  <GlowButton className={nostromoMedium.className}>
+                    REGISTER NOW
+                  </GlowButton>
+                </a>
+              </div>
+            </main>
+
+            <footer className="bg-[#d6d1c4] text-black py-8 md:py-12 px-6 md:px-20 relative rounded-t-3xl">
+              <div className="w-full mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+                <div className="flex flex-col items-center md:items-start">
+                  <Image
+                    src="/logo.png"
+                    alt="VinnovateIT Logo"
+                    width={200}
+                    height={36}
+                  />
+                  <p
+                    className={`mt-4 text-sm md:text-base leading-relaxed ${poppins.className}`}
+                  >
+                    VIT, VELLORE CAMPUS <br /> VELLORE - 632014 <br />{" "}
+                    TAMILNADU, INDIA
+                  </p>
+                  <p className={`mt-4 text-xs ${poppins.className}`}>
+                    © 2025 VinnovateIT, Vellore Institute of Technology
+                  </p>
+                </div>
+                <div className="mt-8 md:mt-0 flex flex-col items-center">
+                  <div className="flex space-x-4 mb-10">
+                    <a
+                      href="https://www.instagram.com/vinnovateit/?hl=en"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+                    >
+                      <FaInstagram />
+                    </a>
+                    <a
+                      href="https://x.com/v_innovate_it?lang=en"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+                    >
+                      <FaTwitter />
+                    </a>
+                    <a
+                      href="https://github.com/vinnovateit"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+                    >
+                      <FaGithub />
+                    </a>
+                    <a
+                      href="https://www.linkedin.com/company/v-innovate-it/?originalSubdomain=in"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+                    >
+                      <FaLinkedin />
+                    </a>
+                    <a
+                      href="https://www.youtube.com/channel/UClqr0ir3N1_sG4ubZjEDe3g"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+                    >
+                      <FaYoutube />
+                    </a>
+                    <a
+                      href="https://www.facebook.com/VinnovateIT/about/?_rdr"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+                    >
+                      <FaFacebook />
+                    </a>
+                  </div>
+                  <GlowButton className={nostromoMedium.className}>
+                    LET’S CONNECT!
+                  </GlowButton>
+                </div>
+              </div>
+            </footer>
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}

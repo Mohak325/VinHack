@@ -18,13 +18,16 @@ export default function FaqSection() {
           {/* Title */}
           <h1 className="text-center text-4xl font-bold mb-16 text-slate-800 font-orbitron">FAQS</h1>
 
+
           {/* Grid Layout */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-12">
             {/* Left Side - General + Hacking */}
             <div className="space-y-10">
               {/* General FAQs */}
               <div>
+
                 <h2 className={`text-center text-[28px] font-bold  text-slate-700 mb-6 ${orbitron.className}`}>GENERAL FAQS</h2>
+
                 <div className="space-y-4">
                   <FaqItem
                     question="What is a hackathon?"
@@ -51,7 +54,9 @@ export default function FaqSection() {
 
               {/* Hacking FAQs */}
               <div>
+
                 <h2 className={`text-center text-[28px] font-bold text-black mb-6 ${orbitron.className}`}>HACKING FAQS</h2>
+
                 <div className="space-y-4">
                   <FaqItem
                     question="What should I bring?"
@@ -73,7 +78,9 @@ export default function FaqSection() {
             <div className="space-y-10">
               {/* VinHack FAQs */}
               <div>
+
                 <h2 className={`text-center text-[28px] font-bold text-black mb-6 ${orbitron.className}`}>VINHACK FAQS</h2>
+
                 <div className="space-y-4">
                   <FaqItem
                     question="What is the theme of VinHack?"
@@ -100,7 +107,9 @@ export default function FaqSection() {
 
               {/* Sign Up FAQs */}
               <div>
+
                 <h2 className={`text-center text-[28px] font-bold text-black mb-6 ${orbitron.className}`}>SIGN UP FAQS</h2>
+
                 <div className="space-y-4">
                   <FaqItem
                     question="Where can I register for VinHack?"
@@ -123,13 +132,16 @@ export default function FaqSection() {
             </div>
           </div>
         </div>
+
       </GridPlusBackground>
+
 
     </section>
   );
 }
 
 function FaqItem({ question, answer }) {
+
   const [isOpen, setIsOpen] = useState(false);
   const contentRef = useRef(null);
 
@@ -163,5 +175,6 @@ function FaqItem({ question, answer }) {
       </div>
     </div>
     </div >
+
   );
 }
