@@ -65,7 +65,7 @@ function MainContent({ fontClassNames, isVisible }) {
       </GridPlusBackground>
       {/* Remaining sections */}
       <>
-        {/* <Timeline /> */}
+        <Timeline />
         <Coc />
         <Rules />
         <Footer />

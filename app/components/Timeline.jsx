@@ -1,412 +1,557 @@
 "use client";
 import React, { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import CrosshairSVG from './Crosshair.jsx'; // Assuming Crosshair.jsx is in the same directory
+import {CrosshairSVG} from './Crosshair';
 import localFont from 'next/font/local';
-
-// --- FONT SETUP ---
-// 1. Load the custom Type12 font using a dummy path.
-//    Make sure to place Type12.ttf in the correct folder in your project.
 const type12 = localFont({ src: '../fonts/Type12.ttf' });
 
 
-// --- DATA FOR DAY 01 EVENTS ---
-const events_day1 = [
+
+
+// Notch Component
+const Notch = ({ type, coords, onToggle, fontClassName }) => {
+  if (type === "coords") {
+    return (
+      <div className={`fixed top-4 left-4 z-50 text-xs text-gray-400 ${fontClassName}`}>
+        [{coords?.x || 0}, {coords?.y || 0}]
+      </div>
+    );
+  }
+  
+  if (type === "menu") {
+    return (
+      <button 
+        onClick={onToggle}
+        className={`fixed top-4 right-4 z-50 text-xs text-gray-400 hover:text-white transition-colors ${fontClassName}`}
+      >
+        [MENU]
+      </button>
+    );
+  }
+  
+  return null;
+};
+
+// HACKATHON FLOW DATA
+const hackathonEvents = [
   {
     id: 1,
+    time: "09:00 AM",
     date: "22 SEP",
-    image: "https://images.unsplash.com/photo-1518770660439-4636190af475?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
-    eventName: "/ LAUNCH BRIEFING",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    image: "https://images.unsplash.com/photo-1540575467063-178a50c2df87?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+    eventName: "/ CHECK-IN",
+    description: "Registration opens. Participants receive their welcome kits, team assignments, and venue orientation. Network with fellow hackers and grab some coffee."
   },
   {
     id: 2,
-    date: "23 SEP",
-    image: "https://images.pexels.com/photos/2128028/pexels-photo-2128028.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    eventName: "/ CYBERNETICS EXPO",
-    description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    time: "11:30 AM", 
+    date: "22 SEP",
+    image: "https://images.unsplash.com/photo-1475721027785-f74eccf877e2?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+    eventName: "/ SPEAKER SESSION",
+    description: "Keynote presentations from industry leaders sharing insights on cutting-edge technology trends, innovation strategies, and the future of digital transformation."
   },
   {
     id: 3,
-    date: "24 SEP",
-    image: "https://images.pexels.com/photos/7319323/pexels-photo-7319323.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    eventName: "/ AI ETHICS DEBATE",
-    description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+    time: "01:00 PM",
+    date: "22 SEP", 
+    image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+    eventName: "/ LUNCH BREAK",
+    description: "Networking lunch with gourmet food options. Connect with mentors, sponsors, and fellow participants while recharging for the challenges ahead."
   },
-    {
+  {
     id: 4,
-    date: "25 SEP",
-    image: "https://images.pexels.com/photos/5474028/pexels-photo-5474028.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    eventName: "/ ROBOTICS WORKSHOP",
-    description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    time: "02:00 PM",
+    date: "22 SEP",
+    image: "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    eventName: "/ CTF + TYPING CHALLENGE",
+    description: "Mini competitive events featuring Capture The Flag cybersecurity challenges and speed typing competitions. Test your technical skills and reflexes."
   },
   {
     id: 5,
-    date: "26 SEP",
-    image: "https://images.pexels.com/photos/8386440/pexels-photo-8386440.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    eventName: "/ VIRTUAL REALITY DEMO",
-    description: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam."
+    time: "04:00 PM",
+    date: "22 SEP",
+    image: "https://images.pexels.com/photos/3184292/pexels-photo-3184292.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    eventName: "/ REVIEW SESSION 1",
+    description: "First progress review with mentors. Present your initial concepts, get feedback, and refine your approach based on expert guidance."
   },
   {
     id: 6,
-    date: "27 SEP",
-    image: "https://images.pexels.com/photos/73910/mars-mars-rover-space-travel-robot-73910.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    eventName: "/ SPACE EXPLORATION TALK",
-    description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione."
+    time: "07:00 PM",
+    date: "22 SEP",
+    image: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+    eventName: "/ DINNER",
+    description: "Evening meal with diverse cuisine options. Relax, socialize, and discuss project ideas with your team and other participants."
   },
   {
     id: 7,
-    date: "28 SEP",
-    image: "https://images.pexels.com/photos/2156/sky-earth-space-working.jpg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    eventName: "/ SATELLITE HACKATHON",
-    description: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora."
+    time: "10:00 PM",
+    date: "22 SEP",
+    image: "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    eventName: "/ NEGATIVE MINI HACKATHON",
+    description: "Unique reverse-engineering challenge. Break down existing solutions, identify flaws, and propose innovative alternatives. Think outside the box!"
   },
   {
     id: 8,
-    date: "29 SEP",
-    image: "https://images.pexels.com/photos/112285/pexels-photo-112285.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    eventName: "/ CLOSING CEREMONY",
-    description: "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum."
-  }
-];
-
-// --- DATA FOR DAY 02 EVENTS ---
-const events_day2 = [
+    time: "02:00 AM",
+    date: "23 SEP",
+    image: "https://images.pexels.com/photos/4348404/pexels-photo-4348404.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    eventName: "/ REVIEW SESSION 2",
+    description: "Late-night progress check. Present your developments, receive crucial feedback, and strategize for the final push toward completion."
+  },
   {
     id: 9,
-    date: "30 SEP",
-    image: "https://images.pexels.com/photos/3861969/pexels-photo-3861969.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    eventName: "/ ADVANCED AI SEMINAR",
-    description: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua."
+    time: "06:00 AM",
+    date: "23 SEP", 
+    image: "https://images.unsplash.com/photo-1551836022-deb4988cc6c0?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+    eventName: "/ BREAK TIME",
+    description: "Much-needed rest period. Recharge with breakfast, stretch, and prepare mentally for the final development phase and presentations."
   },
   {
     id: 10,
-    date: "01 OCT",
-    image: "https://images.pexels.com/photos/572688/pexels-photo-572688.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    eventName: "/ QUANTUM COMPUTING WORKSHOP",
-    description: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat."
+    time: "08:00 AM",
+    date: "23 SEP",
+    image: "https://images.unsplash.com/photo-1497366216548-37526070297c?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80", 
+    eventName: "/ REPORT BACK TO VENUE",
+    description: "Return to main venue for the final day. Team check-ins, venue setup verification, and preparation for the final countdown phase."
   },
   {
     id: 11,
-    date: "02 OCT",
-    image: "https://images.pexels.com/photos/2085831/pexels-photo-2085831.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    eventName: "/ BIO-TECH CONFERENCE",
-    description: "Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur."
+    time: "10:00 AM",
+    date: "23 SEP",
+    image: "https://images.pexels.com/photos/1181677/pexels-photo-1181677.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    eventName: "/ FINAL COUNTDOWN", 
+    description: "Intense final development phase. Polish your projects, prepare presentations, and put the finishing touches on your innovative solutions."
   },
   {
     id: 12,
-    date: "03 OCT",
-    image: "https://images.pexels.com/photos/7688460/pexels-photo-7688460.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    eventName: "/ NEURAL NETWORKS SYMPOSIUM",
-    description: "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum."
+    time: "12:00 PM",
+    date: "23 SEP",
+    image: "https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+    eventName: "/ LUNCH",
+    description: "Pre-presentation lunch break. Final meal before the big presentations. Network and calm your nerves before showcasing your hard work."
   },
   {
     id: 13,
-    date: "04 OCT",
-    image: "https://images.pexels.com/photos/1181275/pexels-photo-1181275.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    eventName: "/ DATA SCIENCE SUMMIT",
-    description: "Sed ut perspiciatis unde omnis iste natus error sit voluptatem accusantium doloremque laudantium, totam rem aperiam."
+    time: "01:30 PM", 
+    date: "23 SEP",
+    image: "https://images.pexels.com/photos/3184338/pexels-photo-3184338.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    eventName: "/ REVIEW SESSION 3",
+    description: "Final review session before presentations. Last-minute refinements, presentation rehearsals, and final mentor feedback sessions."
   },
   {
     id: 14,
-    date: "05 OCT",
-    image: "https://images.pexels.com/photos/265087/pexels-photo-265087.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    eventName: "/ FINTECH FORUM",
-    description: "Nemo enim ipsam voluptatem quia voluptas sit aspernatur aut odit aut fugit, sed quia consequuntur magni dolores eos qui ratione."
+    time: "05:00 PM",
+    date: "23 SEP",
+    image: "https://images.pexels.com/photos/3184465/pexels-photo-3184465.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
+    eventName: "/ FINAL PRESENTATIONS",
+    description: "The moment you've been working toward! Present your innovative solutions to judges, sponsors, and fellow participants. Showcase your creativity and technical skills."
   },
   {
     id: 15,
-    date: "06 OCT",
-    image: "https://images.pexels.com/photos/4386321/pexels-photo-4386321.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    eventName: "/ CRYPTOCURRENCY CRASH COURSE",
-    description: "Neque porro quisquam est, qui dolorem ipsum quia dolor sit amet, consectetur, adipisci velit, sed quia non numquam eius modi tempora."
-  },
-  {
-    id: 16,
-    date: "07 OCT",
-    image: "https://images.pexels.com/photos/590022/pexels-photo-590022.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    eventName: "/ AGILE DEVELOPMENT WORKSHOP",
-    description: "Quis autem vel eum iure reprehenderit qui in ea voluptate velit esse quam nihil molestiae consequatur, vel illum qui dolorem eum."
-  },
-  {
-    id: 17,
-    date: "08 OCT",
-    image: "https://images.pexels.com/photos/3183197/pexels-photo-3183197.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=1",
-    eventName: "/ PROJECT MANAGEMENT MASTERCLASS",
-    description: "At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores."
+    time: "07:00 PM",
+    date: "23 SEP", 
+    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?ixlib=rb-4.0.3&auto=format&fit=crop&w=1170&q=80",
+    eventName: "/ CLOSING CEREMONY",
+    description: "Celebration time! Awards presentation, winner announcements, networking opportunities, and commemoration of an incredible hackathon journey."
   }
 ];
 
-
-// --- COPIED FROM Notch.jsx ---
-const Notch = ({ type, soundOn, onToggle, coords, fontClassName }) => {
-  const [lines, setLines] = useState([]);
-  const lineCount = 19;
-  const animationFrameId = useRef(null);
-  const transitionStartTime = useRef(null);
-  const startLines = useRef([]);
-
-  const staticLines = React.useMemo(() => {
-    return [...Array(lineCount)].map((_, i) => {
-      let height = 4;
-      if (i >= 6 && i <= 12) {
-        const centerIndex = 9;
-        const distFromCenter = Math.abs(i - centerIndex);
-        height = 6 + 6 * Math.max(0, 1 - distFromCenter / 4);
-      }
-      return { height };
-    });
-  }, []);
-
-  useEffect(() => {
-    if (type !== "sound") return;
-
-    if (animationFrameId.current) {
-      cancelAnimationFrame(animationFrameId.current);
-    }
-
-    if (soundOn) {
-      let wavePhase = 0;
-      const animateOn = () => {
-        wavePhase += 0.15;
-        const newLines = [...Array(lineCount)].map((_, i) => {
-          const height = 4 + 10 * (0.5 + 0.5 * Math.sin(i * 0.5 + wavePhase));
-          return { height };
-        });
-        setLines(newLines);
-        animationFrameId.current = requestAnimationFrame(animateOn);
-      };
-      animateOn();
-    } else {
-      const animateOff = (timestamp) => {
-        if (!transitionStartTime.current) {
-          transitionStartTime.current = timestamp;
-          startLines.current = lines;
-        }
-
-        const elapsed = timestamp - transitionStartTime.current;
-        const duration = 200;
-        const progress = Math.min(elapsed / duration, 1);
-
-        const newLines = startLines.current.map((startLine, i) => {
-          const endHeight = staticLines[i].height;
-          const height =
-            startLine.height - (startLine.height - endHeight) * progress;
-          return { height };
-        });
-
-        setLines(newLines);
-
-        if (progress < 1) {
-          animationFrameId.current = requestAnimationFrame(animateOff);
-        } else {
-          transitionStartTime.current = null;
-        }
-      };
-      animationFrameId.current = requestAnimationFrame(animateOff);
-    }
-
-    return () => {
-      if (animationFrameId.current) {
-        cancelAnimationFrame(animationFrameId.current);
-      }
-    };
-  }, [soundOn, type, lines, staticLines]);
-
-  useEffect(() => {
-    if (type === "sound" && !soundOn) {
-      setLines(staticLines);
-    }
-  }, [soundOn, type, staticLines]);
-
-  const textClasses = `tracking-[0.2em] select-none ${fontClassName || ''}`;
-  const textColor = { color: "#ea8244" };
-
-  switch (type) {
-    case "coords":
-      return (
-        <div className="absolute top-0 left-0 p-4" style={{ color: "#ea8244" }}>
-          <p className={textClasses}>X {coords?.x || "0000"}</p>
-          <p className={textClasses}>Y {coords?.y || "0000"}</p>
-        </div>
-      );
-    case "menu":
-       return (
-        <div className="absolute top-0 right-0 p-4 text-right">
-          <p className={`${textClasses} hover:opacity-70 cursor-pointer`} style={textColor} onClick={onToggle}>
-            MENU
-          </p>
-        </div>
-      );
-    default:
-      return null;
-  }
-};
-// --- END OF COPIED CODE ---
-
-/**
- * CardBorderSVG component
- */
+// Card Border SVG Component
 const CardBorderSVG = ({ imageUrl, altText = 'Event image', strokeColor = 'white' }) => {
-    const mainPathD = "M373.527 7H20.0125C17.2462 7 15.0056 9.24615 15.0125 12.0124L16.2157 495.487C16.2226 498.244 18.4592 500.475 21.2157 500.475H374.755C377.517 500.475 379.755 498.236 379.755 495.475V314.708C379.755 313.447 379.279 312.233 378.422 311.308L366.351 298.286C365.494 297.361 365.018 296.147 365.018 294.887V210.938C365.018 209.568 365.58 208.258 366.573 207.314L376.972 197.43C377.965 196.486 378.527 195.176 378.527 193.806V12C378.527 9.23858 376.289 7 373.527 7Z";
+  const mainPathD = "M373.527 7H20.0125C17.2462 7 15.0056 9.24615 15.0125 12.0124L16.2157 495.487C16.2226 498.244 18.4592 500.475 21.2157 500.475H374.755C377.517 500.475 379.755 498.236 379.755 495.475V314.708C379.755 313.447 379.279 312.233 378.422 311.308L366.351 298.286C365.494 297.361 365.018 296.147 365.018 294.887V210.938C365.018 209.568 365.58 208.258 366.573 207.314L376.972 197.43C377.965 196.486 378.527 195.176 378.527 193.806V12C378.527 9.23858 376.289 7 373.527 7Z";
 
-    return (
-        <svg width="100%" height="100%" viewBox="0 0 387 508" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
-            <defs>
-                <clipPath id="imageClipPath">
-                    <path d={mainPathD} />
-                </clipPath>
-                
-                {/* Define a smooth gradient for the border */}
-                <linearGradient id="smoothGradient" x1="0%" y1="0%" x2="100%" y2="100%">
-                    <stop offset="0%" stopColor="#FBCFE8" /> {/* Light Pink */}
-                    <stop offset="50%" stopColor="#C4B5FD" /> {/* Lavender */}
-                    <stop offset="100%" stopColor="#93C5FD" /> {/* Light Blue */}
-                </linearGradient>
+  return (
+    <svg width="100%" height="100%" viewBox="0 0 387 508" fill="none" xmlns="http://www.w3.org/2000/svg" xmlnsXlink="http://www.w3.org/1999/xlink">
+      <defs>
+        <clipPath id={`imageClipPath-${Math.random()}`}>
+          <path d={mainPathD} />
+        </clipPath>
+        
+        <linearGradient id={`smoothGradient-${Math.random()}`} x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%" stopColor="#FBCFE8" />
+          <stop offset="50%" stopColor="#C4B5FD" />
+          <stop offset="100%" stopColor="#93C5FD" />
+        </linearGradient>
 
-                {/* Define a blur filter for the glow effect */}
-                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
-                    <feGaussianBlur stdDeviation="5" result="coloredBlur" />
-                </filter>
-            </defs>
+        <filter id={`glow-${Math.random()}`} x="-50%" y="-50%" width="200%" height="200%">
+          <feGaussianBlur stdDeviation="5" result="coloredBlur" />
+        </filter>
+      </defs>
 
-            {/* The main content image, clipped by the path */}
-            <image
-                xlinkHref={imageUrl}
-                alt={altText}
-                x="0" y="0" width="100%" height="100%"
-                preserveAspectRatio="xMidYMid slice"
-                clipPath="url(#imageClipPath)"
-            />
+      <image
+        xlinkHref={imageUrl}
+        alt={altText}
+        x="0" y="0" width="100%" height="100%"
+        preserveAspectRatio="xMidYMid slice"
+        clipPath={`url(#imageClipPath-${Math.random()})`}
+      />
 
-            {/* Path for the glow effect (thicker, blurred, behind) */}
-            <path d={mainPathD} stroke="url(#smoothGradient)" strokeWidth="15" fill="none" filter="url(#glow)" />
-
-            {/* The main border path (sharp, on top) */}
-            <path d={mainPathD} stroke="url(#smoothGradient)" strokeWidth="14" fill="none"/>
-            
-            {/* The small white accent, always on top */}
-            <path d="M1 399.28L7.75473 395V479.386L1 474.494V399.28Z" fill={strokeColor} stroke={strokeColor}/>
-        </svg>
-
-    );
+      <path d={mainPathD} stroke={`url(#smoothGradient-${Math.random()})`} strokeWidth="15" fill="none" filter={`url(#glow-${Math.random()})`} />
+      <path d={mainPathD} stroke={`url(#smoothGradient-${Math.random()})`} strokeWidth="14" fill="none"/>
+      <path d="M1 399.28L7.75473 395V479.386L1 474.494V399.28Z" fill={strokeColor} stroke={strokeColor}/>
+    </svg>
+  );
 };
 
-/**
- * TimelineGrid component
- */
+// Timeline Grid Background
 const TimelineGrid = ({ children }) => {
   return (
-    <div className="w-full min-h-screen relative bg-black text-[#D5D1BE] font-mono p-2 sm:p-4 md:p-8">
-      <div className="absolute inset-0 opacity-40"
+    <div className="w-full min-h-screen relative bg-black text-[#D5D1BE] font-mono">
+      {/* Mobile grid */}
+      <div className="absolute inset-0 opacity-40 md:hidden"
         style={{
           backgroundImage: `linear-gradient(to right, #4A2E00 1px, transparent 1px), linear-gradient(to bottom, #4A2E00 1px, transparent 1px)`,
-          backgroundSize: '20px 20px', // Smaller on mobile
+          backgroundSize: '20px 20px',
         }}/>
-      {/* Medium screens and up */}
+      <div className="absolute inset-0 opacity-40 md:hidden"
+        style={{
+          backgroundImage: `radial-gradient(#8F3C00 1px, transparent 1px)`,
+          backgroundSize: '20px 20px',
+          backgroundPosition: '10px 10px'
+        }}/>
+      
+      {/* Desktop grid */}
       <div className="absolute inset-0 opacity-40 hidden md:block"
         style={{
           backgroundImage: `linear-gradient(to right, #4A2E00 1px, transparent 1px), linear-gradient(to bottom, #4A2E00 1px, transparent 1px)`,
           backgroundSize: '40px 40px',
         }}/>
-      <div className="absolute inset-0 opacity-40"
-        style={{
-          backgroundImage: `radial-gradient(#8F3C00 1px, transparent 1px)`,
-          backgroundSize: '20px 20px', // Smaller on mobile
-          backgroundPosition: '10px 10px'
-        }}/>
-      {/* Medium screens and up */}
       <div className="absolute inset-0 opacity-40 hidden md:block"
         style={{
           backgroundImage: `radial-gradient(#8F3C00 1px, transparent 1px)`,
           backgroundSize: '40px 40px',
           backgroundPosition: '20px 20px'
         }}/>
-      <div className="relative z-10">{children}</div>
+      
+      <div className="relative z-10 p-4 sm:p-6 lg:p-8">{children}</div>
     </div>
   );
 };
 
-/**
- * Reusable TimelineSection component
- */
-const TimelineSection = ({ day, dayNumber, events }) => {
-  const scrollRef = useRef(null);
-  const { scrollYProgress } = useScroll({
-    target: scrollRef,
-    offset: ["start start", "end end"]
-  });
-  const x = useTransform(scrollYProgress, [0, 1], ["0%", `-${100 * (events.length)}%`]);
+// GSAP-enhanced Timeline Section
+const GSAPTimelineSection = ({ events }) => {
+  const containerRef = useRef(null);
+  const [currentIndex, setCurrentIndex] = useState(0);
+  const [isGSAPLoaded, setIsGSAPLoaded] = useState(false);
+
+  // GSAP scroll implementation with enhanced smoothness
+  useEffect(() => {
+    const loadGSAP = async () => {
+      try {
+        // Load GSAP from CDN
+        if (!window.gsap) {
+          const script = document.createElement('script');
+          script.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js';
+          document.head.appendChild(script);
+          
+          await new Promise((resolve) => {
+            script.onload = resolve;
+          });
+        }
+
+        if (!window.ScrollTrigger) {
+          const scrollTriggerScript = document.createElement('script');
+          scrollTriggerScript.src = 'https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js';
+          document.head.appendChild(scrollTriggerScript);
+          
+          await new Promise((resolve) => {
+            scrollTriggerScript.onload = resolve;
+          });
+        }
+
+        const { gsap } = window;
+        const { ScrollTrigger } = window;
+        
+        gsap.registerPlugin(ScrollTrigger);
+        setIsGSAPLoaded(true);
+
+        // Enhanced smooth scrolling configuration
+        gsap.config({
+          force3D: true,
+          nullTargetWarn: false,
+        });
+
+        if (containerRef.current) {
+          const container = containerRef.current;
+          const cards = container.querySelectorAll('.timeline-card');
+          const wrapper = container.querySelector('.cards-wrapper');
+          
+          // Create smooth horizontal scroll timeline
+          const tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: container,
+              start: "top top",
+              end: () => `+=${window.innerWidth * (cards.length - 1)}`,
+              pin: true,
+              scrub: 2.5, // Increased for smoother movement
+              snap: {
+                snapTo: 1 / (cards.length - 1),
+                duration: { min: 0.2, max: 0.6 },
+                delay: 0.1,
+                ease: "power2.inOut"
+              },
+              anticipatePin: 1,
+              refreshPriority: -1,
+              onUpdate: (self) => {
+                const progress = self.progress;
+                const newIndex = Math.round(progress * (cards.length - 1));
+                if (newIndex !== currentIndex) {
+                  setCurrentIndex(newIndex);
+                }
+              }
+            }
+          });
+
+          // Animate the wrapper instead of individual cards for better performance
+          tl.to(wrapper, {
+            x: () => -(window.innerWidth * (cards.length - 1)),
+            ease: "none"
+          });
+
+          // Add subtle parallax effects to cards
+          cards.forEach((card, index) => {
+            const cardImage = card.querySelector('.card-image');
+            const cardContent = card.querySelector('.card-content');
+            
+            if (cardImage && cardContent) {
+              // Parallax effect for images
+              gsap.fromTo(cardImage, 
+                { 
+                  scale: 1.1,
+                  rotation: 0.01 // Force 3D acceleration
+                },
+                {
+                  scale: 1,
+                  scrollTrigger: {
+                    trigger: card,
+                    start: "left right",
+                    end: "right left",
+                    scrub: 1.5,
+                    horizontal: true
+                  }
+                }
+              );
+
+              // Staggered content animation
+              gsap.fromTo(cardContent.children,
+                { 
+                  y: 30, 
+                  opacity: 0.7,
+                  rotationX: 0.01 // Force 3D acceleration
+                },
+                {
+                  y: 0,
+                  opacity: 1,
+                  stagger: 0.1,
+                  scrollTrigger: {
+                    trigger: card,
+                    start: "left center",
+                    end: "center center",
+                    scrub: 2,
+                    horizontal: true
+                  }
+                }
+              );
+            }
+          });
+
+          // Smooth refresh on resize
+          const handleResize = gsap.utils.debounce(() => {
+            ScrollTrigger.refresh();
+          }, 250);
+
+          window.addEventListener('resize', handleResize);
+          
+          return () => {
+            window.removeEventListener('resize', handleResize);
+          };
+        }
+      } catch (error) {
+        console.warn('GSAP failed to load, falling back to CSS scrolling');
+        setIsGSAPLoaded(false);
+      }
+    };
+
+    loadGSAP();
+
+    // Cleanup
+    return () => {
+      if (window.ScrollTrigger) {
+        window.ScrollTrigger.getAll().forEach(trigger => trigger.kill());
+      }
+    };
+  }, [events.length, currentIndex]);
+
+  // Fallback CSS-only smooth scroll for when GSAP isn't loaded
+  const fallbackScrollRef = useRef(null);
+  
+  useEffect(() => {
+    if (!isGSAPLoaded && fallbackScrollRef.current) {
+      const container = fallbackScrollRef.current;
+      let isScrolling = false;
+      
+      const smoothScroll = (e) => {
+        if (!isScrolling) {
+          isScrolling = true;
+          requestAnimationFrame(() => {
+            const scrollLeft = container.scrollLeft;
+            const cardWidth = container.offsetWidth;
+            const newIndex = Math.round(scrollLeft / cardWidth);
+            setCurrentIndex(Math.min(newIndex, events.length - 1));
+            isScrolling = false;
+          });
+        }
+      };
+
+      container.addEventListener('scroll', smoothScroll, { passive: true });
+      return () => container.removeEventListener('scroll', smoothScroll);
+    }
+  }, [isGSAPLoaded, events.length]);
 
   return (
-    <main className="flex flex-col md:flex-row gap-4 md:gap-8">
-      {/* Sticky Sidebar - Mobile: horizontal at top, Desktop: vertical on side */}
-      <div className="md:sticky md:top-1/4 md:h-screen py-4 md:py-8 px-4 md:pl-16">
-        <h2 className="text-2xl md:text-4xl text-gray-300 mb-2 md:mb-8 whitespace-nowrap">[DAY {day}]</h2>
-        <p className="text-lg md:text-2xl text-gray-400">[{dayNumber}]</p>
-      </div>
-
-      {/* Horizontal Scrolling Section */}
-      <div ref={scrollRef} className="relative h-[200vh] md:h-[300vh] w-full">
-        <div className="sticky top-1/4 h-screen">
-          <motion.div style={{ x }} className="flex h-full items-center">
-            {events.map((event) => (
-              <div key={event.id} className="w-screen flex-shrink-0 flex justify-center px-4">
-                 <div className="flex flex-col lg:flex-row gap-4 md:gap-8 items-start w-full max-w-4xl">
-                      <div className="w-full max-w-[200px] md:max-w-[250px] h-[280px] md:h-[350px] flex-shrink-0 relative mx-auto lg:mx-0">
-                          <CardBorderSVG imageUrl={event.image} altText={event.eventName} />
-                      </div>
-                      <div className="pt-0 md:pt-4 text-center lg:text-left">
-                          <p className="text-gray-300 text-sm md:text-base">[{event.date} 9:00 AM] {'{'}</p>
-                          <p className="pl-4 md:pl-8 my-2 text-cyan-400 text-sm md:text-base font-medium">{event.eventName}</p>
-                          <p className="mt-4 md:mt-8 text-gray-300 text-sm md:text-base">[DESCRIPTION] {'{'}</p>
-                          <p className="pl-4 md:pl-8 mt-2 text-gray-500 text-xs md:text-sm leading-relaxed">{event.description}</p>
-                          <p className="text-gray-300 mt-2 text-sm md:text-base">{'}'}</p>
-                          <p className="text-gray-300 mt-2 text-sm md:text-base">{'}'}</p>
-                      </div>
-                  </div>
+    <div ref={containerRef} className="relative h-screen overflow-hidden">
+      {isGSAPLoaded ? (
+        // GSAP Version with enhanced smoothness
+        <div className="cards-wrapper flex h-full will-change-transform" style={{ transform: 'translate3d(0,0,0)' }}>
+          {events.map((event, index) => (
+            <div 
+              key={event.id} 
+              className="timeline-card flex-shrink-0 w-full h-full flex items-center justify-center px-4 sm:px-8"
+              style={{ transform: 'translate3d(0,0,0)' }}
+            >
+              <div className="flex flex-col xl:flex-row gap-6 lg:gap-8 items-center max-w-6xl mx-auto">
+                {/* Card with enhanced performance */}
+                <div className="card-image w-full max-w-[280px] sm:max-w-[320px] lg:max-w-[380px] h-[320px] sm:h-[380px] lg:h-[450px] flex-shrink-0 will-change-transform">
+                  <CardBorderSVG imageUrl={event.image} altText={event.eventName} />
+                </div>
+                
+                {/* Content with staggered animations */}
+                <div className="card-content flex-1 text-center xl:text-left max-w-2xl">
+                  <p className="text-gray-300 text-sm sm:text-base lg:text-lg">
+                    [{event.date} {event.time}] {'{'}
+                  </p>
+                  <p className="pl-4 sm:pl-6 lg:pl-8 my-3 lg:my-4 text-cyan-400 text-base sm:text-lg lg:text-xl font-medium">
+                    {event.eventName}
+                  </p>
+                  <p className="mt-4 lg:mt-6 text-gray-300 text-sm sm:text-base lg:text-lg">
+                    [DESCRIPTION] {'{'}
+                  </p>
+                  <p className="pl-4 sm:pl-6 lg:pl-8 mt-3 lg:mt-4 text-gray-400 text-xs sm:text-sm lg:text-base leading-relaxed max-w-xl xl:max-w-none">
+                    {event.description}
+                  </p>
+                  <p className="text-gray-300 mt-3 lg:mt-4 text-sm sm:text-base lg:text-lg">{'}'}</p>
+                  <p className="text-gray-300 mt-2 text-sm sm:text-base lg:text-lg">{'}'}</p>
+                </div>
               </div>
-            ))}
-          </motion.div>
+            </div>
+          ))}
         </div>
+      ) : (
+        // Fallback smooth CSS scroll
+        <div 
+          ref={fallbackScrollRef}
+          className="flex h-full overflow-x-auto overflow-y-hidden scrollbar-hide scroll-smooth snap-x snap-mandatory"
+          style={{
+            scrollBehavior: 'smooth',
+            scrollSnapType: 'x mandatory',
+            WebkitOverflowScrolling: 'touch'
+          }}
+        >
+          {events.map((event, index) => (
+            <div 
+              key={event.id} 
+              className="timeline-card flex-shrink-0 w-full h-full flex items-center justify-center px-4 sm:px-8 snap-start"
+            >
+              <div className="flex flex-col xl:flex-row gap-6 lg:gap-8 items-center max-w-6xl mx-auto">
+                {/* Card */}
+                <div className="w-full max-w-[280px] sm:max-w-[320px] lg:max-w-[380px] h-[320px] sm:h-[380px] lg:h-[450px] flex-shrink-0 transition-transform duration-300 hover:scale-105">
+                  <CardBorderSVG imageUrl={event.image} altText={event.eventName} />
+                </div>
+                
+                {/* Content */}
+                <div className="flex-1 text-center xl:text-left max-w-2xl">
+                  <p className="text-gray-300 text-sm sm:text-base lg:text-lg">
+                    [{event.date} {event.time}] {'{'}
+                  </p>
+                  <p className="pl-4 sm:pl-6 lg:pl-8 my-3 lg:my-4 text-cyan-400 text-base sm:text-lg lg:text-xl font-medium">
+                    {event.eventName}
+                  </p>
+                  <p className="mt-4 lg:mt-6 text-gray-300 text-sm sm:text-base lg:text-lg">
+                    [DESCRIPTION] {'{'}
+                  </p>
+                  <p className="pl-4 sm:pl-6 lg:pl-8 mt-3 lg:mt-4 text-gray-400 text-xs sm:text-sm lg:text-base leading-relaxed max-w-xl xl:max-w-none">
+                    {event.description}
+                  </p>
+                  <p className="text-gray-300 mt-3 lg:mt-4 text-sm sm:text-base lg:text-lg">{'}'}</p>
+                  <p className="text-gray-300 mt-2 text-sm sm:text-base lg:text-lg">{'}'}</p>
+                </div>
+              </div>
+            </div>
+          ))}
+        </div>
+      )}
+      
+      {/* Progress Indicator */}
+      <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex space-x-2">
+        {events.map((_, index) => (
+          <div
+            key={index}
+            className={`w-2 h-2 rounded-full transition-all duration-300 ${
+              index === currentIndex ? 'bg-cyan-400 w-8' : 'bg-gray-600'
+            }`}
+          />
+        ))}
       </div>
-    </main>
+      
+      {/* Event Counter */}
+      <div className="absolute top-8 right-8 text-gray-400 text-sm font-mono">
+        [{String(currentIndex + 1).padStart(2, '0')}/{String(events.length).padStart(2, '0')}]
+      </div>
+    </div>
   );
 };
 
-
-/**
- * Main Timeline component
- */
+// Main Timeline Component
 const Timeline = () => {
-  // 2. The useEffect for loading Google Fonts is no longer needed.
-  // useEffect(() => {
-  //   const link = document.createElement('link');
-  //   link.href = "https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap";
-  //   link.rel = 'stylesheet';
-  //   document.head.appendChild(link);
-  // }, []);
+  const [coords, setCoords] = useState({ x: 0, y: 0 });
+
+  // Track mouse coordinates
+  useEffect(() => {
+    const handleMouseMove = (e) => {
+      setCoords({ x: e.clientX, y: e.clientY });
+    };
+
+    window.addEventListener('mousemove', handleMouseMove);
+    return () => window.removeEventListener('mousemove', handleMouseMove);
+  }, []);
 
   return (
-    <div className="bg-black">
-      <Notch type="coords" coords={{ x: 2048, y: 5824 }} fontClassName="font-mono" />
+    <div className="bg-black min-h-screen">
+      <Notch type="coords" coords={coords} fontClassName="font-mono" />
       <Notch type="menu" onToggle={() => alert('Menu toggled!')} fontClassName="font-mono" />
       
       <TimelineGrid>
-        <header className="sticky top-0 z-20 flex flex-col sm:flex-row justify-between items-start mb-8 md:mb-16 bg-black py-4 gap-4">
-          {/* 3. Apply the font via className and remove the inline style */}
-          <h1 className={`text-3xl sm:text-5xl md:text-7xl font-bold tracking-[0.1em] sm:tracking-[0.2em] md:tracking-[0.4em] text-gray-200 ${type12.className}`}>
-            TIMELINE
+        <header className="sticky top-0 z-20 flex flex-col sm:flex-row justify-between items-start mb-8 lg:mb-16 bg-black/90 backdrop-blur-sm py-6 gap-4">
+          <h1 className={`text-4xl sm:text-6xl lg:text-8xl xl:text-9xl font-bold tracking-[0.1em] sm:tracking-[0.2em] lg:tracking-[0.3em] text-gray-200 ${type12.className}`}>
+            HACKATHON
           </h1>
-          <div className="block sm:hidden md:block">
+          <div className="hidden sm:block">
             <CrosshairSVG />
           </div>
         </header>
 
-        {/* Render the timeline sections */}
-        <TimelineSection day="01" dayNumber="001" events={events_day1} />
-        <TimelineSection day="02" dayNumber="002" events={events_day2} />
-        
+        {/* Timeline Section with GSAP */}
+        <div className="min-h-screen">
+          <div className="mb-8 lg:mb-12">
+            <h2 className="text-2xl sm:text-3xl lg:text-4xl text-gray-300 mb-2 lg:mb-4">
+              [48 HOUR JOURNEY]
+            </h2>
+            <p className="text-base sm:text-lg lg:text-xl text-gray-400">
+              [FROM CONCEPT TO CREATION]
+            </p>
+          </div>
+          
+          <GSAPTimelineSection events={hackathonEvents} />
+        </div>
       </TimelineGrid>
     </div>
   );
