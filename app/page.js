@@ -18,6 +18,8 @@ import AboutVinnhack from "./components/about/AboutVinhack";
 import Timeline from "./components/TImeline";
 import GridPlusBackground from "./components/Grid";
 
+import Marquees from "./components/Marquee";
+
 function MainContent({ fontClassNames, isVisible }) {
   const [isFlipping, setIsFlipping] = useState(false);
 
@@ -37,8 +39,7 @@ function MainContent({ fontClassNames, isVisible }) {
   return (
     <Border {...fontClassNames}>
       <Hero {...fontClassNames} isVisible={isVisible} />
-      <div className="w-full h-screen" />
-
+      {/* <Marquees/> */}
 			<GridPlusBackground>
 				{/* Scroll container for flipping effect */}
 				<div ref={containerRef}>
