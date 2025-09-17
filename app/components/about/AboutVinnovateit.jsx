@@ -119,12 +119,22 @@ const AboutVinnovateit = ({ isFlipping }) => {
 					style={{ x: circleX, scale: circleScale }}
 					className="absolute top-[5%] left-[22%] lg:left-[25%] xl:left-[28%] w-[56%] lg:w-[50%] xl:w-[44%] h-[75%] flex justify-center items-center overflow-visible"
 				>
-					<div className="h-full w-auto aspect-square max-w-full max-h-full">
+					<div className="h-full w-auto aspect-square max-w-full max-h-full relative">
+						{/* CoinFlip - exactly like AboutVinhack */}
 						<CoinFlip
 							frontImg="/vinhack23.jpg"
 							backImg="/vinnovateit.jpg"
 							isFlipping={isFlipping}
 						/>
+						{/* Circle Border Frame - 10% larger than the circle */}
+						<div className="absolute -inset-[5%] w-[110%] h-[110%] pointer-events-none z-20">
+							<Image
+								src="/circle_border.svg"
+								alt="Circle Border"
+								fill
+								className="object-contain"
+							/>
+						</div>
 					</div>
 				</motion.div>
 
