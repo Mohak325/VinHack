@@ -37,21 +37,21 @@ function MainContent({ fontClassNames, isVisible }) {
   return (
     <Border {...fontClassNames}>
       <Hero {...fontClassNames} isVisible={isVisible} />
-      <div className="w-full h-screen" />
+      <div className="w-full h-[20vh] md:h-[30vh]" />
 
 			<GridPlusBackground>
 				{/* Scroll container for flipping effect */}
 				<div ref={containerRef}>
-					<div className="w-full h-[50vh]" />
+					<div className="w-full h-[15vh] md:h-[25vh]" />
 					<AboutVinnhack isFlipping={isFlipping} />
-					<div className="w-full h-[50vh]" />
+					<div className="w-full h-[15vh] md:h-[25vh]" />
 					<AboutVinnovateit isFlipping={isFlipping} />
-					<div className="w-full h-[50vh]" />
+					<div className="w-full h-[15vh] md:h-[25vh]" />
 				</div>
         </GridPlusBackground>
       {/* Remaining sections */}
       <Tracks />
-      <Timeline />
+      {/* <Timeline /> */}
       <FaqSection />
       <Coc />
       <Rules />
