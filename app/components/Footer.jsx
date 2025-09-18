@@ -1,10 +1,9 @@
 "use client";
 import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
-import { Poppins } from "next/font/google";
 import GlowButton from "./GlowButton.jsx";
 import ScrambleText from "./ScrambleText.jsx";
-import { ruigslay, nostromoMedium } from "../fonts";
+import { ruigslay, nostromoMedium,poppins } from "../fonts";
 import {
   FaInstagram,
   FaGithub,
@@ -14,8 +13,6 @@ import {
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { motion } from "framer-motion";
-
-const poppins = Poppins({ subsets: ["latin"], weight: ["400", "600"] });
 
 const formatNum = (num) => num.toString().padStart(4, "0").split("");
 
