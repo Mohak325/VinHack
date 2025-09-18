@@ -16,7 +16,6 @@ import Border from "./components/Border";
 import { ruigslay, nostromoLight, nostromoMedium } from "./fonts";
 import AboutVinnovateit from "./components/about/AboutVinnovateit";
 import AboutVinnhack from "./components/about/AboutVinhack";
-// import Timeline from "./components/TImeline";
 import { GridPlusBackground } from "./components/Grid";
 
 import Marquees from "./components/Marquee";
@@ -47,7 +46,7 @@ function MainContent({ fontClassNames, isVisible }) {
   return (
     <Border {...fontClassNames}>
       <Hero {...fontClassNames} isVisible={isVisible} />
-      <div className="w-full h-[5vh] md:h-[10vh]" />
+      <div className="w-full h-[20vh] md:h-[30vh]" />
 
       <GridPlusBackground>
         {/* Scroll container for flipping effect */}
@@ -76,19 +75,13 @@ function MainContent({ fontClassNames, isVisible }) {
 
 
 export default function Home() {
-  // State to manage the loading screen's visibility and fade-out animation
   const [isLoading, setIsLoading] = useState(true);
-  // State to mount the main content after loading
   const [isHeroVisible, setIsHeroVisible] = useState(false);
-  // State to control the presence of the loading screen in the DOM
   const [isLoaderPresent, setIsLoaderPresent] = useState(true);
 
   // This function is called by LoadingScreen when it's done
   const handleLoadingComplete = () => {
-    // 1. Mount the Hero and other main components immediately.
-    // They will render underneath the still-visible loading screen.
     setIsHeroVisible(true);
-    // 2. Wait a moment, then trigger the fade-out of the loading screen.
     setTimeout(() => {
       setIsLoading(false);
     }, 100);

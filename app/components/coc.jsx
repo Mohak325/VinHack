@@ -1,8 +1,8 @@
 "use client";
 import React from "react";
-import Grid from "./Grid.jsx";
-import NotchedPageWrapper from "./notch_back.jsx";
+
 import localFont from "next/font/local";
+import { GridPlusBackground } from "./Grid";
 
 // Import Type12 from app/fonts
 const type12 = localFont({
@@ -11,7 +11,6 @@ const type12 = localFont({
   style: "normal",
   variable: "--font-type12",
 });
-
 
 const Coc = () => {
   const rules = [
@@ -22,9 +21,9 @@ const Coc = () => {
     "TL;DR: Be respectful towards everyone, be it participants, organizers, or anyone related to the event. Incase of any incidents with conduct not being abided, feel free to reach out to anyone on organizing team.",
   ];
 
+  return ( // ✅ Missing return
 
-    <NotchedPageWrapper>
-      <Grid>
+      <GridPlusBackground>
         <div id="coc" className="w-full max-w-6xl mx-auto p-6 sm:p-8 md:p-12 pb-16">
           {/* CODE OF CONDUCT in Type12 */}
           <h1
@@ -53,9 +52,7 @@ const Coc = () => {
             ))}
           </ul>
         </div>
-      </Grid>
-    </NotchedPageWrapper>
-
+      </GridPlusBackground>
   );
 };
 

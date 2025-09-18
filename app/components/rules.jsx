@@ -1,8 +1,7 @@
 "use client";
 import React from "react";
-import Grid from "./Grid.jsx";
-import NotchedPageWrapper from "./notch_back.jsx";
 import localFont from "next/font/local";
+import { GridPlusBackground } from "./Grid";
 
 // import Type12 font
 const type12 = localFont({
@@ -28,8 +27,7 @@ const Rules = () => {
   ];
 
   return (
-    <NotchedPageWrapper>
-      <Grid>
+      <GridPlusBackground>
         {/* Added pb-16 for extra padding at the bottom */}
         <div
           id="rules"
@@ -61,8 +59,7 @@ const Rules = () => {
             ))}
           </ul>
         </div>
-      </Grid>
-    </NotchedPageWrapper>
+      </GridPlusBackground>
 
   );
 };
