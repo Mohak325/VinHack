@@ -12,7 +12,6 @@ import Tracks from "./components/Track";
 import Coc from "./components/coc.jsx";
 import Rules from "./components/rules.jsx";
 import Border from "./components/Border";
-
 import { ruigslay, nostromoLight, nostromoMedium } from "./fonts";
 import AboutVinnovateit from "./components/about/AboutVinnovateit";
 import AboutVinnhack from "./components/about/AboutVinhack";
@@ -57,6 +56,7 @@ function MainContent({ fontClassNames, isVisible }) {
           <AboutVinnovateit isFlipping={isFlipping} />
           <div className="w-full h-[15vh] md:h-[25vh]" />
         </div>
+
         {/* Tracks section */}
         <Tracks />
         {/* FAQ section */}
