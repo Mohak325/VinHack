@@ -61,7 +61,6 @@ function MainContent({ fontClassNames, isVisible }) {
         <Tracks />
         {/* FAQ section */}
         <FaqSection />
-      </GridPlusBackground>
       {/* Remaining sections */}
       <>
         {/* <Timeline /> */}
@@ -69,6 +68,7 @@ function MainContent({ fontClassNames, isVisible }) {
         <Rules />
         <Footer />
       </>
+      </GridPlusBackground>
     </Border>
   );
 }
