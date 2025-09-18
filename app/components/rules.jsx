@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
-import { GridPlusBackground  } from "./Grid.jsx";
+import { GridPlusBackground } from "./Grid.jsx";
+import { motion } from "framer-motion";
 
 const Rules = () => {
   const rules = [
@@ -18,12 +19,15 @@ const Rules = () => {
 
   return (
     <GridPlusBackground>
-      {/* Added pb-16 for extra padding at the bottom */}
       <div
         id="rules"
         className="w-full max-w-6xl mx-auto p-6 sm:p-8 md:p-12 pb-12"
       >
-        <h1
+        <motion.h1
+          initial={{ opacity: 0, y: -40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: false }} // 👈 animate every time
           className="text-center text-4xl sm:text-5xl md:text-7xl tracking-widest font-bold mt-12"
           style={{
             fontFamily: '"Orbitron", sans-serif',
@@ -31,11 +35,16 @@ const Rules = () => {
           }}
         >
           RULES
-        </h1>
-        <ul className="list-none p-0 m-0 flex flex-col gap-4 md:gap-6 mt-12 px-4 md:px-10 ">
+        </motion.h1>
+
+        <ul className="list-none p-0 m-0 flex flex-col gap-4 md:gap-6 mt-12 px-4 md:px-10">
           {rules.map((rule, index) => (
-            <li
+            <motion.li
               key={index}
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: false, amount: 0.2 }} // 👈 replay on revisit/scroll
               className="text-base sm:text-lg md:text-xl"
               style={{
                 fontFamily: '"Poppins", sans-serif',
@@ -46,7 +55,7 @@ const Rules = () => {
               }}
             >
               • {rule}
-            </li>
+            </motion.li>
           ))}
         </ul>
       </div>
