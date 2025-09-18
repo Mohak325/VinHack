@@ -5,6 +5,7 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CoinFlip from "../CoinFlip";
+import GlowButton from "../GlowButton";
 import { orbitron, nostromoLight, nostromoMedium, type12 } from "../../fonts";
 
 gsap.registerPlugin(ScrollTrigger);
@@ -246,15 +247,13 @@ const AboutVinnovateit = ({ isFlipping }) => {
 						href="https://vinnovateit.com"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="mt-3 lg:mt-4 xl:mt-5 self-start group"
+						className="mt-3 lg:mt-4 xl:mt-5 self-start inline-block"
 					>
-						<Image
-							src="/assets/click_for_website.svg"
-							alt="Learn More About Vinnovateit"
-							width={250}
-							height={40}
-							className="lg:w-[300px] lg:h-[50px] xl:w-[350px] xl:h-[60px] group-hover:scale-95 transition-transform duration-150"
-						/>
+						<GlowButton className={`${nostromoMedium.className}`}>
+							<span className="text-[clamp(0.875rem,2vw,1rem)] leading-none">
+								VISIT OUR WEBSITE
+							</span>
+						</GlowButton>
 					</a>
 				</div>
 
