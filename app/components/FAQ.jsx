@@ -214,6 +214,7 @@ export default function FaqSection() {
             </div>
           </div>
         </motion.div>
+        <div className="h-20"></div>
       </GridPlusBackground>
     </section>
   );
