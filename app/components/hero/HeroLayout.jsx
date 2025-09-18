@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
-import LoadingScreen from "./Loading";
+import LoadingScreen from "./loader/Loading";
 import Hero from "./Hero";
 
 export default function HeroLayout() {
