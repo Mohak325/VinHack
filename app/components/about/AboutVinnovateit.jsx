@@ -66,7 +66,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
 						circleRef.current,
 						{
 							// diagonal rightward (positive x), slight upward for depth
-							x: "45%",
+							x: "10%",
 							y: "-15%",
 							scale: 0.75,
 							duration: 1,
