@@ -5,7 +5,7 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CoinFlip from "../CoinFlip";
-import { orbitron, nostromoLight, nostromoMedium, type12 } from "../../fonts";
+import { orbitron, nostromoLight, nostromoMedium, t012 } from "../../fonts";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -65,7 +65,7 @@ const AboutVinhack = ({ isFlipping }) => {
 						circleRef.current,
 						{
 							// diagonal rightward (positive x), slight upward for depth
-							x: "10%",
+							x: "35%",
 							y: "-15%",
 							scale: 0.75,
 							duration: 1,
@@ -277,7 +277,7 @@ const AboutVinhack = ({ isFlipping }) => {
 					className="absolute top-[85%] left-[5%] w-full lg:w-4/5 xl:w-3/4"
 				>
 					<h1
-						className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-black font-normal leading-relaxed whitespace-nowrap tracking-widest ${type12.className}`}
+						className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-black font-normal leading-relaxed whitespace-nowrap tracking-widest ${t012.className}`}
 					>
 						WHAT'S VINHACK ?
 					</h1>
