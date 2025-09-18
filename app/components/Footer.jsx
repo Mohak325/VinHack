@@ -151,7 +151,7 @@ export default function Footer() {
               <div className="w-full mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
                 <div className="flex flex-col items-center md:items-start">
                   <Image
-                    src="/logo.png"
+                    src="/assets/logo.png"
                     alt="VinnovateIT Logo"
                     width={200}
                     height={36}

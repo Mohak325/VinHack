@@ -106,7 +106,7 @@ const LoadingScreen = ({ onCompletion, assetPaths, isFadingOut }) => {
           {" "}
           {/* Adjusted top */}
           <Image
-            src="/loading-topmost.png"
+            src="/assets/loader/loading-topmost.png"
             alt="Topmost Decoration"
             width={1920}
             height={400}
@@ -131,7 +131,7 @@ const LoadingScreen = ({ onCompletion, assetPaths, isFadingOut }) => {
           {/* Adjusted top */}
           <div className="w-full md:w-3/4">
             <Image
-              src="/loading-top.png"
+              src="/assets/loader/loading-top.png"
               alt="Top Decoration"
               width={1440}
               height={300}
@@ -168,7 +168,7 @@ const LoadingScreen = ({ onCompletion, assetPaths, isFadingOut }) => {
           {" "}
           {/* Adjusted bottom */}
           <Image
-            src="/loading-topmost.png"
+            src="/assets/loader/loading-topmost.png"
             alt="Flipped Topmost Decoration"
             width={1920}
             height={400}
@@ -189,7 +189,7 @@ const LoadingScreen = ({ onCompletion, assetPaths, isFadingOut }) => {
           {/* Adjusted bottom */}
           <div className="w-full md:w-3/4">
             <Image
-              src="/loading-top.png"
+              src="/assets/loader/loading-top.png"
               alt="Flipped Top Decoration"
               width={1440}
               height={300}
