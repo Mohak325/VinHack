@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
 import { GridPlusBackground } from './Grid';
-import { orbitron, t012, nostromoLight} from "../fonts";
+import GlowButton from './GlowButton';
+import { orbitron, t012, nostromoLight, nostromoMedium} from "../fonts";
 
 const Sponsor = () => {
     const [showModal, setShowModal] = useState(false);
@@ -43,12 +44,14 @@ const Sponsor = () => {
                                         <p className={`${nostromoLight.className}`}>
                                             Develop an AI-based system to revolutionize insurance claims processing by automatically analyzing damage images for severity classification, cost estimation, and fraud detection.
                                         </p>
-                                        <button
+                                        <GlowButton 
                                             onClick={() => setShowModal(true)}
-                                            className={`bg-black text-white px-8 py-3 rounded-lg font-semibold hover:bg-gray-800 transition-colors duration-300 ${orbitron.className}`}
+                                            className={`${nostromoMedium.className}`}
                                         >
-                                            KNOW MORE
-                                        </button>
+                                            <span className="text-[clamp(0.875rem,2vw,1rem)] leading-none">
+                                                KNOW MORE
+                                            </span>
+                                        </GlowButton>
                                     </div>
                                 </main>
                             </div>
