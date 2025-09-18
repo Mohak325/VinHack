@@ -13,6 +13,7 @@ import {
   FaFacebook,
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
+import { motion } from "framer-motion";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "600"] });
 
@@ -75,14 +76,28 @@ export default function Footer() {
       id="register"
       className="relative bg-black text-white font-sans"
       // --- STYLE RESTORED HERE ---
-      style={{
-        backgroundImage: `url("data:image/svg+xml,%3csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3e%3cg stroke='%23F5B37F' stroke-width='1'%3e%3cpath d='M 50 47 V 53 M 47 50 H 53'/%3e%3c/g%3e%3c/svg%3e")`,
-        backgroundSize: "100px 100px",
-      }}
+     
       ref={footerRef}
     >
       <style>{animationStyles}</style>
-
+       <div className="absolute inset-0 grid grid-cols-12 gap-8 p-8 opacity-50">
+        {Array.from({ length: 96 }, (_, index) => (
+          <div key={index} className="flex items-center justify-center">
+            <motion.div
+              className="text-sm font-light select-none"
+              style={{ color: "#ea8244" }}
+              animate={{ rotate: 360 }}
+              transition={{ 
+                duration: 8 + (index % 3) * 2, 
+                repeat: Infinity, 
+                ease: "linear" 
+              }}
+            >
+              +
+            </motion.div>
+          </div>
+        ))}
+      </div>
       <div className="relative w-full min-h-screen p-4">
         {/* Your original border and notch structure */}
         <div
@@ -115,24 +130,13 @@ export default function Footer() {
                 text="VinHack"
                 className={`text-7xl sm:text-8xl md:text-[11rem] text-orange-500 ${ruigslay.className}`}
               />
-              <ScrambleText
-                key={footerVisible ? "visible-h2" : "hidden-h2"}
-                as="h2"
-                text="HAVEN’T REGISTERED YET?"
-                className={`text-2xl md:text-4xl font-bold mt-6 text-orange-500 ${nostromoMedium.className}`}
-              />
-              <ScrambleText
-                key={footerVisible ? "visible-p1" : "hidden-p1"}
-                as="p"
-                text="What are you waiting for?"
-                className={`mt-4 text-xl md:text-3xl text-[#D5D1BE] ${poppins.className}`}
-              />
-              <ScrambleText
-                key={footerVisible ? "visible-p2" : "hidden-p2"}
-                as="p"
-                text="REGISTER NOW!"
-                className={`mt-4 text-xl md:text-3xl font-semibold text-[#D5D1BE] ${poppins.className}`}
-              />
+              <h2 className={`text-2xl md:text-4xl font-bold mt-6 text-orange-500 ${nostromoMedium.className}`}>
+                HAVEN’T REGISTERED YET?
+              </h2>
+              <p className={`mt-4 text-xl md:text-3xl text-[#D5D1BE] ${poppins.className}`}>
+                What are you waiting for?
+              </p>
+              
               <div className="mt-10 mb-8">
                 <a
                   href="https://gravitas.vit.ac.in/events/5fceeb67-a8ca-4ab9-9419-eb3f9b9d6b69"

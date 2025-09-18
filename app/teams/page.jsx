@@ -82,24 +82,7 @@ export default function TeamPage() {
       />
 
       {/* Plus symbols pattern */}
-      <div className="absolute inset-0 grid grid-cols-8 gap-8 p-8 opacity-50">
-        {Array.from({ length: 48 }, (_, index) => (
-          <div key={index} className="flex items-center justify-center">
-            <motion.div
-              className="text-sm font-light select-none"
-              style={{ color: "#ea8244" }}
-              animate={{ rotate: 360 }}
-              transition={{ 
-                duration: 8 + (index % 3) * 2, 
-                repeat: Infinity, 
-                ease: "linear" 
-              }}
-            >
-              +
-            </motion.div>
-          </div>
-        ))}
-      </div>
+     
 
       {/* Content overlay */}
       <div className="relative z-10">
