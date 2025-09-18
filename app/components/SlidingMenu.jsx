@@ -104,7 +104,9 @@ const SlidingMenu = () => {
                   className={`${nostromoMedium.className} mx-2 md:mx-4`}
                 />
               ) : (
-                <span className={`${nostromoMedium.className} mx-2 md:mx-4 text-center md:text-left`}>
+                <span
+                  className={`${nostromoMedium.className} mx-2 md:mx-4 text-center md:text-left`}
+                >
                   {option.name}
                 </span>
               )}
