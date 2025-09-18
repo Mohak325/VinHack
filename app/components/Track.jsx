@@ -136,7 +136,7 @@ const Tracks = () => {
                 <img
                   src={track.imageUrl}
                   alt={track.title}
-                  className="w-full h-full object-contain"
+                  className="w-full h-full object-contain font-bold"
                 />
               </div>
               <div className="p-6">
