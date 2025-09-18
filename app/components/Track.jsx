@@ -105,10 +105,15 @@ const Tracks = () => {
                                 whileInView={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.6, delay: index * 0.1 }}
                                 viewport={{ once: true, margin: "-100px" }}
-                                className="bg-white rounded-lg shadow-lg overflow-hidden"
+                                className="rounded-lg shadow-lg overflow-hidden border-4 border-black"
+                                style={{ backgroundColor: '#D5D1BE' }}
                             >
-                                <div className="aspect-video w-full overflow-hidden">
-                                    <img src={track.imageUrl} alt={track.title} className="w-full h-full object-contain" />
+                                <div className="aspect-square w-full overflow-hidden p-6 flex items-center justify-center">
+                                    <img 
+                                        src={track.imageUrl} 
+                                        alt={track.title} 
+                                        className="w-48 h-48 object-cover rounded-full border-4 border-black" 
+                                    />
                                 </div>
                                 <div className="p-6">
                                     <p className={`font-bold text-black text-3xl mb-2 ${nostromoMedium.className}`}>{track.id}</p>
@@ -168,7 +173,7 @@ const Tracks = () => {
                 <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
                     <div className="relative w-full h-full p-4 sm:p-8 md:p-12">
                         <div className="relative w-full h-full">
-                            <div className="absolute w-48 h-48 md:w-64 md:h-64 z-10" style={circleStyle}>
+                            <div className="absolute w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 z-10" style={circleStyle}>
                                 <div className="w-full h-full rounded-full border-4 border-black transition-all duration-300" style={circleBgStyle}></div>
                             </div>
                             <div className="absolute w-[42%] text-left pr-4" style={{ top: '50%', left: '75%', transform: 'translate(-160%, -50%)', opacity: introOpacity, pointerEvents: introOpacity > 0 ? 'auto' : 'none' }}>
