@@ -5,7 +5,8 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CoinFlip from "../CoinFlip";
-import { orbitron, nostromoLight, nostromoMedium } from "../../fonts";
+import GlowButton from "../GlowButton";
+import { orbitron, nostromoLight, nostromoMedium, t012 } from "../../fonts";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -65,7 +66,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
 						circleRef.current,
 						{
 							// diagonal rightward (positive x), slight upward for depth
-							x: "45%",
+							x: "35%",
 							y: "-15%",
 							scale: 0.75,
 							duration: 1,
@@ -161,7 +162,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
 		// The main scrollable container
 		<section
 			ref={targetRef}
-			className="relative h-[250vh] md:h-[300vh] lg:h-[400vh]"
+			className="relative h-[320vh] md:h-[300vh] lg:h-[400vh]"
 		>
 			{/* The sticky container that holds all content */}
 			{/* NOTE: changed overflow-hidden -> overflow-visible so animations don't get clipped */}
@@ -184,7 +185,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
 						{Array.from({ length: 5 }).map((_, i) => (
 							<Image
 								key={i}
-								src="/X.svg"
+								src="/assets/X.svg"
 								alt={`X ${i}`}
 								width={14}
 								height={14}
@@ -196,7 +197,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
 					<div className="flex justify-center">
 						<Image
 							className="w-2/3 sm:w-full"
-							src="/p1.svg"
+							src="/assets/p1.svg"
 							alt="P1 Graphic"
 							width={180}
 							height={180}
@@ -246,15 +247,13 @@ const AboutVinnovateit = ({ isFlipping }) => {
 						href="https://vinnovateit.com"
 						target="_blank"
 						rel="noopener noreferrer"
-						className="mt-3 lg:mt-4 xl:mt-5 self-start group"
+						className="mt-3 lg:mt-4 xl:mt-5 self-start inline-block"
 					>
-						<Image
-							src="/click_for_website.svg"
-							alt="Learn More About Vinnovateit"
-							width={250}
-							height={40}
-							className="lg:w-[300px] lg:h-[50px] xl:w-[350px] xl:h-[60px] group-hover:scale-95 transition-transform duration-150"
-						/>
+						<GlowButton className={`${nostromoMedium.className}`}>
+							<span className="text-[clamp(0.875rem,2vw,1rem)] leading-none">
+								VISIT OUR WEBSITE
+							</span>
+						</GlowButton>
 					</a>
 				</div>
 
@@ -268,13 +267,13 @@ const AboutVinnovateit = ({ isFlipping }) => {
 				>
 					<div className="h-full w-auto aspect-square max-w-full max-h-full relative">
 						<CoinFlip
-							frontImg="/vinnovateit.jpg"
-							backImg="/whiteLogoViit.svg"
+							frontImg="/assets/vinnovateit.jpg"
+							backImg="/assets/whiteLogoViit.svg"
 							isFlipping={isFlipping}
 						/>
 						{/* Circle Border Overlay */}
 						<Image
-							src="/circle_border.svg"
+							src="/assets/circle_border.svg"
 							alt="Circle Border"
 							fill
 							className="absolute top-0 left-0 w-full h-full pointer-events-none scale-110"
@@ -286,15 +285,13 @@ const AboutVinnovateit = ({ isFlipping }) => {
 				{/* Heading (Moves & Scales) */}
 				<div
 					ref={headingRef}
-					className="absolute top-[85%] left-[5%] w-2/3 lg:w-3/5 xl:w-1/2 overflow-hidden"
+					className="absolute top-[85%] left-[5%] w-full lg:w-4/5 xl:w-3/4"
 				>
-					<Image
-						src="/vinnovateit_text.svg"
-						alt="Vinnovateit Text"
-						width={400}
-						height={100}
-						className="w-full h-auto object-contain max-w-full max-h-full"
-					/>
+					<h1
+						className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-black font-normal leading-relaxed whitespace-nowrap tracking-widest ${t012.className}`}
+					>
+						WHO ARE WE ?
+					</h1>
 				</div>
 
 				{/* --- STATIC ELEMENTS --- */}
