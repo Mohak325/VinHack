@@ -12,6 +12,7 @@ const type12 = localFont({
   variable: "--font-type12",
 });
 
+
 const Coc = () => {
   const rules = [
     "VinnovateIT believes strongly in inclusivity. Everyone, who wants to join the event, is welcome. And we assure you that, all the submissions will be evaluated irrespective of any bias with respect to whatsoever. We will always work to maintain a welcoming and safe environment for everyone.",
@@ -21,7 +22,7 @@ const Coc = () => {
     "TL;DR: Be respectful towards everyone, be it participants, organizers, or anyone related to the event. Incase of any incidents with conduct not being abided, feel free to reach out to anyone on organizing team.",
   ];
 
-  return (
+
     <NotchedPageWrapper>
       <Grid>
         <div id="coc" className="w-full max-w-6xl mx-auto p-6 sm:p-8 md:p-12 pb-16">
@@ -54,6 +55,7 @@ const Coc = () => {
         </div>
       </Grid>
     </NotchedPageWrapper>
+
   );
 };
 

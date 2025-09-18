@@ -1,6 +1,7 @@
 "use client";
 
 import React from "react";
+import { orbitron } from "../fonts";
 
 const HeroContent = ({
   isVisible,
@@ -8,9 +9,17 @@ const HeroContent = ({
   nostromoLightClassName,
 }) => {
   return (
-    <div className="absolute inset-0 w-full h-full flex flex-col justify-center items-center">
+    <div className="relative w-full h-full flex flex-col justify-center items-center px-4 sm:px-6 md:px-8">
+      {/* Sponsor presents text */}
+      <div
+        className={`flex items-center justify-center gap-x-2 sm:gap-x-3 text-sm sm:text-lg md:text-xl mb-2 sm:mb-4 ${orbitron.className} text-black`}
+      >
+        <img src="/assets/sponsor.png" alt="Sponsor" className="h-3 sm:h-4 md:h-5" />
+        <span className="text-xs sm:text-base md:text-lg">presents</span>
+      </div>
+
       <h1
-        className={`text-[clamp(3rem,10vw,10rem)] leading-none relative z-20 ${ruigslayClassName}`}
+        className={`text-responsive-hero leading-none relative z-20 mx-auto text-black text-center ${ruigslayClassName}`}
       >
         VinHack
       </h1>
@@ -20,7 +29,7 @@ const HeroContent = ({
         href="https://gravitas.vit.ac.in/events/5fceeb67-a8ca-4ab9-9419-eb3f9b9d6b69"
         target="_blank"
         rel="noopener noreferrer"
-        className="relative inline-block w-[clamp(140px,18vw,280px)] aspect-[230/80] z-20 group"
+        className="relative inline-block w-[clamp(120px,25vw,280px)] aspect-[230/80] z-20 group mt-2 sm:mt-4"
       >
         <svg
           viewBox="0 0 286 100"
@@ -28,7 +37,6 @@ const HeroContent = ({
           xmlns="http://www.w3.org/2000/svg"
           className="w-full h-full transition-transform duration-150 group-hover:scale-95"
         >
-          {/* SVG paths remain unchanged */}
           <path
             d="M7 1H278.999C282.313 1.00026 285 3.68673 285 7V92.2236C285 95.5374 282.314 98.2246 279 98.2246H7.00098C3.68724 98.2243 1.00004 95.5378 1 92.2246V7C1.00025 3.68641 3.68653 1 7 1Z"
             fill="#141312"
@@ -53,7 +61,7 @@ const HeroContent = ({
           />
         </svg>
         <span
-          className={`absolute inset-0 flex items-center justify-center text-[#E0D8C7] text-[clamp(0.7rem,1.6vw,1.3rem)] transition-transform duration-150 group-hover:scale-95 ${nostromoLightClassName}`}
+          className={`absolute inset-0 flex items-center justify-center text-[#E0D8C7] text-[clamp(0.6rem,2.2vw,1.3rem)] transition-transform duration-150 group-hover:scale-95 ${nostromoLightClassName}`}
         >
           REGISTER NOW
         </span>
@@ -61,9 +69,9 @@ const HeroContent = ({
 
       {/* Illustrations */}
       <div
-        className={`absolute -top-12 -right-8 w-96 h-96 md:w-128 md:h-128 z-40 pointer-events-none transition-all duration-1000 ${
+        className={`absolute top-0 right-0 w-48 h-48 sm:w-72 sm:h-72 md:w-96 md:h-96 lg:w-128 lg:h-128 z-40 pointer-events-none transition-all duration-1000 ${
           isVisible
-            ? "opacity-100 rotate-[-30deg] translate-x-3 -translate-y-3 md:rotate-0 md:translate-x-0 md:translate-y-0"
+            ? "opacity-100 rotate-[-15deg] translate-x-6 -translate-y-6 sm:rotate-[-20deg] sm:translate-x-4 sm:-translate-y-4 md:rotate-[-30deg] md:translate-x-3 md:-translate-y-3 lg:rotate-0 lg:translate-x-0 lg:translate-y-0"
             : "opacity-0 translate-x-16 -translate-y-4 rotate-12"
         }`}
         style={{
@@ -79,9 +87,9 @@ const HeroContent = ({
       </div>
 
       <div
-        className={`absolute -bottom-12 -left-8 w-96 h-96 md:w-128 md:h-128 z-40 pointer-events-none transition-all duration-1000 ${
+        className={`absolute bottom-0 left-0 w-48 h-48 sm:w-72 sm:h-72 md:w-96 md:h-96 lg:w-128 lg:h-128 z-40 pointer-events-none transition-all duration-1000 ${
           isVisible
-            ? "opacity-100 rotate-[-30deg] -translate-x-3 translate-y-3 md:rotate-0 md:translate-x-0 md:translate-y-0"
+            ? "opacity-100 rotate-[15deg] -translate-x-6 translate-y-6 sm:rotate-[20deg] sm:-translate-x-4 sm:translate-y-4 md:rotate-[30deg] md:-translate-x-3 md:translate-y-3 lg:rotate-0 lg:translate-x-0 lg:translate-y-0"
             : "opacity-0 -translate-x-16 translate-y-4 -rotate-12"
         }`}
         style={{

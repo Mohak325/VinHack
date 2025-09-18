@@ -12,6 +12,7 @@ const type12 = localFont({
   variable: "--font-type12",
 });
 
+
 const Rules = () => {
   const rules = [
     "Teams must have 2–4 participants (no solo participation, no multiple teams).",
@@ -62,6 +63,7 @@ const Rules = () => {
         </div>
       </Grid>
     </NotchedPageWrapper>
+
   );
 };
 

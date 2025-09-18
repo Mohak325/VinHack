@@ -4,15 +4,18 @@ import Image from 'next/image';
 import { Poppins } from 'next/font/google';
 import localFont from 'next/font/local';
 import GlowButton from "./GlowButton.jsx";
-import ScrambleText from './ScrambleText.jsx';
-import Notch from './Notch.jsx';
+import ScrambleText from "./ScrambleText.jsx";
+import { ruigslay, nostromoLight, nostromoMedium } from "../fonts";
 import {
-  FaInstagram, FaTwitter, FaGithub, FaLinkedin, FaYoutube, FaFacebook,
+  FaInstagram,
+  FaTwitter,
+  FaGithub,
+  FaLinkedin,
+  FaYoutube,
+  FaFacebook,
 } from "react-icons/fa";
 
-const ruigslay = localFont({ src: "../../public/fonts/ruigslay/Ruigslay.ttf" });
-const nostromo = localFont({ src: "../../public/fonts/nostromo/nostromo-regular-black.otf" });
-const poppins = Poppins({ subsets: ['latin'], weight: ['400', '600'] });
+const poppins = Poppins({ subsets: ["latin"], weight: ["400", "600"] });
 
 const formatNum = (num) => num.toString().padStart(4, "0").split("");
 
@@ -69,12 +72,13 @@ export default function Footer() {
   `;
 
   return (
-    <section 
+    <section
+      id="register"
       className="relative bg-black text-white font-sans"
       // --- STYLE RESTORED HERE ---
       style={{
         backgroundImage: `url("data:image/svg+xml,%3csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3e%3cg stroke='%23F5B37F' stroke-width='1'%3e%3cpath d='M 50 47 V 53 M 47 50 H 53'/%3e%3c/g%3e%3c/svg%3e")`,
-        backgroundSize: '100px 100px'
+        backgroundSize: "100px 100px",
       }}
       ref={footerRef}
     >
@@ -82,22 +86,24 @@ export default function Footer() {
 
       <div className="relative w-full min-h-screen p-4">
         {/* Your original border and notch structure */}
-        <div className="absolute inset-0" style={{ clipPath: "polygon(0% 30px, 30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0% calc(100% - 30px))" }}></div>
+        <div
+          className="absolute inset-0"
+          style={{
+            clipPath:
+              "polygon(0% 30px, 30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0% calc(100% - 30px))",
+          }}
+        ></div>
         <div className="absolute top-0 left-0 w-[30px] h-[30px] bg-black"></div>
         <div className="absolute top-0 right-0 w-[30px] h-[30px] bg-black"></div>
         <div className="absolute bottom-0 left-0 w-[30px] h-[30px] bg-black"></div>
         <div className="absolute bottom-0 right-0 w-[30px] h-[30px] bg-black"></div>
 
-        <Notch position="top" soundOn={soundOn} onToggleSound={handleToggleSound} />
-        <Notch position="left" tokens={tokenizeCoords(coords.x, coords.y)} />
-        <Notch position="right" onToggleMenu={handleToggleMenu} />
-        <Notch position="bottom" />
-
         <div
           className="relative w-full h-full flex flex-col items-center justify-start pt-16 hide-scrollbar overflow-y-auto"
           style={{
-            minHeight: 'calc(100vh - 2rem)',
-            clipPath: "polygon(0% 30px, 30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0% calc(100% - 30px))",
+            minHeight: "calc(100vh - 2rem)",
+            clipPath:
+              "polygon(0% 30px, 30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0% calc(100% - 30px))",
           }}
         >
           <div className={footerVisible ? "animate-main-content w-full" : "w-full"}>
@@ -106,13 +112,13 @@ export default function Footer() {
                 key={footerVisible ? "visible" : "hidden"}
                 as="h1"
                 text="VinHack"
-                className={`text-7xl sm:text-8xl md:text-[11rem] font-bold text-orange-500 ${ruigslay.className}`}
+                className={`text-7xl sm:text-8xl md:text-[11rem] text-orange-500 ${ruigslay.className}`}
               />
               <ScrambleText
                 key={footerVisible ? "visible-h2" : "hidden-h2"}
                 as="h2"
                 text="HAVEN’T REGISTERED YET?"
-                className={`text-2xl md:text-4xl font-bold mt-6 text-orange-500 ${nostromo.className}`}
+                className={`text-2xl md:text-4xl font-bold mt-6 text-orange-500 ${nostromoMedium.className}`}
               />
               <ScrambleText
                 key={footerVisible ? "visible-p1" : "hidden-p1"}
@@ -132,7 +138,9 @@ export default function Footer() {
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  <GlowButton className={nostromo.className}>REGISTER NOW</GlowButton>
+                  <GlowButton className={nostromoMedium.className}>
+                    REGISTER NOW
+                  </GlowButton>
                 </a>
               </div>
             </main>
@@ -140,9 +148,17 @@ export default function Footer() {
             <footer className="bg-[#d6d1c4] text-black py-8 md:py-12 px-6 md:px-20 relative rounded-t-3xl">
               <div className="w-full mx-auto flex flex-col md:flex-row justify-between items-center text-center md:text-left">
                 <div className="flex flex-col items-center md:items-start">
-                  <Image src="/logo.png" alt="VinnovateIT Logo" width={200} height={36} />
-                  <p className={`mt-4 text-sm md:text-base leading-relaxed ${poppins.className}`}>
-                    VIT, VELLORE CAMPUS <br /> VELLORE - 632014 <br /> TAMILNADU, INDIA
+                  <Image
+                    src="/logo.png"
+                    alt="VinnovateIT Logo"
+                    width={200}
+                    height={36}
+                  />
+                  <p
+                    className={`mt-4 text-sm md:text-base leading-relaxed ${poppins.className}`}
+                  >
+                    VIT, VELLORE CAMPUS <br /> VELLORE - 632014 <br />{" "}
+                    TAMILNADU, INDIA
                   </p>
                   <p className={`mt-4 text-xs ${poppins.className}`}>
                     © 2025 VinnovateIT, Vellore Institute of Technology
@@ -150,14 +166,58 @@ export default function Footer() {
                 </div>
                 <div className="mt-8 md:mt-0 flex flex-col items-center">
                   <div className="flex space-x-4 mb-10">
-                    <a href="https://www.instagram.com/vinnovateit/?hl=en" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"><FaInstagram /></a>
-                    <a href="https://x.com/v_innovate_it?lang=en" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"><FaTwitter /></a>
-                    <a href="https://github.com/vinnovateit" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"><FaGithub /></a>
-                    <a href="https://www.linkedin.com/company/v-innovate-it/?originalSubdomain=in" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"><FaLinkedin /></a>
-                    <a href="https://www.youtube.com/channel/UClqr0ir3N1_sG4ubZjEDe3g" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"><FaYoutube /></a>
-                    <a href="https://www.facebook.com/VinnovateIT/about/?_rdr" target="_blank" rel="noopener noreferrer" className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"><FaFacebook /></a>
+                    <a
+                      href="https://www.instagram.com/vinnovateit/?hl=en"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+                    >
+                      <FaInstagram />
+                    </a>
+                    <a
+                      href="https://x.com/v_innovate_it?lang=en"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+                    >
+                      <FaTwitter />
+                    </a>
+                    <a
+                      href="https://github.com/vinnovateit"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+                    >
+                      <FaGithub />
+                    </a>
+                    <a
+                      href="https://www.linkedin.com/company/v-innovate-it/?originalSubdomain=in"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+                    >
+                      <FaLinkedin />
+                    </a>
+                    <a
+                      href="https://www.youtube.com/channel/UClqr0ir3N1_sG4ubZjEDe3g"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+                    >
+                      <FaYoutube />
+                    </a>
+                    <a
+                      href="https://www.facebook.com/VinnovateIT/about/?_rdr"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+                    >
+                      <FaFacebook />
+                    </a>
                   </div>
-                  <GlowButton className={nostromo.className}>LET’S CONNECT!</GlowButton>
+                  <GlowButton className={nostromoMedium.className}>
+                    LET’S CONNECT!
+                  </GlowButton>
                 </div>
               </div>
             </footer>

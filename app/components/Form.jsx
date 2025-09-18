@@ -41,14 +41,14 @@ export default function Form() {
   }, []);
 
   return (
-    <main className="flex flex-col min-h-screen items-center justify-center bg-gray-900 text-white p-6">
+    <main className="flex flex-col min-h-screen items-center justify-center bg-gray-900 text-white p-4 sm:p-6">
       <form
         onSubmit={handleSubmit}
-        className="p-6 bg-gray-800 rounded-xl shadow-lg w-80 space-y-4 mb-6"
+        className="p-4 sm:p-6 bg-gray-800 rounded-xl shadow-lg w-full max-w-sm sm:max-w-md md:w-80 space-y-4 mb-6"
       >
-        <h1 className="text-xl font-bold">MongoDB + Prisma Form</h1>
+        <h1 className="text-lg sm:text-xl font-bold text-center">MongoDB + Prisma Form</h1>
         <input
-          className="w-full p-2 rounded bg-gray-700"
+          className="w-full p-2 sm:p-3 rounded bg-gray-700 text-sm sm:text-base"
           type="text"
           name="name"
           placeholder="Your Name"
@@ -57,7 +57,7 @@ export default function Form() {
           required
         />
         <input
-          className="w-full p-2 rounded bg-gray-700"
+          className="w-full p-2 sm:p-3 rounded bg-gray-700 text-sm sm:text-base"
           type="email"
           name="email"
           placeholder="Your Email"
@@ -67,23 +67,23 @@ export default function Form() {
         />
         <button
           type="submit"
-          className="w-full p-2 bg-green-600 rounded hover:bg-green-700"
+          className="w-full p-2 sm:p-3 bg-green-600 rounded hover:bg-green-700 text-sm sm:text-base font-medium transition-colors"
         >
           Submit
         </button>
-        <p>{status}</p>
+        <p className="text-sm text-center">{status}</p>
       </form>
 
-      <div className="w-full max-w-md bg-gray-800 p-4 rounded-xl">
-        <h2 className="text-lg font-semibold mb-2">Submissions</h2>
-        <ul className="space-y-2">
+      <div className="w-full max-w-sm sm:max-w-md bg-gray-800 p-4 sm:p-6 rounded-xl">
+        <h2 className="text-base sm:text-lg font-semibold mb-2 text-center">Submissions</h2>
+        <ul className="space-y-2 max-h-60 overflow-y-auto">
           {submissions.map((s) => (
             <li
               key={s.id}
-              className="p-2 bg-gray-700 rounded flex justify-between"
+              className="p-2 sm:p-3 bg-gray-700 rounded flex flex-col sm:flex-row sm:justify-between space-y-1 sm:space-y-0"
             >
-              <span>{s.name}</span>
-              <span className="text-gray-400">{s.email}</span>
+              <span className="font-medium text-sm sm:text-base">{s.name}</span>
+              <span className="text-gray-400 text-xs sm:text-sm break-all">{s.email}</span>
             </li>
           ))}
         </ul>
