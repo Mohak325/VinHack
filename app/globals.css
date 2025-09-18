@@ -11,28 +11,23 @@ body {
   overflow-y: auto;
 }
 
-/* Custom Scrollbar Styles */
-/* For Firefox */
 html, body {
-  scrollbar-width: thin;
-  scrollbar-color: #F5B37F #000000; /* thumb and track color */
+  scrollbar-width: none;
 }
 
-/* For Chrome, Safari, and Opera */
 html::-webkit-scrollbar,
 body::-webkit-scrollbar {
-  width: 2px;
+  display: none;
 }
 
 html::-webkit-scrollbar-track,
 body::-webkit-scrollbar-track {
-  background: #1a1a1a; /* A dark color for the track */
+  display: none;
 }
 
 html::-webkit-scrollbar-thumb,
 body::-webkit-scrollbar-thumb {
-  background-color: #F5B37F;
-  border-radius: 2px;
+ display: none;
 }
 
 html::-webkit-scrollbar-button,

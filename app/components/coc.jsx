@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
-import { GridPlusBackground } from "./Grid.jsx";
+import { t012 } from "../fonts";
+import { motion } from "framer-motion";
 
 const Coc = () => {
   const rules = [
@@ -12,41 +13,47 @@ const Coc = () => {
   ];
 
   return (
-    <GridPlusBackground>
-      <div
-        id="coc"
-        className="w-full max-w-6xl mx-auto p-6 sm:p-8 md:p-12 pb-16"
+    <div id="coc" className="w-full max-w-6xl mx-auto p-6 sm:p-8 md:p-12 pb-16">
+      {/* CODE OF CONDUCT in Type12 */}
+      <motion.h1
+      initial={{ opacity: 0, y: -40 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          viewport={{ once: false }} 
+        className={`${t012.className} text-center text-5xl sm:text-5xl md:text-7xl tracking-widest font-bold mt-16`}
+        style={{
+          color: "#000",
+          lineHeight: 1.25,
+          letterSpacing: "0.08em",
+          wordSpacing: "0.5em",
+        }}
       >
-        {/* Removed horizontal padding (px-*) to allow text-center to work correctly */}
-        <h1
-          className="text-center text-5xl sm:text-5xl md:text-7xl tracking-widest font-bold mt-16"
-          style={{
-            fontFamily: '"Orbitron", sans-serif',
-            color: "#000",
-          }}
-        >
-          CODE OF CONDUCT
-        </h1>
-        {/* Add a margin-bottom to create space for the fixed footer/navigation */}
-        <ul className="list-none p-0 m-0 flex flex-col gap-4 md:gap-6 mt-20 pb-10 mb-24">
-          {rules.map((rule, index) => (
-            <li
-              key={index}
-              className="text-base sm:text-lg md:text-xl"
-              style={{
-                fontFamily: '"Poppins", sans-serif',
-                fontWeight: "bold",
-                textAlign: "left",
-                lineHeight: "1.7",
-                color: "#000",
-              }}
-            >
-              • {rule}
-            </li>
-          ))}
-        </ul>
-      </div>
-    </GridPlusBackground>
+        CODE OF CONDUCT
+      </motion.h1>
+
+      {/* Rules list */}
+      <ul className="list-none p-0 m-0 flex flex-col gap-4 md:gap-6 mt-20 pb-10 mb-24">
+        {rules.map((rule, index) => (
+          <motion.li
+            key={index}
+            initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.5, delay: index * 0.1 }}
+              viewport={{ once: false, amount: 0.2 }}
+            className="text-base sm:text-lg md:text-xl"
+            style={{
+              fontFamily: '"Poppins", sans-serif',
+              fontWeight: "bold",
+              textAlign: "left",
+              lineHeight: "1.7",
+              color: "#000",
+            }}
+          >
+            • {rule}
+          </motion.li>
+        ))}
+      </ul>
+    </div>
   );
 };
 

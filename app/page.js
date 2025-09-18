@@ -4,8 +4,8 @@
 import { useState, useRef, useEffect } from "react";
 import { useScroll } from "framer-motion";
 
-import LoadingScreen from "./components/Loading";
-import Hero from "./components/Hero";
+import LoadingScreen from "./components/loader/Loading";
+import Hero from "./components/hero/Hero";
 import FaqSection from "./components/FAQ";
 import Footer from "./components/Footer";
 import Tracks from "./components/Track";
@@ -16,10 +16,10 @@ import Border from "./components/Border";
 import { ruigslay, nostromoLight, nostromoMedium } from "./fonts";
 import AboutVinnovateit from "./components/about/AboutVinnovateit";
 import AboutVinnhack from "./components/about/AboutVinhack";
-// import Timeline from "./components/TImeline";
 import { GridPlusBackground } from "./components/Grid";
 
 import Marquees from "./components/Marquee";
+import Timeline from "./components/Timeline";
 
 function MainContent({ fontClassNames, isVisible }) {
   const [isFlipping, setIsFlipping] = useState(false);
@@ -47,8 +47,7 @@ function MainContent({ fontClassNames, isVisible }) {
   return (
     <Border {...fontClassNames}>
       <Hero {...fontClassNames} isVisible={isVisible} />
-      <div className="w-full h-[20vh] md:h-[30vh]" />
-
+      <Marquees />
       <GridPlusBackground>
         {/* Scroll container for flipping effect */}
         <div ref={containerRef}>
@@ -62,33 +61,27 @@ function MainContent({ fontClassNames, isVisible }) {
         <Tracks />
         {/* FAQ section */}
         <FaqSection />
-      </GridPlusBackground>
       {/* Remaining sections */}
       <>
-        {/* <Timeline /> */}
+        <Timeline/>
         <Coc />
         <Rules />
         <Footer />
       </>
+      </GridPlusBackground>
     </Border>
   );
 }
 
 
 export default function Home() {
-  // State to manage the loading screen's visibility and fade-out animation
   const [isLoading, setIsLoading] = useState(true);
-  // State to mount the main content after loading
   const [isHeroVisible, setIsHeroVisible] = useState(false);
-  // State to control the presence of the loading screen in the DOM
   const [isLoaderPresent, setIsLoaderPresent] = useState(true);
 
   // This function is called by LoadingScreen when it's done
   const handleLoadingComplete = () => {
-    // 1. Mount the Hero and other main components immediately.
-    // They will render underneath the still-visible loading screen.
     setIsHeroVisible(true);
-    // 2. Wait a moment, then trigger the fade-out of the loading screen.
     setTimeout(() => {
       setIsLoading(false);
     }, 100);

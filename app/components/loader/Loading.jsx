@@ -2,22 +2,18 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import ProgressBar from "./ProgressBar";
-import DecryptingText from "./DecryptingText";
 import AnimatedLines from "./AnimatedLines";
-import { orbitron, nostromoMedium, gulimche } from "../fonts"; // Import nostromoMedium and gulimche
+import { orbitron, nostromoMedium, gulimche } from "../../fonts";
 
 const LoadingScreen = ({ onCompletion, assetPaths, isFadingOut }) => {
   const [progress, setProgress] = useState(0);
-  const [loadingText, setLoadingText] = useState("// SYSTEM LOADING"); // Changed to match provided code
+  const [loadingText, setLoadingText] = useState("// SYSTEM LOADING");
   const [showDate, setShowDate] = useState(false);
   const [loadingComplete, setLoadingComplete] = useState(false);
 
-  const targetText = "VINHACK"; // This will be replaced
-  const targetDate = "22-23 SEPTEMBER 2025"; // This will be replaced
-
   useEffect(() => {
-    const progressDuration = 1500; // 1.5 seconds for progress animation
-    const totalDuration = 3000; // 3 seconds total
+    const progressDuration = 1500;
+    const totalDuration = 3000;
     let progressInterval;
 
     const startTime = Date.now();
