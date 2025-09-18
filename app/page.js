@@ -4,8 +4,8 @@
 import { useState, useRef, useEffect, useCallback } from "react";
 import { useScroll } from "framer-motion";
 
-import LoadingScreen from "./components/Loading";
-import Hero from "./components/Hero";
+import LoadingScreen from "./components/loader/Loading";
+import Hero from "./components/hero/Hero";
 import FaqSection from "./components/FAQ";
 import Footer from "./components/Footer";
 import Tracks from "./components/Track";
@@ -101,8 +101,9 @@ export default function Home() {
   }, []);
 
   const assetPaths = [
-    "/assets/bottom_left_hand.svg",
-    "/assets/top_right_hand.svg",
+    "/assets/hero/bottom_left_hand.svg",
+    "/assets/hero/top_right_hand.svg",
+    //TODO: add all assets
   ];
 
   // Pass font class names to components that need them
