@@ -19,6 +19,7 @@ import AboutVinnhack from "./components/about/AboutVinhack";
 import { GridPlusBackground } from "./components/Grid";
 
 import Marquees from "./components/Marquee";
+import Timeline from "./components/Timeline";
 
 function MainContent({ fontClassNames, isVisible }) {
   const [isFlipping, setIsFlipping] = useState(false);
@@ -64,7 +65,7 @@ function MainContent({ fontClassNames, isVisible }) {
       </GridPlusBackground>
       {/* Remaining sections */}
       <>
-        {/* <Timeline /> */}
+        <Timeline />
         <Coc />
         <Rules />
         <Footer />
