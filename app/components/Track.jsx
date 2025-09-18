@@ -98,7 +98,8 @@ const Tracks = () => {
   // Mobile View
   if (isMobile) {
     return (
-      <div className="w-full bg-white py-16">
+      <div className="w-full py-16"
+      style={{ backgroundColor: 'rgb(213,209,190)' }}>
         <motion.div
           initial={{ opacity: 0, y: 50 }}
           whileInView={{ opacity: 1, y: 0 }}
@@ -127,7 +128,7 @@ const Tracks = () => {
                 <img
                   src={track.imageUrl}
                   alt={track.title}
-                  className="w-full h-full object-cover"
+                  className="w-full h-full object-contain"
                 />
               </div>
               <div className="p-6">

@@ -1,5 +1,5 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import Image from "next/image";
 import { Poppins } from "next/font/google";
 import GlowButton from "./GlowButton.jsx";
@@ -22,6 +22,8 @@ export default function Footer() {
   const [soundOn, setSoundOn] = useState(true);
   const [menuOpen, setMenuOpen] = useState(false);
   const [coords, setCoords] = useState({ x: 0, y: 0 });
+  const [footerVisible, setFooterVisible] = useState(false);
+  const footerRef = useRef(null);
 
   useEffect(() => {
     const handleMouseMove = (e) => {
@@ -30,6 +32,21 @@ export default function Footer() {
     window.addEventListener("mousemove", handleMouseMove);
     return () => {
       window.removeEventListener("mousemove", handleMouseMove);
+    };
+  }, []);
+
+  useEffect(() => {
+    const observer = new window.IntersectionObserver(
+      ([entry]) => {
+        setFooterVisible(entry.isIntersecting);
+      },
+      { threshold: 0.2 }
+    );
+    if (footerRef.current) {
+      observer.observe(footerRef.current);
+    }
+    return () => {
+      if (footerRef.current) observer.unobserve(footerRef.current);
     };
   }, []);
 
@@ -47,7 +64,7 @@ export default function Footer() {
     }
     .animate-main-content {
       animation: fadeInFromBack 1.2s ease-out forwards;
-      opacity: 0; /* Start hidden */
+      opacity: 0;
     }
     .hide-scrollbar::-webkit-scrollbar { display: none; }
     .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
@@ -62,6 +79,7 @@ export default function Footer() {
         backgroundImage: `url("data:image/svg+xml,%3csvg width='100' height='100' viewBox='0 0 100 100' xmlns='http://www.w3.org/2000/svg'%3e%3cg stroke='%23F5B37F' stroke-width='1'%3e%3cpath d='M 50 47 V 53 M 47 50 H 53'/%3e%3c/g%3e%3c/svg%3e")`,
         backgroundSize: "100px 100px",
       }}
+      ref={footerRef}
     >
       <style>{animationStyles}</style>
 
@@ -87,22 +105,33 @@ export default function Footer() {
               "polygon(0% 30px, 30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0% calc(100% - 30px))",
           }}
         >
-          <div className="animate-main-content w-full">
+          <div
+            className={footerVisible ? "animate-main-content w-full" : "w-full"}
+          >
             <main className="flex flex-col items-center justify-center text-center px-4 sm:px-6 py-20">
               <ScrambleText
+                key={footerVisible ? "visible" : "hidden"}
                 as="h1"
                 text="VinHack"
                 className={`text-7xl sm:text-8xl md:text-[11rem] text-orange-500 ${ruigslay.className}`}
               />
               <ScrambleText
+                key={footerVisible ? "visible-h2" : "hidden-h2"}
                 as="h2"
                 text="HAVEN’T REGISTERED YET?"
                 className={`text-2xl md:text-4xl font-bold mt-6 text-orange-500 ${nostromoMedium.className}`}
               />
               <ScrambleText
+                key={footerVisible ? "visible-p1" : "hidden-p1"}
                 as="p"
                 text="What are you waiting for?"
                 className={`mt-4 text-xl md:text-3xl text-[#D5D1BE] ${poppins.className}`}
+              />
+              <ScrambleText
+                key={footerVisible ? "visible-p2" : "hidden-p2"}
+                as="p"
+                text="REGISTER NOW!"
+                className={`mt-4 text-xl md:text-3xl font-semibold text-[#D5D1BE] ${poppins.className}`}
               />
               <div className="mt-10 mb-8">
                 <a

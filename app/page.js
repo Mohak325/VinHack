@@ -16,7 +16,6 @@ import Border from "./components/Border";
 import { ruigslay, nostromoLight, nostromoMedium } from "./fonts";
 import AboutVinnovateit from "./components/about/AboutVinnovateit";
 import AboutVinnhack from "./components/about/AboutVinhack";
-// import Timeline from "./components/TImeline";
 import { GridPlusBackground } from "./components/Grid";
 
 import Marquees from "./components/Marquee";
@@ -76,19 +75,13 @@ function MainContent({ fontClassNames, isVisible }) {
 
 
 export default function Home() {
-  // State to manage the loading screen's visibility and fade-out animation
   const [isLoading, setIsLoading] = useState(true);
-  // State to mount the main content after loading
   const [isHeroVisible, setIsHeroVisible] = useState(false);
-  // State to control the presence of the loading screen in the DOM
   const [isLoaderPresent, setIsLoaderPresent] = useState(true);
 
   // This function is called by LoadingScreen when it's done
-  const handleLoadingComplete = useCallback(() => {
-    // 1. Mount the Hero and other main components immediately.
-    // They will render underneath the still-visible loading screen.
+  const handleLoadingComplete = () => {
     setIsHeroVisible(true);
-    // 2. Wait a moment, then trigger the fade-out of the loading screen.
     setTimeout(() => {
       setIsLoading(false);
     }, 100);
@@ -98,7 +91,7 @@ export default function Home() {
     setTimeout(() => {
       setIsLoaderPresent(false);
     }, 1100); // 100ms delay + 1000ms animation duration
-  }, []);
+  };
 
   const assetPaths = [
     "/assets/hero/bottom_left_hand.svg",
