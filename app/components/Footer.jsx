@@ -4,15 +4,15 @@ import Image from "next/image";
 import { Poppins } from "next/font/google";
 import GlowButton from "./GlowButton.jsx";
 import ScrambleText from "./ScrambleText.jsx";
-import { ruigslay, nostromoLight, nostromoMedium } from "../fonts";
+import { ruigslay, nostromoMedium } from "../fonts";
 import {
   FaInstagram,
-  FaTwitter,
   FaGithub,
   FaLinkedin,
   FaYoutube,
   FaFacebook,
 } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "600"] });
 
@@ -181,7 +181,7 @@ export default function Footer() {
                       rel="noopener noreferrer"
                       className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
                     >
-                      <FaTwitter />
+                      <FaXTwitter />
                     </a>
                     <a
                       href="https://github.com/vinnovateit"
