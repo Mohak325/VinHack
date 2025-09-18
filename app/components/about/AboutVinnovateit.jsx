@@ -56,7 +56,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
 				tl.to(
 					headingRef.current,
 					{
-						y: "-65vh", // higher than before (-45vh → -65vh)
+						y: "-75vh", // moved higher for better positioning
 						duration: 1,
 					},
 					0
@@ -65,7 +65,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
 						circleRef.current,
 						{
 							// diagonal rightward (positive x), slight upward for depth
-							x: "35%",
+							x: "45%",
 							y: "-15%",
 							scale: 0.75,
 							duration: 1,
@@ -159,7 +159,10 @@ const AboutVinnovateit = ({ isFlipping }) => {
 
 	return (
 		// The main scrollable container
-		<section ref={targetRef} className="relative h-[250vh] md:h-[300vh] lg:h-[400vh]">
+		<section
+			ref={targetRef}
+			className="relative h-[250vh] md:h-[300vh] lg:h-[400vh]"
+		>
 			{/* The sticky container that holds all content */}
 			{/* NOTE: changed overflow-hidden -> overflow-visible so animations don't get clipped */}
 			<div className="sticky-container sticky top-0 h-screen w-full overflow-visible">

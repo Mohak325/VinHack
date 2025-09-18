@@ -56,7 +56,7 @@ const AboutVinhack = ({ isFlipping }) => {
 				tl.to(
 					headingRef.current,
 					{
-						y: "-65vh", // higher than before (-45vh → -65vh)
+						y: "-75vh", // moved higher for better positioning
 						duration: 1,
 					},
 					0
@@ -65,7 +65,7 @@ const AboutVinhack = ({ isFlipping }) => {
 						circleRef.current,
 						{
 							// diagonal rightward (positive x), slight upward for depth
-							x: "35%",
+							x: "45%",
 							y: "-15%",
 							scale: 0.75,
 							duration: 1,
