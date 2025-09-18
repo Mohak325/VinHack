@@ -115,7 +115,7 @@ const Notch = ({ type, fontClassName, className }) => {
 
   const tokens = coords ? tokenizeCoords(coords.x, coords.y) : [];
   const baseClasses = "fixed z-52 flex justify-center items-center";
-  const textClasses = `text-[10px] xs:text-xs md:text-sm tracking-widest transition-opacity ${fontClassName}`;
+  const textClasses = `text-xs md:text-sm tracking-widest transition-opacity ${fontClassName}`;
   const textColor = { color: "#F5B37F" };
 
   switch (type) {
@@ -123,36 +123,36 @@ const Notch = ({ type, fontClassName, className }) => {
       return (
         <div className={`${baseClasses} ${className}`}>
           <div
-            className={`${baseClasses} top-2 md:top-4 left-1/2 -translate-x-1/2 h-6 md:h-8 lg:h-10 w-40 md:w-50 lg:w-64 bg-black`}
+            className={`${baseClasses} lg:top-4 sm:top-3 top-2 left-1/2 -translate-x-1/2 h-8 md:h-10 w-50 md:w-64 bg-black`}
             style={{ clipPath: "polygon(0 0, 100% 0, 85% 100%, 15% 100%)" }}
           >
             <div
               className="relative bottom-1 w-[95%] h-[80%] flex justify-center items-center"
               style={{
                 backgroundColor: "#8F3C00",
-                clipPath: "polygon(5% 0, 95% 0, 85% 100%, 15% 100%)",
+                clipPath: "polygon(3% 10%, 97% 10%, 86% 100%, 14% 100%)",
               }}
             >
               <button
                 onClick={() => onToggle("sound")}
-                className={`flex items-center justify-center w-full h-full hover:opacity-80 ${textClasses}`}
+                className={`flex pt-1 items-center justify-center w-full h-full hover:opacity-80 ${textClasses}`}
                 style={textColor}
                 type="button"
               >
                 <div className="flex items-center">
-                  <div className="flex justify-center items-center w-16 md:w-20 h-[16px]">
+                  <div className="flex justify-center items-center w-20 h-[25px]">
                     {lines.map((line, i) => (
                       <div
                         key={i}
-                        className="bg-[#E86100] opacity-80 rounded-sm mx-px"
+                        className="bg-[#E86100] mx-0.5"
                         style={{
-                          width: `2px`,
+                          width: `3px`,
                           height: `${line.height}px`,
                         }}
                       />
                     ))}
                   </div>
-                  <div className="w-8 md:w-12 text-left pl-1 md:pl-2">
+                  <div className="w-12 text-left pl-2">
                     <span>[{soundOn ? "ON" : "OFF"}]</span>
                   </div>
                 </div>
@@ -164,7 +164,7 @@ const Notch = ({ type, fontClassName, className }) => {
     case "menu":
       return (
         <div
-          className={`${baseClasses} top-1/2 right-1.5 md:right-3 -translate-y-1/2 w-5 md:w-7 h-48 md:h-72 bg-black`}
+          className={`${baseClasses} top-1/2 right-3 w-5 md:w-7 -translate-y-1/2 w-7 h-72 bg-black`}
           style={{ clipPath: "polygon(0 15%, 100% 0, 100% 100%, 0 85%)" }}
         >
           <button
@@ -186,7 +186,7 @@ const Notch = ({ type, fontClassName, className }) => {
     case "coords":
       return (
         <div
-          className={`${baseClasses} top-1/2 left-1.5 md:left-3 -translate-y-1/2 w-5 md:w-7 h-48 md:h-72 bg-black hidden md:flex`}
+          className={`${baseClasses} top-1/2 left-3 w-5 md:w-7 -translate-y-1/2 h-72 bg-black`}
           style={{ clipPath: "polygon(0 0, 100% 15%, 100% 85%, 0 100%)" }}
         >
           <div
@@ -204,7 +204,7 @@ const Notch = ({ type, fontClassName, className }) => {
     case "discover":
       return (
         <div
-          className={`${baseClasses} bottom-2 md:bottom-3.5 left-1/2 -translate-x-1/2 h-4 md:h-5 lg:h-7 w-32 md:w-40 bg-black rounded-t-xl`}
+          className={`${baseClasses} lg:bottom-4 sm:bottom-3 bottom-2 left-1/2 -translate-x-1/2 h-5 md:h-7 w-40 bg-black rounded-t-xl`}
           style={{
             clipPath: "polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)",
           }}
@@ -233,6 +233,7 @@ const Border = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const cornerNotchColor = "#000000";
+  const cornerNotchSize = "12px"; // Matched to border size
 
   return (
     <BorderContext.Provider
@@ -243,74 +244,41 @@ const Border = ({
         className="relative w-full h-full"
       >
         {/* Borders */}
-        <div className="fixed top-0 left-0 w-full h-[10px] md:h-[20px] bg-black z-52 pointer-events-none"></div>
-        <div className="fixed bottom-0 left-0 w-full h-[10px] md:h-[20px] bg-black z-52 pointer-events-none"></div>
-        <div className="fixed top-0 left-0 w-[10px] md:w-[20px] h-full bg-black z-52 pointer-events-none"></div>
-        <div className="fixed top-0 right-0 w-[10px] md:w-[20px] h-full bg-black z-52 pointer-events-none"></div>
+        <div className="fixed top-0 left-0 w-full lg:h-5 sm:h-4 h-3 bg-black z-52 pointer-events-none"></div>
+        <div className="fixed bottom-0 left-0 w-full lg:h-5 sm:h-4 h-3 bg-black z-52 pointer-events-none"></div>
+        <div className="fixed top-0 left-0 lg:w-5 sm:w-4 w-3 h-full bg-black z-52 pointer-events-none"></div>
+        <div className="fixed top-0 right-0 lg:w-5 sm:w-4 w-3 h-full bg-black z-52 pointer-events-none"></div>
 
-        {/* Corner Notches - Mobile */}
-        <div className="md:hidden">
-          <div
-            className="fixed top-[10px] left-[10px] w-0 h-0 z-52 pointer-events-none"
-            style={{
-              borderTop: `10px solid ${cornerNotchColor}`,
-              borderRight: `10px solid transparent`,
-            }}
-          />
-          <div
-            className="fixed top-[10px] right-[10px] w-0 h-0 z-52 pointer-events-none"
-            style={{
-              borderTop: `10px solid ${cornerNotchColor}`,
-              borderLeft: `10px solid transparent`,
-            }}
-          />
-          <div
-            className="fixed bottom-[10px] left-[10px] w-0 h-0 z-52 pointer-events-none"
-            style={{
-              borderBottom: `10px solid ${cornerNotchColor}`,
-              borderRight: `10px solid transparent`,
-            }}
-          />
-          <div
-            className="fixed bottom-[10px] right-[10px] w-0 h-0 z-52 pointer-events-none"
-            style={{
-              borderBottom: `10px solid ${cornerNotchColor}`,
-              borderLeft: `10px solid transparent`,
-            }}
-          />
-        </div>
-
-        {/* Corner Notches - Desktop */}
-        <div className="hidden md:block">
-          <div
-            className="fixed top-[20px] left-[20px] w-0 h-0 z-52 pointer-events-none"
-            style={{
-              borderTop: `20px solid ${cornerNotchColor}`,
-              borderRight: `20px solid transparent`,
-            }}
-          />
-          <div
-            className="fixed top-[20px] right-[20px] w-0 h-0 z-52 pointer-events-none"
-            style={{
-              borderTop: `20px solid ${cornerNotchColor}`,
-              borderLeft: `20px solid transparent`,
-            }}
-          />
-          <div
-            className="fixed bottom-[20px] left-[20px] w-0 h-0 z-52 pointer-events-none"
-            style={{
-              borderBottom: `20px solid ${cornerNotchColor}`,
-              borderRight: `20px solid transparent`,
-            }}
-          />
-          <div
-            className="fixed bottom-[20px] right-[20px] w-0 h-0 z-52 pointer-events-none"
-            style={{
-              borderBottom: `20px solid ${cornerNotchColor}`,
-              borderLeft: `20px solid transparent`,
-            }}
-          />
-        </div>
+        {/* --- ADDED: Corner Notches --- */}
+        <div
+          className="fixed lg:top-5 sm:top-4 top-3 lg:left-5 sm:left-4 left-3 w-0 h-0 z-52 pointer-events-none"
+          style={{
+            borderTop: `${cornerNotchSize} solid ${cornerNotchColor}`,
+            borderRight: `${cornerNotchSize} solid transparent`,
+          }}
+        />
+        <div
+          className="fixed lg:top-5 sm:top-4 top-3 lg:right-5 sm:right-4 right-3 w-0 h-0 z-52 pointer-events-none"
+          style={{
+            borderTop: `${cornerNotchSize} solid ${cornerNotchColor}`,
+            borderLeft: `${cornerNotchSize} solid transparent`,
+          }}
+        />
+        <div
+          className="fixed lg:bottom-5 sm:bottom-4 bottom-3 lg:left-5 sm:left-4 left-3 w-0 h-0 z-52 pointer-events-none"
+          style={{
+            borderBottom: `${cornerNotchSize} solid ${cornerNotchColor}`,
+            borderRight: `${cornerNotchSize} solid transparent`,
+          }}
+        />
+        <div
+          className="fixed lg:bottom-5 sm:bottom-4 bottom-3 lg:right-5 sm:right-4 right-3 w-0 h-0 z-52 pointer-events-none"
+          style={{
+            borderBottom: `${cornerNotchSize} solid ${cornerNotchColor}`,
+            borderLeft: `${cornerNotchSize} solid transparent`,
+          }}
+        />
+        {/* --- End of Corner Notches --- */}
 
         {/* Notches */}
         <div className="pointer-events-auto">
@@ -321,7 +289,7 @@ const Border = ({
         </div>
 
         {/* Main Content */}
-        <div className="relative z-10 mobile-border-spacing">{children}</div>
+        <div className="relative z-10">{children}</div>
 
         {/* Sliding Menu */}
         <div className="pointer-events-auto">

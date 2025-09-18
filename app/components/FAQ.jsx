@@ -2,17 +2,8 @@
 
 import { useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { orbitron } from "../fonts";
-import {Poppins } from 'next/font/google'
-import {GridPlusBackground} from "./Grid";
-import localFont from 'next/font/local';
-
-const type12 = localFont({ src: '../fonts/T012Regular.woff2' });
-
-const poppins = Poppins({
-  subsets: ['latin'],
-  weight: ['400', '500', '600', '700'], // pick the weights you need
-})
+import { orbitron, poppins, t012 } from "../fonts";
+import { GridPlusBackground } from "./Grid";
 
 // Animation variants
 const containerVariants = {
@@ -21,16 +12,16 @@ const containerVariants = {
     opacity: 1,
     transition: {
       duration: 0.3,
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 };
 
 const titleVariants = {
-  hidden: { 
-    opacity: 0, 
+  hidden: {
+    opacity: 0,
     y: -30,
-    scale: 0.95 
+    scale: 0.95,
   },
   visible: {
     opacity: 1,
@@ -38,31 +29,31 @@ const titleVariants = {
     scale: 1,
     transition: {
       duration: 0.6,
-      ease: "easeOut"
-    }
-  }
+      ease: "easeOut",
+    },
+  },
 };
 
 const sectionVariants = {
-  hidden: { 
-    opacity: 0, 
-    y: 40 
+  hidden: {
+    opacity: 0,
+    y: 40,
   },
   visible: {
     opacity: 1,
     y: 0,
     transition: {
       duration: 0.5,
-      ease: "easeOut"
-    }
-  }
+      ease: "easeOut",
+    },
+  },
 };
 
 const faqItemVariants = {
-  hidden: { 
-    opacity: 0, 
+  hidden: {
+    opacity: 0,
     x: -20,
-    scale: 0.98
+    scale: 0.98,
   },
   visible: {
     opacity: 1,
@@ -70,16 +61,16 @@ const faqItemVariants = {
     scale: 1,
     transition: {
       duration: 0.4,
-      ease: "easeOut"
-    }
-  }
+      ease: "easeOut",
+    },
+  },
 };
 
 export default function FaqSection() {
   return (
     <section className="relative w-full bg-gradient-to-br from-slate-50 to-slate-100">
       <GridPlusBackground>
-        <motion.div 
+        <motion.div
           className="relative max-w-6xl w-full mx-auto px-6 z-10"
           variants={containerVariants}
           initial="hidden"
@@ -87,8 +78,8 @@ export default function FaqSection() {
           viewport={{ once: true, margin: "-100px" }}
         >
           {/* Title */}
-          <motion.h2 
-            className={`text-center text-5xl font-black tracking-widest text-black mb-12 ${type12.className}`}
+          <motion.h2
+            className={`text-center text-5xl font-black tracking-widest text-black mb-12 ${t012.className}`}
             variants={titleVariants}
           >
             FAQ
@@ -100,17 +91,14 @@ export default function FaqSection() {
             <div className="space-y-10">
               {/* General FAQs */}
               <motion.div variants={sectionVariants}>
-                <motion.h2 
+                <motion.h2
                   className={`text-center text-[28px] font-bold text-slate-700 mb-6 ${orbitron.className}`}
                   variants={faqItemVariants}
                 >
                   GENERAL FAQS
                 </motion.h2>
 
-                <motion.div 
-                  className="space-y-4"
-                  variants={containerVariants}
-                >
+                <motion.div className="space-y-4" variants={containerVariants}>
                   <FaqItem
                     question="What is a hackathon?"
                     answer="A hackathon is an event where participants work together in teams to build a project. Hackathons are a great way to learn new skills, meet new people, and build something cool."
@@ -136,17 +124,14 @@ export default function FaqSection() {
 
               {/* Hacking FAQs */}
               <motion.div variants={sectionVariants}>
-                <motion.h2 
+                <motion.h2
                   className={`text-center text-[28px] font-bold text-black mb-6 ${orbitron.className}`}
                   variants={faqItemVariants}
                 >
                   HACKING FAQS
                 </motion.h2>
 
-                <motion.div 
-                  className="space-y-4"
-                  variants={containerVariants}
-                >
+                <motion.div className="space-y-4" variants={containerVariants}>
                   <FaqItem
                     question="What should I bring?"
                     answer="Make sure to bring your laptop, charger and any other required tech you'll need for your hack. You will find it helpful to bring along key items you would bring to a sleepover: pillows, blanket, toothbrush/toothpaste, deodorant, earphones, etc."
@@ -167,17 +152,14 @@ export default function FaqSection() {
             <div className="space-y-10">
               {/* VinHack FAQs */}
               <motion.div variants={sectionVariants}>
-                <motion.h2 
+                <motion.h2
                   className={`text-center text-[28px] font-bold text-black mb-6 ${orbitron.className}`}
                   variants={faqItemVariants}
                 >
                   VINHACK FAQS
                 </motion.h2>
 
-                <motion.div 
-                  className="space-y-4"
-                  variants={containerVariants}
-                >
+                <motion.div className="space-y-4" variants={containerVariants}>
                   <FaqItem
                     question="What is the theme of VinHack?"
                     answer="The theme of this hackathon is Open Innovation. This theme is broad enough to allow you to build anything you want. You can build a website, an app, a game, a hardware project, or anything else you can think of. The only requirement is that it has to be a new project, and not submitted to any hackathon in the past."
@@ -203,17 +185,14 @@ export default function FaqSection() {
 
               {/* Sign Up FAQs */}
               <motion.div variants={sectionVariants}>
-                <motion.h2 
+                <motion.h2
                   className={`text-center text-[28px] font-bold text-black mb-6 ${orbitron.className}`}
                   variants={faqItemVariants}
                 >
                   SIGN UP FAQS
                 </motion.h2>
 
-                <motion.div 
-                  className="space-y-4"
-                  variants={containerVariants}
-                >
+                <motion.div className="space-y-4" variants={containerVariants}>
                   <FaqItem
                     question="Where can I register for VinHack?"
                     answer="You can register for VinHack on Foundance. You can click on the button on homepage to register. You can also register by clicking here."
@@ -249,19 +228,22 @@ function FaqItem({ question, answer }) {
   };
 
   return (
-    <motion.div 
+    <motion.div
       className="border border-gray-700 rounded-lg overflow-hidden"
       variants={faqItemVariants}
-      whileHover={{ 
+      whileHover={{
         scale: 1.02,
-        transition: { duration: 0.2 }
+        transition: { duration: 0.2 },
       }}
       whileTap={{ scale: 0.98 }}
     >
       <motion.button
         onClick={toggleOpen}
-        className={`w-full text-left ${poppins.className} cursor-pointer px-3 py-2 text-base font-medium faq-no-arrow focus:outline-none transition-colors duration-300 ${isOpen ? "bg-[#D5D1BE] text-black" : "bg-[#2B1E1E] text-white"
-          }`}
+        className={`w-full text-left ${
+          poppins.className
+        } cursor-pointer px-3 py-2 text-base font-medium faq-no-arrow focus:outline-none transition-colors duration-300 ${
+          isOpen ? "bg-[#D5D1BE] text-black" : "bg-[#2B1E1E] text-white"
+        }`}
         style={{ listStyle: "none" }}
         aria-expanded={isOpen}
         whileHover={{ backgroundColor: isOpen ? "#C8C4B1" : "#3A2A2A" }}
@@ -270,21 +252,20 @@ function FaqItem({ question, answer }) {
       </motion.button>
       <motion.div
         ref={contentRef}
-        className={`overflow-hidden ${isOpen
-            ? "bg-[#332015] text-white"
-            : "bg-[#f5f5f5] text-black"
-          }`}
+        className={`overflow-hidden ${
+          isOpen ? "bg-[#332015] text-white" : "bg-[#f5f5f5] text-black"
+        }`}
         initial={false}
         animate={{
           height: isOpen ? "auto" : 0,
-          opacity: isOpen ? 1 : 0
+          opacity: isOpen ? 1 : 0,
         }}
         transition={{
           duration: 0.3,
-          ease: "easeInOut"
+          ease: "easeInOut",
         }}
       >
-        <motion.div 
+        <motion.div
           className={`px-4 py-3 ${poppins.className} text-sm`}
           initial={{ y: -10 }}
           animate={{ y: isOpen ? 0 : -10 }}

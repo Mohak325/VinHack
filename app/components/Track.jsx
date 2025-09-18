@@ -2,13 +2,7 @@
 
 import React, { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
-
-// 1. Import your custom fonts directly into this file.
-//    (Ensure the path '../lib/fonts' is correct for your project structure)
-import { orbitron, nostromoLight, nostromoMedium, ruigslay } from '../fonts';
-import localFont from 'next/font/local';
-
-const type12 = localFont({ src: '../fonts/Type12.ttf' });
+import { t012, nostromoLight, nostromoMedium } from "../fonts";
 
 const tracksData = [
   {
@@ -113,7 +107,9 @@ const Tracks = () => {
           viewport={{ once: true }}
           className="text-center mb-16"
         >
-          <h2 className={`text-5xl font-black tracking-widest text-black ${type12.className}`}>
+          <h2
+            className={`text-5xl font-black tracking-widest text-black ${t012.className}`}
+          >
             TRACKS
           </h2>
         </motion.div>
@@ -208,8 +204,15 @@ const Tracks = () => {
         <div className="relative w-full h-full p-4 sm:p-8 md:p-12">
           <div className="relative w-full h-full z-10">
             {/* TRACKS title */}
-            <div className="absolute top-0 left-0 w-full pt-16 sm:pt-20 text-center z-20 pointer-events-none transition-opacity duration-300" style={{ opacity: titleOpacity }}>
-              <h2 className={`text-5xl sm:text-6xl lg:text-8xl font-black tracking-widest text-black ${type12.className}`}>TRACKS</h2>
+            <div
+              className="absolute top-0 left-0 w-full pt-16 sm:pt-20 text-center z-20 pointer-events-none transition-opacity duration-300"
+              style={{ opacity: titleOpacity }}
+            >
+              <h2
+                className={`text-5xl sm:text-6xl lg:text-8xl font-black tracking-widest text-black ${t012.className}`}
+              >
+                TRACKS
+              </h2>
             </div>
 
             {/* Animated circle */}
