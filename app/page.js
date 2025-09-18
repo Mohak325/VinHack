@@ -1,7 +1,7 @@
 
 "use client";
 
-import { useState, useRef, useEffect, useCallback } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useScroll } from "framer-motion";
 
 import LoadingScreen from "./components/loader/Loading";
@@ -80,9 +80,7 @@ export default function Home() {
   const [isLoaderPresent, setIsLoaderPresent] = useState(true);
 
   // This function is called by LoadingScreen when it's done
-  const handleLoadingComplete = useCallback(() => {
-    // 1. Mount the Hero and other main components immediately.
-    // They will render underneath the still-visible loading screen.
+  const handleLoadingComplete = () => {
     setIsHeroVisible(true);
     setTimeout(() => {
       setIsLoading(false);
@@ -93,12 +91,11 @@ export default function Home() {
     setTimeout(() => {
       setIsLoaderPresent(false);
     }, 1100); // 100ms delay + 1000ms animation duration
-  }, []);
+  };
 
   const assetPaths = [
-    "/assets/hero/bottom_left_hand.svg",
-    "/assets/hero/top_right_hand.svg",
-    //TODO: add all assets
+    "/assets/bottom_left_hand.svg",
+    "/assets/top_right_hand.svg",
   ];
 
   // Pass font class names to components that need them
