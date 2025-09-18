@@ -2,14 +2,9 @@ import React, { useState, useEffect, useRef } from 'react';
 import hackathonEvents from './timeline/data';
 import TimelineGrid from './timeline/TimelineGrid';
 import EventCard from './timeline/EventCard';
-import localFont from "next/font/local";
+import { t012 } from "../fonts";
 // Font configuration (simulating localFont)
-const type12 = localFont({
-  src: "../fonts/type12/Type12.woff2", // relative to this file
-  weight: "400",
-  style: "normal",
-  variable: "--font-type12",
-});
+const type12 = t012;
 
 const TimelineHeader = ({ isTimelineVisible }) => (
   <header className={`absolute top-0 left-0 right-0 z-20 flex flex-col sm:flex-row justify-between items-start bg-black/90 backdrop-blur-sm p-4 sm:p-6 lg:p-8 gap-4 transition-transform duration-500 ${

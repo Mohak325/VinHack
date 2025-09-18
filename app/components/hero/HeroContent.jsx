@@ -6,7 +6,7 @@ import { orbitron, nostromoMedium } from "../../fonts";
 
 const HeroContent = ({ isVisible, ruigslayClassName }) => {
   return (
-    <div className="relative w-full h-full flex flex-col justify-center items-center">
+    <div className="relative w-full h-full flex flex-col justify-center items-center overflow-hidden">
       {/* Sponsor presents text */}
       <div
         className={`flex items-center justify-center gap-x-[clamp(0.5rem,1.5vw,0.75rem)] text-[clamp(0.875rem,2.5vw,1.25rem)] mb-4 ${orbitron.className} text-black`}
@@ -41,10 +41,10 @@ const HeroContent = ({ isVisible, ruigslayClassName }) => {
 
       {/* Illustrations */}
       <div
-        className={`absolute -top-12 -right-8 w-96 h-96 md:w-128 md:h-128 z-40 pointer-events-none transition-all duration-1000 ${
+        className={`absolute -top-12 -right-8 size-96 md:size-128 z-40 pointer-events-none transition-all duration-1000 ${
           isVisible
-            ? "opacity-100 rotate-[-30deg] translate-x-10 -translate-y-3 md:rotate-0 md:translate-x-0 md:translate-y-0"
-            : "opacity-0 translate-x-16 -translate-y-4 rotate-12"
+            ? "opacity-100 rotate-[-30deg] translate-x-5 -translate-y-3 md:rotate-0 md:translate-x-0 md:translate-y-0"
+            : "opacity-0 translate-x-10 -translate-y-4 rotate-12"
         }`}
         style={{
           transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
@@ -59,10 +59,10 @@ const HeroContent = ({ isVisible, ruigslayClassName }) => {
       </div>
 
       <div
-        className={`absolute -bottom-12 -left-8 w-96 h-96 md:w-128 md:h-128 z-40 pointer-events-none transition-all duration-1000 ${
+        className={`absolute -bottom-12 -left-8 size-96 md:size-128 z-40 pointer-events-none transition-all duration-1000 ${
           isVisible
-            ? "opacity-100 rotate-[-30deg] -translate-x-10 translate-y-3 md:rotate-0 md:translate-x-0 md:translate-y-0"
-            : "opacity-0 -translate-x-16 translate-y-4 -rotate-12"
+            ? "opacity-100 rotate-[-30deg] -translate-x-5 translate-y-3 md:rotate-0 md:translate-x-0 md:translate-y-0"
+            : "opacity-0 -translate-x-10 translate-y-4 -rotate-12"
         }`}
         style={{
           transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",

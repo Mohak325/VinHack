@@ -34,14 +34,6 @@ export const ruigslay = localFont({
   variable: "--font-ruigslay",
 });
 
-
-export const type12 = localFont({
-  src: "./fonts/type12/Type12.woff2",
-  weight: "400",
-  style: "normal",
-  variable: "--font-type12",
-});
-
 export const gulimche = localFont({
   src: "../public/assets/fonts/gulimche/GulimChe.woff2",
   weight: "400",

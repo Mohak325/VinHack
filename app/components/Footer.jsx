@@ -1,19 +1,18 @@
 "use client";
-import React, { useState, useEffect, useRef } from 'react';
-import Image from 'next/image';
-import { Poppins } from 'next/font/google';
-import localFont from 'next/font/local';
+import React, { useState, useEffect, useRef } from "react";
+import Image from "next/image";
+import { Poppins } from "next/font/google";
 import GlowButton from "./GlowButton.jsx";
 import ScrambleText from "./ScrambleText.jsx";
-import { ruigslay, nostromoLight, nostromoMedium } from "../fonts";
+import { ruigslay, nostromoMedium } from "../fonts";
 import {
   FaInstagram,
-  FaTwitter,
   FaGithub,
   FaLinkedin,
   FaYoutube,
   FaFacebook,
 } from "react-icons/fa";
+import { FaXTwitter } from "react-icons/fa6";
 
 const poppins = Poppins({ subsets: ["latin"], weight: ["400", "600"] });
 
@@ -106,7 +105,9 @@ export default function Footer() {
               "polygon(0% 30px, 30px 0%, calc(100% - 30px) 0%, 100% 30px, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0% calc(100% - 30px))",
           }}
         >
-          <div className={footerVisible ? "animate-main-content w-full" : "w-full"}>
+          <div
+            className={footerVisible ? "animate-main-content w-full" : "w-full"}
+          >
             <main className="flex flex-col items-center justify-center text-center px-4 sm:px-6 py-20">
               <ScrambleText
                 key={footerVisible ? "visible" : "hidden"}
@@ -180,7 +181,7 @@ export default function Footer() {
                       rel="noopener noreferrer"
                       className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
                     >
-                      <FaTwitter />
+                      <FaXTwitter />
                     </a>
                     <a
                       href="https://github.com/vinnovateit"

@@ -47,8 +47,7 @@ function MainContent({ fontClassNames, isVisible }) {
   return (
     <Border {...fontClassNames}>
       <Hero {...fontClassNames} isVisible={isVisible} />
-      <div className="w-full h-[20vh] md:h-[30vh]" />
-
+      <Marquees />
       <GridPlusBackground>
         {/* Scroll container for flipping effect */}
         <div ref={containerRef}>
@@ -62,7 +61,6 @@ function MainContent({ fontClassNames, isVisible }) {
         <Tracks />
         {/* FAQ section */}
         <FaqSection />
-      </GridPlusBackground>
       {/* Remaining sections */}
       <>
         <Timeline/>
@@ -70,6 +68,7 @@ function MainContent({ fontClassNames, isVisible }) {
         <Rules />
         <Footer />
       </>
+      </GridPlusBackground>
     </Border>
   );
 }
