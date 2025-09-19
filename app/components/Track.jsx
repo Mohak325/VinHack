@@ -112,7 +112,7 @@ const Tracks = () => {
                                     <img 
                                         src={track.imageUrl} 
                                         alt={track.title} 
-                                        className="w-48 h-48 object-cover rounded-full border-4 border-black" 
+                                        className="w-48 h-48 object-contain rounded-full border-4 border-black" 
                                     />
                                 </div>
                                 <div className="p-6">
@@ -154,7 +154,7 @@ const Tracks = () => {
     const introOpacity = 1 - Math.min(1, progressTotal / introTransitionEnd);
     const currentImageIndex = Math.min(tracksData.length - 1, currentCardFloat);
     const currentImageUrl = tracksData[currentImageIndex]?.imageUrl;
-    const circleBgStyle = { backgroundImage: `url(${currentImageUrl})`, backgroundSize: "cover", backgroundPosition: "center" };
+    const circleBgStyle = { backgroundImage: `url(${currentImageUrl})`, backgroundSize: "contain", backgroundPosition: "center", backgroundColor : 'rgb(218,184,157)', backgroundRepeat: 'no-repeat'};
 
     return (
         <div>
@@ -173,7 +173,7 @@ const Tracks = () => {
                 <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
                     <div className="relative w-full h-full p-4 sm:p-8 md:p-12">
                         <div className="relative w-full h-full">
-                            <div className="absolute w-64 h-64 md:w-80 md:h-80 lg:w-96 lg:h-96 z-10" style={circleStyle}>
+                            <div className="absolute w-56 h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 z-10" style={circleStyle}>
                                 <div className="w-full h-full rounded-full border-4 border-black transition-all duration-300" style={circleBgStyle}></div>
                             </div>
                             <div className="absolute w-[42%] text-left pr-4" style={{ top: '50%', left: '75%', transform: 'translate(-160%, -50%)', opacity: introOpacity, pointerEvents: introOpacity > 0 ? 'auto' : 'none' }}>
