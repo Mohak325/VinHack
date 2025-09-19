@@ -67,7 +67,7 @@ const faqItemVariants = {
 
 export default function FaqSection() {
   return (
-    <section className="relative w-full">
+    <section id="faq" className="relative w-full">
       <motion.div
         className="relative max-w-6xl w-full mx-auto px-6 z-10"
         variants={containerVariants}

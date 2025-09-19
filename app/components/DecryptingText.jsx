@@ -53,7 +53,7 @@ const DecryptingText = ({ targetText, start, isComplete, className }) => {
   const textToRender = hasMounted ? displayText : "";
 
   return (
-    <div className={className}>
+    <div className={`${className} pointer-events-none`}>
       {textToRender || generateRandomText(targetText.length)}
     </div>
   );

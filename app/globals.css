@@ -4,15 +4,18 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
 
-html,
-body {
+html, body {
   overflow-x: hidden;
-  /* Allow vertical scrolling */
   overflow-y: auto;
+  scrollbar-width: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  background-color: black;
 }
 
-html, body {
-  scrollbar-width: none;
+html {
+  scroll-behavior: smooth;
 }
 
 html::-webkit-scrollbar,
