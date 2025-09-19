@@ -42,7 +42,7 @@ const SlidingMenu = () => {
     { name: "Who Are We?", href: "#who-are-we" },
     { name: "Tracks", href: "#tracks" },
     { name: "FAQ", href: "#faq" },
-    { name: "Code Of Conduct", href: "#coc" },
+    { name: "Guidelines", href: "#coc" },
     { name: "Rules", href: "#rules" },
     { name: "Register", href: "#register" },
   ];
@@ -83,7 +83,7 @@ const SlidingMenu = () => {
         </div>
 
         {/* Menu Items - Center on mobile, specific position on desktop */}
-        <div className="col-span-1 md:col-start-2 row-start-2 flex flex-col items-center justify-center space-y-3 md:space-y-4 h-full px-4">
+        <div className="col-span-1 md:col-start-2 row-start-2 flex flex-col items-center justify-center space-y-3 h-full px-4">
           {menuOptions.map((option, index) => (
             <a
               key={index}
@@ -98,7 +98,7 @@ const SlidingMenu = () => {
               onMouseLeave={() => setHoveredIndex(null)}
             >
               <motion.span
-                className={`${nostromoLight.className} text-xs md:text-sm lg:text-lg`}
+                className={`${nostromoLight.className} text-xs md:text-sm lg:text-md`}
                 animate={{
                   scale: hoveredIndex === index ? 0 : 1,
                   opacity: hoveredIndex === index ? 0 : 1,
@@ -124,7 +124,7 @@ const SlidingMenu = () => {
               )}
 
               <motion.span
-                className={`${nostromoLight.className} text-xs md:text-sm lg:text-lg`}
+                className={`${nostromoLight.className} text-xs md:text-sm lg:text-md`}
                 initial={{ scale: 0, opacity: 0 }}
                 animate={{
                   scale: hoveredIndex === index ? 1 : 0,

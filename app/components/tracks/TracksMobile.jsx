@@ -7,7 +7,7 @@ import { tracksData } from "./data";
 
 const TracksMobile = () => {
   return (
-    <div style={{ backgroundColor: "rgb(213,209,190)" }}>
+    <div>
       <div className="pt-16 pb-8 text-center">
         <h2
           className={`text-5xl font-black tracking-widest text-black ${t012.className}`}

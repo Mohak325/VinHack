@@ -71,12 +71,13 @@ const Sponsor = () => {
                         className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black bg-opacity-50"
                         onClick={() => setShowModal(false)}
                     >
-                        <motion.div
+                        <GridPlusBackground>
+                            <motion.div
                             initial={{ scale: 0.9, opacity: 0 }}
                             animate={{ scale: 1, opacity: 1 }}
                             exit={{ scale: 0.9, opacity: 0 }}
                             transition={{ duration: 0.3 }}
-                            className="bg-white rounded-lg max-w-4xl w-full max-h-[80vh] overflow-y-auto p-8 relative"
+                            className="rounded-lg max-w-4xl w-full max-h-[80vh] overflow-y-auto p-8 relative"
                             onClick={(e) => e.stopPropagation()}
                         >
                             <button
@@ -86,7 +87,7 @@ const Sponsor = () => {
                                 ×
                             </button>
                             
-                            <h2 className={`font-sans font-bold text-2xl lg:text-3xl mb-6 ${orbitron.className}`}>
+                            <h2 className={`text-orange-500 font-sans font-bold text-2xl lg:text-3xl mb-6 ${orbitron.className}`}>
                                 AI-Based Claims Image Assessment
                             </h2>
                             
@@ -116,6 +117,8 @@ const Sponsor = () => {
                                 </p>
                             </div>
                         </motion.div>
+                        </GridPlusBackground>
+                        
                     </motion.div>
                     </GridPlusBackground>
                     

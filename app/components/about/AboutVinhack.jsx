@@ -260,7 +260,7 @@ const AboutVinhack = ({ isFlipping }) => {
           <div className="h-full w-auto aspect-square max-w-full max-h-full relative">
             <CoinFlip
               frontImg="/assets/vinhack_pic.jpeg"
-              backImg="/assets/vinhack_logo_orange.svg"
+              backImg="/assets/VinHack_logo_orange.svg"
               isFlipping={isFlipping}
             />
             {/* Circle Border Overlay */}
@@ -280,7 +280,7 @@ const AboutVinhack = ({ isFlipping }) => {
 					className="absolute top-[85%] left-[5%] lg:w-4/5 xl:w-3/4"
 				>
 					<h1
-						className={`text-5xl md:text-4xl w-[90%] lg:text-7xl text-nowrap xl:text-7xl text-black font-normal leading-relaxed tracking-widest ${t012.className}`}
+						className={`text-4xl w-[90%] lg:text-7xl text-nowrap xl:text-7xl text-black font-normal leading-relaxed tracking-widest ${t012.className}`}
 					>
 						WHAT'S VINHACK ?
 					</h1>

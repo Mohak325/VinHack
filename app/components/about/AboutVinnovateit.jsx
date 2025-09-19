@@ -280,7 +280,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
 					className="absolute top-[85%] left-[5%] w-[90%] lg:w-4/5 xl:w-3/4"
 				>
 					<h1
-						className={`text-5xl md:text-4xl lg:text-7xl xl:text-7xl text-nowrap text-black font-normal leading-relaxed whitespace-nowrap tracking-widest ${t012.className}`}
+						className={`text-4xl lg:text-7xl xl:text-7xl text-nowrap text-black font-normal leading-relaxed whitespace-nowrap tracking-widest ${t012.className}`}
 					>
 						WHO ARE WE ?
 					</h1>
@@ -306,18 +306,21 @@ const AboutVinnovateit = ({ isFlipping }) => {
             md:w-1/3 md:h-[25%] 
             items-center justify-center gap-2 md:gap-4 lg:gap-6 xl:gap-10 p-0 overflow-hidden"
         >
-          <div
-            ref={newDotRef}
-            style={{ opacity: 0 }}
-            className={`text-center ${nostromoMedium.className}`}
-          >
-            <div
-              className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl text-black"
-              style={{ fontWeight: 700 }}
-            >
-              .02
-            </div>
-          </div>
+         <div
+  ref={newDotRef}
+  style={{ opacity: 0 }}
+  className={`absolute ${nostromoMedium.className}
+    bottom-[5%]   /* push it below the button */
+    right-[5%]    /* keep aligned to the right */
+    text-center`}
+>
+  <div
+    className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl text-black"
+    style={{ fontWeight: 700 }}
+  >
+    .02
+  </div>
+</div>
         </div>
       </div>
     </section>
