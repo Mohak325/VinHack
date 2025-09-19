@@ -1,7 +1,6 @@
 "use client";
 
 import { useState, useRef, useEffect } from "react";
-import { useScroll } from "framer-motion";
 
 import LoadingScreen from "./components/loader/Loading";
 import Hero from "./components/hero/Hero";
@@ -19,29 +18,42 @@ import Timeline from "./components/Timeline";
 import Marquee from "./components/Marquee";
 
 function MainContent({ fontClassNames, isVisible }) {
-	const [isFlipping, setIsFlipping] = useState(false);
-	const [isMounted, setIsMounted] = useState(false);
+  const [isFlipping, setIsFlipping] = useState(false);
+  const [isTimelineVisible, setIsTimelineVisible] = useState(false);
+  const timelineRef = useRef(null);
 
-	const containerRef = useRef(null);
-	const { scrollYProgress } = useScroll({
-		target: containerRef,
-		offset: ["start start", "end end"],
-	});
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsTimelineVisible(entry.isIntersecting);
+      },
+      {
+        // This creates a horizontal band across the middle of the screen
+        // The color will change when the timeline enters this band
+        rootMargin: "-40% 0px -40% 0px",
+        threshold: 0,
+      }
+    );
 
-	useEffect(() => {
-		setIsMounted(true);
-	}, []);
+    const currentRef = timelineRef.current;
+    if (currentRef) {
+      observer.observe(currentRef);
+    }
 
-	useEffect(() => {
-		if (!isMounted) return;
-	}, [])
+    return () => {
+      if (currentRef) {
+        observer.unobserve(currentRef);
+      }
+    };
+  }, []);
+
   return (
-    <Border {...fontClassNames}>
+    <Border {...fontClassNames} isTimelineVisible={isTimelineVisible}>
       <Hero {...fontClassNames} />
       <Marquee />
 
       <GridPlusBackground>
-        <div ref={containerRef}>
+        <div>
           <div className="w-full h-[15vh] md:h-[25vh]" />
           <AboutVinnhack isFlipping={isFlipping} />
           <div className="w-full h-[15vh] md:h-[25vh]" />
@@ -49,37 +61,35 @@ function MainContent({ fontClassNames, isVisible }) {
           <div className="w-full h-[15vh] md:h-[25vh]" />
         </div>
         <Tracks />
-        <Timeline />
+        <div ref={timelineRef}>
+          <Timeline />
+        </div>
         <FaqSection />
-      <>
-        
-        <Coc />
-        <Rules />
-        <Footer />
-      </>
+        <>
+          <Coc />
+          <Rules />
+          <Footer />
+        </>
       </GridPlusBackground>
     </Border>
   );
 }
 
 export default function Home() {
-	const [isLoading, setIsLoading] = useState(true);
-	const [isHeroVisible, setIsHeroVisible] = useState(false);
-	const [isLoaderPresent, setIsLoaderPresent] = useState(true);
+  const [isLoading, setIsLoading] = useState(true);
+  const [isHeroVisible, setIsHeroVisible] = useState(false);
+  const [isLoaderPresent, setIsLoaderPresent] = useState(true);
 
-	// This function is called by LoadingScreen when it's done
-	const handleLoadingComplete = () => {
-		setIsHeroVisible(true);
-		setTimeout(() => {
-			setIsLoading(false);
-		}, 100);
+  const handleLoadingComplete = () => {
+    setIsHeroVisible(true);
+    setTimeout(() => {
+      setIsLoading(false);
+    }, 100);
 
-		// 3. After the fade-out animation (1000ms) is complete, remove the
-		// loading screen from the DOM.
-		setTimeout(() => {
-			setIsLoaderPresent(false);
-		}, 1100); // 100ms delay + 1000ms animation duration
-	};
+    setTimeout(() => {
+      setIsLoaderPresent(false);
+    }, 1100);
+  };
 
   const assetPaths = [
     "/assets/hero/bottom_left_hand.svg",
@@ -107,29 +117,29 @@ export default function Home() {
     "/assets/tracks/track6.png",
   ];
 
-	// Pass font class names to components that need them
-	const fontClassNames = {
-		ruigslayClassName: ruigslay.className,
-		nostromoLightClassName: nostromoLight.className,
-		nostromoMediumClassName: nostromoMedium.className,
-	};
+  const fontClassNames = {
+    ruigslayClassName: ruigslay.className,
+    nostromoLightClassName: nostromoLight.className,
+    nostromoMediumClassName: nostromoMedium.className,
+  };
 
-	return (
-		<main className="relative bg-[#D5D1BE] text-white">
-			{isLoaderPresent && (
-				<LoadingScreen
-					onCompletion={handleLoadingComplete}
-					assetPaths={assetPaths}
-					isFadingOut={!isLoading}
-				/>
-			)}
+  return (
+    <main className="relative bg-[#D5D1BE] text-white">
+      {isLoaderPresent && (
+        <LoadingScreen
+          onCompletion={handleLoadingComplete}
+          assetPaths={assetPaths}
+          isFadingOut={!isLoading}
+        />
+      )}
 
-			{isHeroVisible && (
-				<MainContent
-					fontClassNames={fontClassNames}
-					isVisible={isHeroVisible}
-				/>
-			)}
-		</main>
-	);
+      {isHeroVisible && (
+        <MainContent
+          fontClassNames={fontClassNames}
+          isVisible={isHeroVisible}
+        />
+      )}
+    </main>
+  );
 }
+
