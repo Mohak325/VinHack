@@ -11,6 +11,11 @@ html, body {
   -webkit-user-select: none;
   -ms-user-select: none;
   user-select: none;
+  background-color: black;
+}
+
+html {
+  scroll-behavior: smooth;
 }
 
 html::-webkit-scrollbar,
