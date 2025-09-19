@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import React from "react";
 import { motion } from "framer-motion";
 import GlowButton from "../GlowButton.jsx";
@@ -10,12 +11,19 @@ const HeroContent = ({ ruigslayClassName, handVariants, leftHandVariants }) => {
     <div className="relative w-full h-full flex flex-col justify-center items-center">
       {/* Sponsor presents text */}
       <div
-        className={`flex items-center justify-center gap-x-[clamp(0.5rem,1.5vw,0.75rem)] text-[clamp(0.875rem,2.5vw,1.25rem)] mb-4 ${orbitron.className} text-black`}
+        className={`flex items-center justify-center 
+              gap-x-[clamp(0.6rem,1.8vw,0.9rem)] 
+              text-[clamp(1.05rem,3vw,1.5rem)] 
+              mb-4 ${orbitron.className} text-black`}
       >
-        <img
+        <Image
           src="/assets/hero/sponsor.png"
           alt="Sponsor"
-          className="h-[clamp(0.75rem,2.5vw,1.25rem)]"
+          width={0}
+          height={0}
+          sizes="100vw"
+          className="w-[clamp(150px,22vw,235px)] h-auto"
+          style={{ height: "auto" }}
         />
         <span>presents</span>
       </div>
@@ -45,9 +53,11 @@ const HeroContent = ({ ruigslayClassName, handVariants, leftHandVariants }) => {
         className="absolute -top-12 -right-8 w-96 h-96 md:w-128 md:h-128 z-40 pointer-events-none"
         variants={handVariants}
       >
-        <img
+        <Image
           src="/assets/hero/top_right_hand.svg"
           alt="Illustration of a hand reaching down"
+          width={729}
+          height={525}
           className="w-full h-full"
         />
       </motion.div>
@@ -56,9 +66,11 @@ const HeroContent = ({ ruigslayClassName, handVariants, leftHandVariants }) => {
         className="absolute -bottom-12 -left-8 w-96 h-96 md:w-128 md:h-128 z-40 pointer-events-none overflow-clip"
         variants={leftHandVariants}
       >
-        <img
+        <Image
           src="/assets/hero/bottom_left_hand.svg"
           alt="Illustration of a hand reaching up"
+          width={734}
+          height={381}
           className="w-full h-full"
         />
       </motion.div>
