@@ -16,6 +16,7 @@ export const useBorder = () => useContext(BorderContext);
 const Notch = ({ type, fontClassName, className, isVisible }) => {
   const { soundOn, setSoundOn, isMenuOpen, setIsMenuOpen, coords } =
     useContext(BorderContext);
+
   const onToggle = (toggleType) => {
     if (toggleType === "sound") {
       setSoundOn((s) => !s);
@@ -135,6 +136,7 @@ const Notch = ({ type, fontClassName, className, isVisible }) => {
             >
               <button
                 onClick={() => onToggle("sound")}
+                data-sound-click
                 className={`flex pt-1 items-center justify-center w-full h-full hover:opacity-80 ${textClasses}`}
                 style={textColor}
                 type="button"
@@ -169,6 +171,8 @@ const Notch = ({ type, fontClassName, className, isVisible }) => {
         >
           <button
             onClick={() => onToggle("menu")}
+            data-sound-click
+            data-sound-hover
             className={`${textClasses} flex flex-col items-center justify-center h-full w-full hover:opacity-70`}
             style={textColor}
           >
@@ -211,6 +215,8 @@ const Notch = ({ type, fontClassName, className, isVisible }) => {
         >
           <a
             href="#discover"
+            data-sound-hover
+            data-sound-click
             className={`${textClasses} hover:opacity-70 transition-opacity duration-500 ${
               isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
             }`}
@@ -235,25 +241,143 @@ const Border = ({
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDiscoverVisible, setIsDiscoverVisible] = useState(true);
 
+  const backgroundMusic = useRef(null);
+  const hoverSound = useRef(null);
+  const clickSound = useRef(null);
+  const fadeInProcess = useRef(null);
+  const fadeOutProcess = useRef(null);
+
+  const backgroundMusicURL = "/assets/audio/background_music.mp3";
+  const hoverSoundURL =
+    "https://www.dropbox.com/scl/fi/llh0lafsdd02k4a89lg6m/hover-effect-dich.mp3?rlkey=xf5rn79uo9klimtnq1otxenvj&raw=1";
+  const clickSoundURL =
+    "https://www.dropbox.com/scl/fi/47gqhe6ilmfughe60u5m9/click-1-effect-dich.mp3?rlkey=czmv0eztgfi33zzbtsm3b6z7h&raw=1";
+
+  const backgroundMusicVolume = 0.5;
+  const hoverSoundVolume = 0.75;
+  const clickSoundVolume = 0.75;
+
+  const stopFadeProcesses = () => {
+    if (fadeInProcess.current) clearInterval(fadeInProcess.current);
+    if (fadeOutProcess.current) clearInterval(fadeOutProcess.current);
+    fadeInProcess.current = null;
+    fadeOutProcess.current = null;
+  };
+
   useEffect(() => {
-    const handleScroll = () => {
-      // Fade out after scrolling past 90% of the viewport height
-      if (window.scrollY > window.innerHeight * 0.9) {
-        setIsDiscoverVisible(false);
-      } else {
-        setIsDiscoverVisible(true);
+    backgroundMusic.current = new Audio(backgroundMusicURL);
+    hoverSound.current = new Audio(hoverSoundURL);
+    clickSound.current = new Audio(clickSoundURL);
+    backgroundMusic.current.loop = true;
+
+    return () => {
+      stopFadeProcesses();
+      backgroundMusic.current?.pause();
+    };
+  }, []);
+
+  useEffect(() => {
+    const duration = 250;
+    const steps = 25;
+    const interval = duration / steps;
+    const stepSize = 1 / steps;
+
+    stopFadeProcesses();
+
+    if (soundOn) {
+      if (backgroundMusic.current.paused) {
+        backgroundMusic.current
+          .play()
+          .catch((e) => console.error("Audio play failed:", e));
+      }
+
+      let currentStep = 0;
+      fadeInProcess.current = setInterval(() => {
+        currentStep++;
+        const progress = Math.min(currentStep * stepSize, 1);
+        if (backgroundMusic.current)
+          backgroundMusic.current.volume = progress * backgroundMusicVolume;
+        if (hoverSound.current)
+          hoverSound.current.volume = progress * hoverSoundVolume;
+        if (clickSound.current)
+          clickSound.current.volume = progress * clickSoundVolume;
+        if (progress >= 1) {
+          clearInterval(fadeInProcess.current);
+          fadeInProcess.current = null;
+        }
+      }, interval);
+    } else {
+      if (!backgroundMusic.current) return;
+      let currentVolume = backgroundMusic.current.volume;
+      const stepAmount = currentVolume / steps;
+
+      fadeOutProcess.current = setInterval(() => {
+        currentVolume -= stepAmount;
+        const progress = Math.max(currentVolume, 0);
+        if (backgroundMusic.current) backgroundMusic.current.volume = progress;
+        if (hoverSound.current) hoverSound.current.volume = progress;
+        if (clickSound.current) clickSound.current.volume = progress;
+        if (progress <= 0) {
+          clearInterval(fadeOutProcess.current);
+          fadeOutProcess.current = null;
+          backgroundMusic.current.pause();
+        }
+      }, interval);
+    }
+  }, [soundOn]);
+
+  const soundOnRef = useRef(soundOn);
+  useEffect(() => {
+    soundOnRef.current = soundOn;
+  }, [soundOn]);
+
+  useEffect(() => {
+    const handleMouseOver = (event) => {
+      if (!soundOnRef.current) return;
+      const target = event.target.closest("[data-sound-hover]");
+      if (target && !target.hasAttribute("data-sound-playing")) {
+        target.setAttribute("data-sound-playing", "true");
+        hoverSound.current.currentTime = 0;
+        hoverSound.current.play();
+        target.addEventListener(
+          "mouseleave",
+          () => {
+            target.removeAttribute("data-sound-playing");
+          },
+          { once: true }
+        );
       }
     };
 
-    window.addEventListener("scroll", handleScroll);
+    const handleMouseClick = (event) => {
+      if (!soundOnRef.current) return;
+      if (event.target.closest("[data-sound-click]")) {
+        clickSound.current.currentTime = 0;
+        clickSound.current.play();
+      }
+    };
 
+    document.addEventListener("mouseover", handleMouseOver);
+    document.addEventListener("click", handleMouseClick);
+
+    return () => {
+      document.removeEventListener("mouseover", handleMouseOver);
+      document.removeEventListener("click", handleMouseClick);
+    };
+  }, []);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsDiscoverVisible(window.scrollY < window.innerHeight * 0.9);
+    };
+    window.addEventListener("scroll", handleScroll);
     return () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
   const cornerNotchColor = "#000000";
-  const cornerNotchSize = "12px"; // Matched to border size
+  const cornerNotchSize = "12px";
 
   return (
     <BorderContext.Provider
@@ -263,13 +387,11 @@ const Border = ({
         onMouseMove={(e) => setCoords({ x: e.clientX, y: e.clientY })}
         className="relative w-full h-full"
       >
-        {/* Borders */}
         <div className="fixed top-0 left-0 w-full lg:h-5 sm:h-4 h-3 bg-black z-52 pointer-events-none"></div>
         <div className="fixed bottom-0 left-0 w-full lg:h-5 sm:h-4 h-3 bg-black z-52 pointer-events-none"></div>
         <div className="fixed top-0 left-0 lg:w-5 sm:w-4 w-3 h-full bg-black z-52 pointer-events-none"></div>
         <div className="fixed top-0 right-0 lg:w-5 sm:w-4 w-3 h-full bg-black z-52 pointer-events-none"></div>
 
-        {/* --- ADDED: Corner Notches --- */}
         <div
           className="fixed lg:top-5 sm:top-4 top-3 lg:left-5 sm:left-4 left-3 w-0 h-0 z-52 pointer-events-none"
           style={{
@@ -298,9 +420,7 @@ const Border = ({
             borderLeft: `${cornerNotchSize} solid transparent`,
           }}
         />
-        {/* --- End of Corner Notches --- */}
 
-        {/* Notches */}
         <div className="pointer-events-auto">
           <Notch type="sound" fontClassName={nostromoLightClassName} />
           <Notch type="menu" fontClassName={nostromoLightClassName} />
@@ -312,10 +432,8 @@ const Border = ({
           />
         </div>
 
-        {/* Main Content */}
         <div className="relative z-10">{children}</div>
 
-        {/* Sliding Menu */}
         <div className="pointer-events-auto">
           <SlidingMenu />
         </div>
