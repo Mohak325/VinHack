@@ -228,9 +228,10 @@ const AboutVinhack = ({ isFlipping }) => {
 					ref={paragraphRef}
 					style={{ opacity: 0 }}
 					className="absolute 
-            top-[65%] left-[5%] w-[90%]
-            md:top-[25%] md:left-[5%] md:w-[50%] lg:w-[45%] xl:w-[42%] 
-            md:bottom-[10%] flex flex-col justify-between overflow-visible"
+        top-[65%] left-[5%] w-[90%]
+        md:top-[25%] md:left-[5%] md:w-[50%] lg:w-[45%] xl:w-[42%] 
+        md:bottom-[10%] flex flex-col justify-between overflow-visible
+        z-10" // <-- Add this for lower stacking
 				>
 					<div
 						className="text-[#EA8244] text-justify text-sm sm:text-base lg:text-lg xl:text-xl 2xl:text-2xl p-2 sm:p-3 lg:p-4 xl:p-5 leading-tight sm:leading-relaxed lg:leading-relaxed xl:leading-loose overflow-hidden"
@@ -250,9 +251,10 @@ const AboutVinhack = ({ isFlipping }) => {
 				<div
 					ref={circleRef}
 					className="absolute 
-            top-[25%] left-[50%] -translate-x-1/2 w-[70%] h-[35%]
-            md:top-[20%] md:w-[50%] md:h-[60%]
-            flex justify-center items-center overflow-visible"
+        top-[25%] left-[50%] -translate-x-1/2 w-[70%] h-[35%]
+        md:top-[20%] md:w-[50%] md:h-[60%]
+        flex justify-center items-center overflow-visible
+        z-20" // <-- Add this for higher stacking
 				>
 					<div className="h-full w-auto aspect-square max-w-full max-h-full relative">
 						<CoinFlip
@@ -266,7 +268,7 @@ const AboutVinhack = ({ isFlipping }) => {
 							alt="Circle Border"
 							fill
 							className="absolute top-0 left-0 w-full h-full pointer-events-none scale-110"
-							style={{ zIndex: 10 }}
+							style={{ zIndex: 19 }}
 						/>
 					</div>
 				</div>
@@ -277,7 +279,7 @@ const AboutVinhack = ({ isFlipping }) => {
 					className="absolute top-[85%] left-[5%] w-full lg:w-4/5 xl:w-3/4"
 				>
 					<h1
-						className={`text-2xl md:text-3xl lg:text-4xl xl:text-5xl text-black font-normal leading-relaxed whitespace-nowrap tracking-widest ${t012.className}`}
+						className={`text-5xl md:text-4xl lg:text-7xl xl:text-7xl text-black font-normal leading-relaxed whitespace-nowrap tracking-widest ${t012.className}`}
 					>
 						WHAT'S VINHACK ?
 					</h1>

@@ -1,100 +1,86 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
+import { orbitron, ruigslay } from "../fonts";
 
-const MarqueeText = () => (
-  <div className="flex items-center gap-10">
-    <span className="relative">IMAGINE</span>
-    <span className="relative top-1/2 transform size-6 border-4 border-black rotate-45 bg-orange-400"></span>
-    <span className="relative">BUILD</span>
-    <span className="relative top-1/2 transform size-6 border-4 border-black rotate-45 bg-orange-400"></span>
-    <span className="">TRANSFORM</span>
-    <span className="relative top-1/2 transform size-6 border-4 border-black rotate-45 bg-orange-400"></span>
-  </div>
-);
+const NewMarquee = () => {
+  const topMarqueeRef = useRef(null);
+  const bottomMarqueeRef = useRef(null);
 
-const Marquee = () => {
+  useEffect(() => {
+    const topMarquee = topMarqueeRef.current;
+    const bottomMarquee = bottomMarqueeRef.current;
+
+    if (!topMarquee || !bottomMarquee) return;
+
+    // Clone content for seamless loop
+    const topContent = topMarquee.innerHTML;
+    const bottomContent = bottomMarquee.innerHTML;
+
+    topMarquee.innerHTML = topContent + topContent;
+    bottomMarquee.innerHTML = bottomContent + bottomContent;
+
+    let topPosition = 0;
+    let bottomPosition = 0;
+    const speed = 1; // pixels per frame
+
+    const animate = () => {
+      // Top marquee - scroll left
+      topPosition -= speed;
+      if (topPosition <= -topMarquee.scrollWidth / 2) {
+        topPosition = 0;
+      }
+      topMarquee.style.transform = `translateX(${topPosition}px)`;
+
+      // Bottom marquee - scroll right
+      bottomPosition += speed;
+      if (bottomPosition >= bottomMarquee.scrollWidth / 2) {
+        bottomPosition = 0;
+      }
+      bottomMarquee.style.transform = `translateX(-${
+        bottomMarquee.scrollWidth / 2 - bottomPosition
+      }px)`;
+
+      requestAnimationFrame(animate);
+    };
+
+    animate();
+  }, []);
+
   return (
-    <div className="relative w-full h-24 top-15 z-50 overflow-hidden flex items-center justify-center">
-      {/* Diagonal marquee container */}
-      <div className="absolute w-[150vw] h-32 bg-orange-500 overflow-hidden border-4 border-black">
-        {/* Inner geometric border pattern */}
-        <div className="absolute inset-2 border-2 border-black opacity-40"></div>
-
-        {/* Top and bottom accent lines */}
-        <div className="absolute top-1 left-4 right-4 h-0.5 bg-black opacity-60"></div>
-        <div className="absolute bottom-1 left-4 right-4 h-0.5 bg-black opacity-60"></div>
-
-        {/* Shine effect overlay */}
-        <div
-          className="absolute inset-0 opacity-30"
-          style={{
-            background:
-              "linear-gradient(90deg, rgba(255,255,255,0.1) 0%, transparent 50%, rgba(255,255,255,0.1) 100%)",
-            animation: "shine 3s ease-in-out infinite",
-          }}
-        ></div>
-
-        {/* Moving text with geometric separation */}
-        <div
-          className="absolute top-1/2 left-0 transform -translate-y-1/2 whitespace-nowrap text-black font-black text-4xl flex items-center"
-          style={{
-            animation: "scroll 72s linear infinite",
-            textShadow:
-              "3px 3px 0px rgba(0,0,0,0.1), -1px -1px 0px rgba(255,255,255,0.3)",
-            fontFamily: "Orbitron, monospace",
-            letterSpacing: "0.25em",
-          }}
-        >
-          <div className="flex items-center pr-10">
-            <MarqueeText />
-          </div>
-          <div className="flex items-center pr-10">
-            <MarqueeText />
-          </div>
-          <div className="flex items-center pr-10">
-            <MarqueeText />
-          </div>
-          <div className="flex items-center pr-10">
-            <MarqueeText />
-          </div>
-          <div className="flex items-center pr-10">
-            <MarqueeText />
-          </div>
-          <div className="flex items-center pr-10">
-            <MarqueeText />
-          </div>
-          <div className="flex items-center pr-10">
-            <MarqueeText />
-          </div>
-          <div className="flex items-center pr-10">
-            <MarqueeText />
-          </div>
+    <div className="relative w-full h-32 sm:h-48 md:h-56 lg:h-64 overflow-hidden z-10 mb-[-1rem] sm:mb-[-1.5rem] md:mb-[-2rem] lg:mb-[-4rem]">
+      {/* Top marquee (In it to VinIT) */}
+      <div className="absolute w-[120%] h-16 sm:h-20 md:h-28 lg:h-32 bg-[#EF6400] transform -rotate-3 top-2 sm:top-3 md:top-4 lg:top-4 -left-10 flex items-center overflow-hidden z-20">
+        <div ref={topMarqueeRef} className="flex whitespace-nowrap">
+          <p
+            className={`${orbitron.className} text-3xl sm:text-4xl md:text-6xl lg:text-7xl font-black text-[#D5D1BE] inline-flex items-center`}
+          >
+            In it to VinIT{" "}
+            <span className="mx-2 sm:mx-3 md:mx-4">&middot;</span>
+            In it to VinIT{" "}
+            <span className="mx-2 sm:mx-3 md:mx-4">&middot;</span>
+            In it to VinIT{" "}
+            <span className="mx-2 sm:mx-3 md:mx-4">&middot;</span>
+            In it to VinIT{" "}
+            <span className="mx-2 sm:mx-3 md:mx-4">&middot;</span>
+          </p>
         </div>
       </div>
 
-      <style jsx>{`
-        @import url("https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap");
-
-        @keyframes scroll {
-          0% {
-            transform: translateX(0%);
-          }
-          100% {
-            transform: translateX(-50%);
-          }
-        }
-
-        @keyframes shine {
-          0%,
-          100% {
-            opacity: 0.2;
-          }
-          50% {
-            opacity: 0.6;
-          }
-        }
-      `}</style>
+      {/* Bottom marquee (VinHack) */}
+      <div className="absolute w-[120%] h-12 sm:h-16 md:h-20 lg:h-24 bg-[#D5D1BE] transform rotate-2 bottom-2 sm:bottom-3 md:bottom-4 lg:bottom-4 -left-10 flex items-center overflow-hidden z-20">
+        <div ref={bottomMarqueeRef} className="flex whitespace-nowrap">
+          <p
+            className={`${ruigslay.className} text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-[#EF6400] inline-flex items-center`}
+          >
+            VinHack <span className="mx-2 sm:mx-3 md:mx-4">&middot;</span>
+            VinHack <span className="mx-2 sm:mx-3 md:mx-4">&middot;</span>
+            VinHack <span className="mx-2 sm:mx-3 md:mx-4">&middot;</span>
+            VinHack <span className="mx-2 sm:mx-3 md:mx-4">&middot;</span>
+            VinHack <span className="mx-2 sm:mx-3 md:mx-4">&middot;</span>
+          </p>
+        </div>
+      </div>
     </div>
   );
 };
 
-export default Marquee;
+export default NewMarquee;
