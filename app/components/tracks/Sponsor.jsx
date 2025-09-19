@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GridPlusBackground } from './Grid';
-import GlowButton from './GlowButton';
-import { orbitron, t012, nostromoLight, nostromoMedium} from "../fonts";
+import { GridPlusBackground } from '../Grid';
+import GlowButton from '../GlowButton';
+import { orbitron, t012, nostromoLight, nostromoMedium} from "../../fonts";
 
 const Sponsor = () => {
     const [showModal, setShowModal] = useState(false);
