@@ -254,7 +254,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
 				<div
 					ref={circleRef}
 					className="absolute 
-        top-[25%] left-[50%] -translate-x-1/2 w-[70%] h-[35%]
+        top-[25%] left-[15%] md:left-[40%] w-[70%] h-[35%]
         md:top-[20%] md:w-[50%] md:h-[60%]
         flex justify-center items-center overflow-visible
         z-20"
