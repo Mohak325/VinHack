@@ -164,7 +164,7 @@ const Notch = ({ type, fontClassName, className }) => {
     case "menu":
       return (
         <div
-          className={`${baseClasses} top-1/2 right-3 w-5 md:w-7 -translate-y-1/2 w-7 h-72 bg-black`}
+          className={`${baseClasses} top-1/2 right-3 w-5 md:w-7 -translate-y-1/2 h-72 bg-black`}
           style={{ clipPath: "polygon(0 15%, 100% 0, 100% 100%, 0 85%)" }}
         >
           <button

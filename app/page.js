@@ -41,7 +41,6 @@ function MainContent({ fontClassNames, isVisible }) {
       <Marquee />
 
       <GridPlusBackground>
-        {/* Scroll container for flipping effect */}
         <div ref={containerRef}>
           <div className="w-full h-[15vh] md:h-[25vh]" />
           <AboutVinnhack isFlipping={isFlipping} />
@@ -49,13 +48,11 @@ function MainContent({ fontClassNames, isVisible }) {
           <AboutVinnovateit isFlipping={isFlipping} />
           <div className="w-full h-[15vh] md:h-[25vh]" />
         </div>
-        {/* Tracks section */}
         <Tracks />
-        {/* FAQ section */}
-        <FaqSection />
-      {/* Remaining sections */}
-      <>
         <Timeline />
+        <FaqSection />
+      <>
+        
         <Coc />
         <Rules />
         <Footer />
