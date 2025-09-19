@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import Image from 'next/image';
 import { motion, AnimatePresence } from 'framer-motion';
-import { GridPlusBackground } from './Grid';
-import GlowButton from './GlowButton';
-import { orbitron, t012, nostromoLight, nostromoMedium} from "../fonts";
+import { GridPlusBackground } from '../Grid';
+import GlowButton from '../GlowButton';
+import { orbitron, t012, nostromoLight, nostromoMedium} from "../../fonts";
 
 const Sponsor = () => {
     const [showModal, setShowModal] = useState(false);
@@ -18,7 +18,7 @@ const Sponsor = () => {
                 className="w-full"
             >
                 <div className="h-full w-full">
-                    <GridPlusBackground>
+
                         <div className="h-full w-full flex flex-col items-center justify-center p-8 font-mono text-[#333]">
                             <div className="w-full max-w-6xl">
                                 <header className="text-center mb-8">
@@ -56,7 +56,7 @@ const Sponsor = () => {
                                 </main>
                             </div>
                         </div>
-                    </GridPlusBackground>
+    
                 </div>
             </motion.div>
 
