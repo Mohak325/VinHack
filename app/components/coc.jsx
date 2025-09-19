@@ -28,7 +28,7 @@ const Coc = () => {
           wordSpacing: "0.5em",
         }}
       >
-        CODE OF CONDUCT
+        GUIDELINES
       </motion.h1>
 
       {/* Rules list */}

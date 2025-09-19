@@ -8,7 +8,7 @@ import React, {
   useRef,
 } from "react";
 import SlidingMenu from "./SlidingMenu";
-
+import { ChevronDown } from "lucide-react";
 const BorderContext = createContext();
 
 export const useBorder = () => useContext(BorderContext);
@@ -230,32 +230,33 @@ const Notch = ({
           </div>
         </div>
       );
-    case "discover":
-      return (
-        <div
-          className={`${baseClasses} lg:bottom-4 sm:bottom-3 bottom-2 left-1/2 -translate-x-1/2 h-5 md:h-7 w-40 rounded-t-xl`}
-          style={{
-            ...notchStyle,
-            clipPath: "polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)",
-          }}
-        >
-          <a
-            href="#discover"
-            data-sound-hover
-            data-sound-click
-            className={`${textClasses} hover:opacity-70 transition-opacity duration-500 ${
-              isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
-            }`}
-            style={textStyle}
-          >
-            DISCOVER
-          </a>
+
+case "discover":
+  return (
+    <div
+      className={`${baseClasses} lg:bottom-4 sm:bottom-3 bottom-2 left-1/2 -translate-x-1/2 h-8 md:h-10 w-40 rounded-t-xl flex flex-col items-center justify-center`}
+      style={{
+        ...notchStyle,
+        clipPath: "polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)",
+      }}
+    >
+      <a
+        href="#whats-vinhack"
+        data-sound-hover
+        data-sound-click
+        className={`${textClasses} hover:opacity-70 transition-opacity duration-500 ${
+          isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+        } flex flex-col items-center`}
+        style={textStyle}
+      >
+        <span>DISCOVER</span>
+        <div className="flex flex-col items-center">
+          <ChevronDown className="w-4 h-4" strokeWidth={1.5} />
         </div>
-      );
-    default:
-      return null;
-  }
-};
+      </a>
+    </div>
+  );default: return null; } };
+
 
 const Border = ({
   children,

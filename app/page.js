@@ -13,7 +13,7 @@ import Rules from "./components/rules.jsx";
 import Border from "./components/Border";
 import { ruigslay, nostromoLight, nostromoMedium } from "./fonts";
 import AboutVinnovateit from "./components/about/AboutVinnovateit";
-import AboutVinnhack from "./components/about/AboutVinhack";
+import AboutVinhack from "./components/about/AboutVinhack";
 import { GridPlusBackground } from "./components/Grid";
 import Timeline from "./components/Timeline";
 import Marquee from "./components/Marquee";
@@ -69,7 +69,7 @@ function MainContent({ fontClassNames, isVisible }) {
 				{/* Scroll container for flipping effect */}
 				<div ref={containerRef} className="overflow-x-hidden">
 					<div className="h-[15vh] md:h-[25vh]" />
-					<AboutVinnhack isFlipping={isFlipping} />
+					<AboutVinhack isFlipping={isFlipping} />
 					<div className="h-[15vh] md:h-[25vh]" />
 					<AboutVinnovateit isFlipping={isFlipping} />
 					<div className="h-[15vh] md:h-[25vh]" />
@@ -115,7 +115,6 @@ export default function Home() {
 		"/assets/logo.png",
 		"/assets/p1.svg",
 		"/assets/vinhack_pic.jpeg",
-		"/assets/vinhack23.jpg",
 		"/assets/vinnovateit.jpg",
 		"/assets/whiteLogoViit.svg",
 		"/assets/X.svg",
