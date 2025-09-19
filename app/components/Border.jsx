@@ -204,16 +204,16 @@ const Notch = ({ type, fontClassName, className, isVisible }) => {
     case "discover":
       return (
         <div
-          className={`${baseClasses} lg:bottom-4 sm:bottom-3 bottom-2 left-1/2 -translate-x-1/2 h-5 md:h-7 w-40 bg-black rounded-t-xl transition-opacity duration-500 ${
-            isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
-          }`}
+          className={`${baseClasses} lg:bottom-4 sm:bottom-3 bottom-2 left-1/2 -translate-x-1/2 h-5 md:h-7 w-40 bg-black rounded-t-xl`}
           style={{
             clipPath: "polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)",
           }}
         >
           <a
-            href="#whats-vinhack"
-            className={`${textClasses} hover:opacity-70`}
+            href="#discover"
+            className={`${textClasses} hover:opacity-70 transition-opacity duration-500 ${
+              isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+            }`}
             style={textColor}
           >
             DISCOVER
