@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import { motion } from "framer-motion";
 import { useBorder } from "./Border";
 import DecryptingText from "./DecryptingText";
 
@@ -10,8 +11,9 @@ const SlidingMenu = () => {
   const { isMenuOpen, setIsMenuOpen } = useBorder();
   const menuRef = useRef(null);
   const [animatingIndex, setAnimatingIndex] = useState(null);
+  const [hoveredIndex, setHoveredIndex] = useState(null);
 
-  const handleMouseEnter = (index) => {
+  const handleMouseEnterDecrypt = (index) => {
     setAnimatingIndex(index);
     setTimeout(() => {
       setAnimatingIndex(null);
@@ -89,19 +91,29 @@ const SlidingMenu = () => {
               className="text-[#F5B37F] hover:text-white transition-colors flex items-center w-full justify-center md:justify-start"
               style={{ fontSize: "clamp(1rem, 4vw, 2rem)" }}
               onClick={handleClose}
-              onMouseEnter={() => handleMouseEnter(index)}
+              onMouseEnter={() => {
+                handleMouseEnterDecrypt(index);
+                setHoveredIndex(index);
+              }}
+              onMouseLeave={() => setHoveredIndex(null)}
             >
-              <span
+              <motion.span
                 className={`${nostromoLight.className} text-xs md:text-sm lg:text-lg`}
+                animate={{
+                  scale: hoveredIndex === index ? 0 : 1,
+                  opacity: hoveredIndex === index ? 0 : 1,
+                }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
               >
                 {String(index + 1).padStart(2, "0")}.
-              </span>
+              </motion.span>
+
               {animatingIndex === index ? (
                 <DecryptingText
                   targetText={option.name}
                   start={true}
                   isComplete={false}
-                  className={`${nostromoMedium.className} mx-2 md:mx-4`}
+                  className={`${nostromoMedium.className} mx-2 md:mx-4 pointer-events-none`}
                 />
               ) : (
                 <span
@@ -110,11 +122,18 @@ const SlidingMenu = () => {
                   {option.name}
                 </span>
               )}
-              <span
+
+              <motion.span
                 className={`${nostromoLight.className} text-xs md:text-sm lg:text-lg`}
+                initial={{ scale: 0, opacity: 0 }}
+                animate={{
+                  scale: hoveredIndex === index ? 1 : 0,
+                  opacity: hoveredIndex === index ? 1 : 0,
+                }}
+                transition={{ duration: 0.2, ease: "easeOut" }}
               >
                 .{String(index + 1).padStart(2, "0")}
-              </span>
+              </motion.span>
             </a>
           ))}
         </div>
