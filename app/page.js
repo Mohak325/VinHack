@@ -43,17 +43,18 @@ function MainContent({ fontClassNames, isVisible }) {
 	}, [scrollYProgress, isMounted]);
 
 	return (
-		<Border {...fontClassNames}>
+		// <Border {...fontClassNames}>
+		<>
 			<Hero {...fontClassNames} isVisible={isVisible} />
 			<Marquees />
 			<GridPlusBackground>
 				{/* Scroll container for flipping effect */}
-				<div ref={containerRef}>
-					<div className="w-full h-[15vh] md:h-[25vh]" />
+				<div ref={containerRef} className="overflow-x-hidden">
+					<div className="h-[15vh] md:h-[25vh]" />
 					<AboutVinnhack isFlipping={isFlipping} />
-					<div className="w-full h-[15vh] md:h-[25vh]" />
+					<div className="h-[15vh] md:h-[25vh]" />
 					<AboutVinnovateit isFlipping={isFlipping} />
-					<div className="w-full h-[15vh] md:h-[25vh]" />
+					<div className="h-[15vh] md:h-[25vh]" />
 				</div>
 
 				{/* Tracks section */}
@@ -68,7 +69,8 @@ function MainContent({ fontClassNames, isVisible }) {
 					<Footer />
 				</>
 			</GridPlusBackground>
-		</Border>
+			</>
+		// </Border>
 	);
 }
 

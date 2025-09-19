@@ -276,10 +276,10 @@ const AboutVinhack = ({ isFlipping }) => {
 				{/* Heading (Moves & Scales) */}
 				<div
 					ref={headingRef}
-					className="absolute top-[85%] left-[5%] w-full lg:w-4/5 xl:w-3/4"
+					className="absolute top-[85%] left-[5%] lg:w-4/5 xl:w-3/4"
 				>
 					<h1
-						className={`text-5xl md:text-4xl lg:text-7xl xl:text-7xl text-black font-normal leading-relaxed whitespace-nowrap tracking-widest ${t012.className}`}
+						className={`text-5xl md:text-4xl w-[90%] lg:text-7xl text-nowrap xl:text-7xl text-black font-normal leading-relaxed tracking-widest ${t012.className}`}
 					>
 						WHAT'S VINHACK ?
 					</h1>
