@@ -1,7 +1,8 @@
-// app/api/external-participants/route.ts
-import {NextResponse } from 'next/server';
+import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
+import { getServerSession } from 'next-auth';
+import { authOptions } from '../auth/[...nextauth]/route';
 
 const prisma = new PrismaClient();
 
@@ -18,10 +19,19 @@ const externalParticipantSchema = z.object({
 
 export async function POST(request) {
   try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+    }
+
     const body = await request.json();
     
     // Validate input data
     const validatedData = externalParticipantSchema.parse(body);
+    
+    // Bind participant to the authenticated user
+    const user = await prisma.user.findUnique({ where: { email: session.user.email } })
+    const userId = user?.id ?? null
     
     // Check if participant with same phone already exists
     const existingParticipant = await prisma.externalParticipant.findFirst({
@@ -50,6 +60,7 @@ export async function POST(request) {
         branch: validatedData.branch,
         city: validatedData.city,
         teamId: validatedData.teamId || null,
+        userId: userId,
       },
       include: {
         team: true, // Include team data if assigned
@@ -87,6 +98,11 @@ export async function POST(request) {
 
 export async function GET(request) {
   try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user?.email) {
+      return NextResponse.json({ error: 'Not authenticated' }, { status: 401 })
+    }
+
     const { searchParams } = new URL(request.url);
     const page = parseInt(searchParams.get('page') || '1');
     const limit = parseInt(searchParams.get('limit') || '10');

@@ -6,6 +6,7 @@ import {
   ruigslay,
   gulimche,
 } from "./fonts";
+import AuthProvider from "./components/AuthProvider";
 
 
 export const metadata = {
@@ -22,7 +23,9 @@ export default function RootLayout({ children }) {
         className={`overflow-x-hidden ${orbitron.variable} ${nostromoLight.variable} ${nostromoMedium.variable} ${ruigslay.variable} ${gulimche.variable} font-sans`}
 
       >
-        {children}
+        <AuthProvider>
+          {children}
+        </AuthProvider>
       </body>
     </html>
   );

@@ -1,4 +1,6 @@
 import prisma from "@/lib/prisma";
+import { getServerSession } from "next-auth";
+import { authOptions } from "../auth/[...nextauth]/route";
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -77,6 +79,12 @@ export default async function handler(req, res) {
 // For App Router (app/api/vit-students/route.js)
 export async function POST(request) {
   try {
+    const session = await getServerSession(authOptions)
+
+    if (!session?.user?.email) {
+      return Response.json({ error: 'Not authenticated' }, { status: 401 })
+    }
+
     const { name, regNo, year, phone, accommodation, hostelType, block, room } = await request.json()
 
     // Validate required fields
@@ -109,6 +117,10 @@ export async function POST(request) {
       }
     }
 
+    // Bind to current authenticated user
+    const currentUser = await prisma.user.findUnique({ where: { email: session.user.email } })
+    const userId = currentUser?.id || null
+
     // Create the student record
     const student = await prisma.vITStudent.create({
       data: {
@@ -120,6 +132,7 @@ export async function POST(request) {
         hostelType: accommodation === 'hostel' ? hostelType : null,
         block: accommodation === 'hostel' ? block : null,
         room: accommodation === 'hostel' ? room : null,
+        userId: userId,
       },
     })
 

@@ -3,6 +3,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useBorder } from "./Border";
 import DecryptingText from "./DecryptingText";
+import UserButton from "./UserButton";
 
 import { orbitron, nostromoMedium, nostromoLight, gulimche } from "../fonts";
 
@@ -60,12 +61,15 @@ const SlidingMenu = () => {
               project: New Era of VinnovateIT
             </p>
           </div>
-          <button
-            onClick={handleClose}
-            className={`${nostromoLight.className} text-[#F5B37F] text-sm hover:text-white`}
-          >
-            CLOSE
-          </button>
+          <div className="flex items-center gap-3">
+            <UserButton />
+            <button
+              onClick={handleClose}
+              className={`${nostromoLight.className} text-[#F5B37F] text-sm hover:text-white`}
+            >
+              CLOSE
+            </button>
+          </div>
         </div>
 
         {/* Desktop Top Right Project Info */}
@@ -127,6 +131,11 @@ const SlidingMenu = () => {
               ©2014-2025
             </p>
           </div>
+        </div>
+
+        {/* Desktop Bottom Right User Controls */}
+        <div className="col-start-3 row-start-3 px-10 py-8 hidden md:flex justify-end items-end">
+          <UserButton />
         </div>
 
         {/* Mobile Footer */}
