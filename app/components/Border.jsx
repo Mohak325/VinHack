@@ -13,7 +13,7 @@ const BorderContext = createContext();
 
 export const useBorder = () => useContext(BorderContext);
 
-const Notch = ({ type, fontClassName, className }) => {
+const Notch = ({ type, fontClassName, className, isVisible }) => {
   const { soundOn, setSoundOn, isMenuOpen, setIsMenuOpen, coords } =
     useContext(BorderContext);
   const onToggle = (toggleType) => {
@@ -204,7 +204,9 @@ const Notch = ({ type, fontClassName, className }) => {
     case "discover":
       return (
         <div
-          className={`${baseClasses} lg:bottom-4 sm:bottom-3 bottom-2 left-1/2 -translate-x-1/2 h-5 md:h-7 w-40 bg-black rounded-t-xl`}
+          className={`${baseClasses} lg:bottom-4 sm:bottom-3 bottom-2 left-1/2 -translate-x-1/2 h-5 md:h-7 w-40 bg-black rounded-t-xl transition-opacity duration-500 ${
+            isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
+          }`}
           style={{
             clipPath: "polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)",
           }}
@@ -231,6 +233,24 @@ const Border = ({
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [soundOn, setSoundOn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [isDiscoverVisible, setIsDiscoverVisible] = useState(true);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      // Fade out after scrolling past 90% of the viewport height
+      if (window.scrollY > window.innerHeight * 0.9) {
+        setIsDiscoverVisible(false);
+      } else {
+        setIsDiscoverVisible(true);
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
 
   const cornerNotchColor = "#000000";
   const cornerNotchSize = "12px"; // Matched to border size
@@ -285,7 +305,11 @@ const Border = ({
           <Notch type="sound" fontClassName={nostromoLightClassName} />
           <Notch type="menu" fontClassName={nostromoLightClassName} />
           <Notch type="coords" fontClassName={nostromoLightClassName} />
-          <Notch type="discover" fontClassName={nostromoLightClassName} />
+          <Notch
+            type="discover"
+            fontClassName={nostromoLightClassName}
+            isVisible={isDiscoverVisible}
+          />
         </div>
 
         {/* Main Content */}
