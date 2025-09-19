@@ -18,7 +18,7 @@ const Sponsor = () => {
                 className="w-full"
             >
                 <div className="h-full w-full">
-                    <GridPlusBackground>
+
                         <div className="h-full w-full flex flex-col items-center justify-center p-8 font-mono text-[#333]">
                             <div className="w-full max-w-6xl">
                                 <header className="text-center mb-8">
@@ -56,7 +56,7 @@ const Sponsor = () => {
                                 </main>
                             </div>
                         </div>
-                    </GridPlusBackground>
+    
                 </div>
             </motion.div>
 

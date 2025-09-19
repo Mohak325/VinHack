@@ -43,7 +43,6 @@ const tracksData = [
         description: 'Finance has been reinvented many times, from coins to credit cards. Now it\'s your turn. Finovate calls on you to reimagine how money flows in the age of AI and blockchain. Create decentralized systems or investment engines that outthink humans. Build the tools that will define the next era of financial innovation.',
         imageUrl: '/assets/tracks/track6.png',
     }
-
 ];
 
 const Tracks = () => {
@@ -51,8 +50,10 @@ const Tracks = () => {
     const [isMobile, setIsMobile] = useState(false);
     const containerRef = useRef(null);
 
-    const finalAnimationTarget =
-        (tracksData.length - 1 + 0.15) / tracksData.length;
+    // KEY FIX 1: Corrected the animation target calculation.
+    // Removed the "+ 0.15" to ensure the animation maps perfectly to the scroll height.
+    const finalAnimationTarget = (tracksData.length - 1) / tracksData.length;
+
     const containerHeightVh =
         100 + (tracksData.length - 1) * 100 * finalAnimationTarget;
 
@@ -67,23 +68,41 @@ const Tracks = () => {
     }, []);
 
     useEffect(() => {
+        if (isMobile) return;
+
         const handleScroll = () => {
             if (!containerRef.current) return;
+
             const { top, height } = containerRef.current.getBoundingClientRect();
             const scrollableHeight = height - window.innerHeight;
             
+            if (scrollableHeight <= 0) return;
+
             const progress = Math.max(0, Math.min(1, -top / scrollableHeight));
-            
             const animationProgress = progress * finalAnimationTarget;
             setScrollProgress(animationProgress);
         };
 
-        if (!isMobile) {
-            window.addEventListener("scroll", handleScroll, { passive: true });
-            return () => {
-                window.removeEventListener("scroll", handleScroll);
-            };
-        }
+        let ticking = false;
+        const scrollHandler = () => {
+            if (!ticking) {
+                window.requestAnimationFrame(() => {
+                    handleScroll();
+                    ticking = false;
+                });
+                ticking = true;
+            }
+        };
+
+        // KEY FIX 2: Call handler once on mount to set the initial state correctly.
+        // This prevents the animation from "jumping" on the first scroll.
+        handleScroll(); 
+
+        window.addEventListener("scroll", scrollHandler, { passive: true });
+        
+        return () => {
+            window.removeEventListener("scroll", scrollHandler);
+        };
     }, [finalAnimationTarget, isMobile]);
 
     // Mobile View
@@ -108,11 +127,11 @@ const Tracks = () => {
                                 className="rounded-lg shadow-lg overflow-hidden border-4 border-black"
                                 style={{ backgroundColor: '#D5D1BE' }}
                             >
-                                <div className="aspect-square w-full overflow-hidden p-6 flex items-center justify-center">
+                                <div className="aspect-square w-full p-6 flex items-center justify-center">
                                     <img 
                                         src={track.imageUrl} 
                                         alt={track.title} 
-                                        className="w-48 h-48 object-contain rounded-full border-4 border-black" 
+                                        className="w-48 h-48 object-contain overflow-hidden rounded-full border-4 border-black" 
                                     />
                                 </div>
                                 <div className="p-6">
@@ -159,7 +178,7 @@ const Tracks = () => {
     return (
         <div>
             {/* The heading is now a simple element that will scroll away */}
-            <div className="pt-16 sm:pt-20 text-center" style={{ backgroundColor: 'rgb(213,209,190)' }}>
+            <div className="pt-16 sm:pt-20 text-center">
                 <h2 className={`text-5xl sm:text-6xl lg:text-8xl font-black tracking-widest text-black ${t012.className}`}>TRACKS</h2>
             </div>
 
@@ -170,7 +189,7 @@ const Tracks = () => {
                 className="relative w-full"
                 style={{ height: `${containerHeightVh}vh` }}
             >
-                <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-hidden">
+                <div className="sticky top-0 h-screen w-full flex items-center justify-center overflow-x-hidden">
                     <div className="relative w-full h-full p-4 sm:p-8 md:p-12">
                         <div className="relative w-full h-full">
                             <div className="absolute w-56 h-56 md:w-72 md:h-72 lg:w-80 lg:h-80 z-10" style={circleStyle}>
@@ -178,7 +197,7 @@ const Tracks = () => {
                             </div>
                             <div className="absolute w-[42%] text-left pr-4" style={{ top: '50%', left: '75%', transform: 'translate(-160%, -50%)', opacity: introOpacity, pointerEvents: introOpacity > 0 ? 'auto' : 'none' }}>
                                 <p className={`font-bold text-black text-4xl lg:text-6xl xl:text-7xl ${nostromoMedium.className}`}>{firstCard.id}</p>
-                                <p className={`text-black/70 mt-2 text-base lg:text-xl xl:text-2xl ${nostromoLight.className}`}>{firstCard.title}</p>
+                                <p className={`text-black/70 mt-2 text-base lg:text-xl xl:text-2xl ${nostromoMedium.className}`}>{firstCard.title}</p>
                                 <p className={`leading-relaxed text-black/60 mt-4 text-sm lg:text-base xl:text-lg ${nostromoLight.className}`}>{firstCard.description}<a href="#" className="font-bold text-black/70 hover:text-black transition-colors duration-300 ml-1">View More</a></p>
                             </div>
                             <div className="relative w-full h-full">
@@ -195,7 +214,7 @@ const Tracks = () => {
                                     return (
                                         <div key={track.id} className={`absolute w-[42%] h-full flex flex-col justify-center ${textAlign} ${contentAlign} ${position} ${padding} ${firstCardMargin}`} style={combinedStyle}>
                                             <p className={`font-bold text-black text-4xl lg:text-6xl xl:text-7xl ${nostromoMedium.className}`}>{track.id}</p>
-                                            <p className={`text-black/70 mt-2 text-base lg:text-xl xl:text-2xl ${nostromoLight.className}`}>{track.title}</p>
+                                            <p className={`text-black/70 mt-2 text-base lg:text-xl xl:text-2xl ${nostromoMedium.className}`}>{track.title}</p>
                                             <p className={`leading-relaxed text-black/60 mt-4 text-sm lg:text-base xl:text-lg ${nostromoLight.className}`}>{track.description}</p>
                                         </div>
                                     );
