@@ -5,7 +5,7 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CoinFlip from "../CoinFlip";
-import { orbitron, nostromoLight, nostromoMedium } from "../../fonts";
+import { orbitron, nostromoLight, nostromoMedium, t012 } from "../../fonts";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -65,7 +65,7 @@ const AboutVinhack = ({ isFlipping }) => {
             circleRef.current,
             {
               // diagonal rightward (positive x), slight upward for depth
-              x: "45%",
+              x: "35%",
               y: "-15%",
               scale: 0.75,
               duration: 1,
@@ -185,7 +185,7 @@ const AboutVinhack = ({ isFlipping }) => {
             {Array.from({ length: 5 }).map((_, i) => (
               <Image
                 key={i}
-                src="/X.svg"
+                src="/assets/X.svg"
                 alt={`X ${i}`}
                 width={14}
                 height={14}
@@ -197,7 +197,7 @@ const AboutVinhack = ({ isFlipping }) => {
           <div className="flex justify-center">
             <Image
               className="w-2/3 sm:w-full"
-              src="/p1.svg"
+              src="/assets/p1.svg"
               alt="P1 Graphic"
               width={180}
               height={180}
@@ -229,9 +229,10 @@ const AboutVinhack = ({ isFlipping }) => {
           ref={paragraphRef}
           style={{ opacity: 0 }}
           className="absolute 
-            top-[65%] left-[5%] w-[90%]
-            md:top-[25%] md:left-[5%] md:w-[50%] lg:w-[45%] xl:w-[42%] 
-            md:bottom-[10%] flex flex-col justify-between overflow-visible"
+        top-[65%] left-[5%] w-[90%]
+        md:top-[25%] md:left-[5%] md:w-[50%] lg:w-[45%] xl:w-[42%] 
+        md:bottom-[10%] flex flex-col justify-between overflow-visible
+        z-10" // <-- Add this for lower stacking
         >
           <div
             className="text-[#EA8244] text-justify text-sm sm:text-base lg:text-lg xl:text-xl 2xl:text-2xl p-2 sm:p-3 lg:p-4 xl:p-5 leading-tight sm:leading-relaxed lg:leading-relaxed xl:leading-loose overflow-hidden"
@@ -251,23 +252,24 @@ const AboutVinhack = ({ isFlipping }) => {
         <div
           ref={circleRef}
           className="absolute 
-            top-[25%] left-[50%] -translate-x-1/2 w-[70%] h-[35%]
-            md:top-[20%] md:w-[50%] md:h-[60%]
-            flex justify-center items-center overflow-visible"
+        top-[25%] left-[50%] -translate-x-1/2 w-[70%] h-[35%]
+        md:top-[20%] md:w-[50%] md:h-[60%]
+        flex justify-center items-center overflow-visible
+        z-20" // <-- Add this for higher stacking
         >
           <div className="h-full w-auto aspect-square max-w-full max-h-full relative">
             <CoinFlip
               frontImg="/assets/vinhack_pic.jpeg"
-              backImg="/VinHack_logo.png"
+              backImg="/assets/vinhack_logo_orange.svg"
               isFlipping={isFlipping}
             />
             {/* Circle Border Overlay */}
             <Image
-              src="/circle_border.svg"
+              src="/assets/circle_border.svg"
               alt="Circle Border"
               fill
               className="absolute top-0 left-0 w-full h-full pointer-events-none scale-110"
-              style={{ zIndex: 10 }}
+              style={{ zIndex: 19 }}
             />
           </div>
         </div>
@@ -275,15 +277,13 @@ const AboutVinhack = ({ isFlipping }) => {
         {/* Heading (Moves & Scales) */}
         <div
           ref={headingRef}
-          className="absolute top-[85%] left-[5%] w-2/3 lg:w-3/5 xl:w-1/2 overflow-hidden"
+          className="absolute top-[85%] left-[5%] w-full lg:w-4/5 xl:w-3/4"
         >
-          <Image
-            src="/vinhack_text.svg"
-            alt="Vinhack Text"
-            width={400}
-            height={100}
-            className="w-full h-auto object-contain max-w-full max-h-full"
-          />
+          <h1
+            className={`text-5xl md:text-4xl lg:text-7xl xl:text-7xl text-black font-normal leading-relaxed whitespace-nowrap tracking-widest ${t012.className}`}
+          >
+            WHAT'S VINHACK ?
+          </h1>
         </div>
 
         {/* --- STATIC ELEMENTS --- */}

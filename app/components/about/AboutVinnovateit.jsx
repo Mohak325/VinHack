@@ -5,7 +5,8 @@ import { useRef, useEffect } from "react";
 import { gsap } from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import CoinFlip from "../CoinFlip";
-import { orbitron, nostromoLight, nostromoMedium } from "../../fonts";
+import GlowButton from "../GlowButton";
+import { orbitron, nostromoLight, nostromoMedium, t012 } from "../../fonts";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -56,7 +57,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
         tl.to(
           headingRef.current,
           {
-            y: "-75vh", // moved higher for better positioning
+            y: "-75vh",
             duration: 1,
           },
           0
@@ -64,8 +65,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
           .to(
             circleRef.current,
             {
-              // diagonal rightward (positive x), slight upward for depth
-              x: "45%",
+              x: "35%",
               y: "-15%",
               scale: 0.75,
               duration: 1,
@@ -92,9 +92,9 @@ const AboutVinnovateit = ({ isFlipping }) => {
         };
       });
 
-      // MOBILE timeline (< 768px) - much gentler movement and no clipping
+      // MOBILE timeline (< 768px)
       mm.add("(max-width: 767px)", () => {
-        const scrollLen = window.innerHeight * 1.5; // shorter on mobile
+        const scrollLen = window.innerHeight * 1.5;
         const stickyEl = targetRef.current.querySelector(".sticky-container");
 
         const tl = gsap.timeline({
@@ -117,13 +117,12 @@ const AboutVinnovateit = ({ isFlipping }) => {
             staticDotRef.current,
           ],
           { opacity: 0 }
-        ); // hidden on mobile anyway
+        );
 
-        tl.to(headingRef.current, { y: "-28vh", duration: 1 }, 0) // smaller upward movement
+        tl.to(headingRef.current, { y: "-28vh", duration: 1 }, 0)
           .to(
             circleRef.current,
             {
-              // keep coin mostly centered on mobile — only slight upward motion and small scale
               x: "0%",
               y: "-10%",
               scale: 0.88,
@@ -142,7 +141,6 @@ const AboutVinnovateit = ({ isFlipping }) => {
         };
       });
 
-      // Refresh on resize to keep ScrollTrigger calculations accurate
       const handleResize = () => {
         ScrollTrigger.refresh();
       };
@@ -150,7 +148,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
 
       return () => {
         window.removeEventListener("resize", handleResize);
-        mm.revert(); // revert matchMedia registrations and ScrollTriggers created by it
+        mm.revert();
       };
     }, targetRef);
 
@@ -158,26 +156,21 @@ const AboutVinnovateit = ({ isFlipping }) => {
   }, [isFlipping]);
 
   return (
-    // The main scrollable container
     <section
       id="who-are-we"
       ref={targetRef}
-      className="relative h-[250vh] md:h-[300vh] lg:h-[400vh]"
+      className="relative h-[320vh] md:h-[300vh] lg:h-[400vh]"
     >
-      {/* The sticky container that holds all content */}
-      {/* NOTE: changed overflow-hidden -> overflow-visible so animations don't get clipped */}
       <div className="sticky-container sticky top-0 h-screen w-full overflow-visible">
-        {/* --- ANIMATED ELEMENTS --- */}
-
-        {/* Left Column (Fades Out) */}
+        {/* Left Column */}
         <div
           ref={sideColumnsLeftRef}
           className={`absolute flex flex-col justify-between 
-    w-[40%] sm:w-[30%] md:w-[22%] 
-    h-[60%] sm:h-[70%] 
-    px-[4%] sm:px-[2%] pt-[2%] 
-    text-xs sm:text-sm md:text-base 
-    overflow-hidden ${orbitron.className}`}
+            w-[40%] sm:w-[30%] md:w-[22%] 
+            h-[60%] sm:h-[70%] 
+            px-[4%] sm:px-[2%] pt-[2%] 
+            text-xs sm:text-sm md:text-base 
+            overflow-hidden ${orbitron.className}`}
         >
           <div className="text-black">STYLE = UTF - 1</div>
           <div className="text-black">ENERGY-PULSE: VIBRANT ORANGE</div>
@@ -185,7 +178,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
             {Array.from({ length: 5 }).map((_, i) => (
               <Image
                 key={i}
-                src="/X.svg"
+                src="/assets/X.svg"
                 alt={`X ${i}`}
                 width={14}
                 height={14}
@@ -197,7 +190,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
           <div className="flex justify-center">
             <Image
               className="w-2/3 sm:w-full"
-              src="/p1.svg"
+              src="/assets/p1.svg"
               alt="P1 Graphic"
               width={180}
               height={180}
@@ -205,14 +198,14 @@ const AboutVinnovateit = ({ isFlipping }) => {
           </div>
         </div>
 
-        {/* Right Column (Fades Out) */}
+        {/* Right Column */}
         <div
           ref={sideColumnsRightRef}
           className={`absolute right-0 top-0 flex flex-col justify-between 
-    p-[4%] sm:p-[2.5%] 
-    w-[40%] sm:w-[30%] md:w-[22%] 
-    h-[60%] sm:h-[75%] 
-    text-start overflow-hidden ${nostromoLight.className}`}
+            p-[4%] sm:p-[2.5%] 
+            w-[40%] sm:w-[30%] md:w-[22%] 
+            h-[60%] sm:h-[75%] 
+            text-start overflow-hidden ${nostromoLight.className}`}
         >
           <div
             className="text-lg sm:text-2xl md:text-3xl text-black"
@@ -224,14 +217,15 @@ const AboutVinnovateit = ({ isFlipping }) => {
           </div>
         </div>
 
-        {/* Text Content - Different positioning for mobile vs desktop */}
+        {/* Text Content */}
         <div
           ref={paragraphRef}
           style={{ opacity: 0 }}
           className="absolute 
-            top-[65%] left-[5%] w-[90%]
-            md:top-[25%] md:left-[5%] md:w-[50%] lg:w-[45%] xl:w-[42%] 
-            md:bottom-[10%] flex flex-col justify-between overflow-visible"
+        top-[65%] left-[5%] w-[90%]
+        md:top-[25%] md:left-[5%] md:w-[50%] lg:w-[45%] xl:w-[42%] 
+        md:bottom-[10%] flex flex-col justify-between overflow-visible
+        z-10"
         >
           <div
             className="text-[#EA8244] text-justify text-sm sm:text-base lg:text-lg xl:text-xl 2xl:text-2xl p-2 sm:p-3 lg:p-4 xl:p-5 leading-tight sm:leading-relaxed lg:leading-relaxed xl:leading-loose overflow-hidden"
@@ -247,58 +241,54 @@ const AboutVinnovateit = ({ isFlipping }) => {
             href="https://vinnovateit.com"
             target="_blank"
             rel="noopener noreferrer"
-            className="mt-3 lg:mt-4 xl:mt-5 self-start group"
+            className="mt-3 lg:mt-4 xl:mt-5 self-start inline-block"
           >
-            <Image
-              src="/click_for_website.svg"
-              alt="Learn More About Vinnovateit"
-              width={250}
-              height={40}
-              className="lg:w-[300px] lg:h-[50px] xl:w-[350px] xl:h-[60px] group-hover:scale-95 transition-transform duration-150"
-            />
+            <GlowButton className={`${nostromoMedium.className}`}>
+              <span className="text-[clamp(0.875rem,2vw,1rem)] leading-none">
+                VISIT OUR WEBSITE
+              </span>
+            </GlowButton>
           </a>
         </div>
 
-        {/* Circle (Moves & Scales) - Centered initially across all screens */}
+        {/* Circle (Coin) */}
         <div
           ref={circleRef}
           className="absolute 
-            top-[25%] left-[50%] -translate-x-1/2 w-[70%] h-[35%]
-            md:top-[20%] md:w-[50%] md:h-[60%]
-            flex justify-center items-center overflow-visible"
+        top-[25%] left-[50%] -translate-x-1/2 w-[70%] h-[35%]
+        md:top-[20%] md:w-[50%] md:h-[60%]
+        flex justify-center items-center overflow-visible
+        z-20"
         >
           <div className="h-full w-auto aspect-square max-w-full max-h-full relative">
             <CoinFlip
-              frontImg="/vinnovateit.jpg"
-              backImg="/whiteLogoViit.svg"
+              frontImg="/assets/vinnovateit.jpg"
+              backImg="/assets/whiteLogoViit.svg"
               isFlipping={isFlipping}
             />
-            {/* Circle Border Overlay */}
             <Image
-              src="/circle_border.svg"
+              src="/assets/circle_border.svg"
               alt="Circle Border"
               fill
               className="absolute top-0 left-0 w-full h-full pointer-events-none scale-110"
-              style={{ zIndex: 10 }}
+              style={{ zIndex: 19 }}
             />
           </div>
         </div>
 
-        {/* Heading (Moves & Scales) */}
+        {/* Heading */}
         <div
           ref={headingRef}
-          className="absolute top-[85%] left-[5%] w-2/3 lg:w-3/5 xl:w-1/2 overflow-hidden"
+          className="absolute top-[85%] left-[5%] w-full lg:w-4/5 xl:w-3/4"
         >
-          <Image
-            src="/vinnovateit_text.svg"
-            alt="Vinnovateit Text"
-            width={400}
-            height={100}
-            className="w-full h-auto object-contain max-w-full max-h-full"
-          />
+          <h1
+            className={`text-5xl md:text-4xl lg:text-7xl xl:text-7xl text-black font-normal leading-relaxed whitespace-nowrap tracking-widest ${t012.className}`}
+          >
+            WHO ARE WE ?
+          </h1>
         </div>
 
-        {/* --- STATIC ELEMENTS --- */}
+        {/* Static Dot */}
         <div
           ref={staticDotRef}
           className={`absolute right-0 top-[37.5%] p-[2.5%] w-[25%] h-[37.5%] text-center ${nostromoMedium.className} hidden md:block`}
@@ -311,7 +301,6 @@ const AboutVinnovateit = ({ isFlipping }) => {
           </div>
         </div>
 
-        {/* Container for the cards and the NEW .02 */}
         <div
           className="absolute bottom-0 right-0 flex 
             w-full h-[15%] 

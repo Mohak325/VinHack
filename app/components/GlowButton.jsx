@@ -1,3 +1,4 @@
+import React from "react";
 import { twMerge } from "tailwind-merge";
 
 const Corner = ({ className }) => (
@@ -19,7 +20,7 @@ const Corner = ({ className }) => (
   </svg>
 );
 
-export default function GlowButton({ children, className }) {
+export default function GlowButton({ onClick, className, children, ...props }) {
   const defaultClasses = `
     relative px-10 py-3 bg-[#141312] text-gray-200 font-bold text-lg rounded-lg
     border-2 border-orange-500
@@ -30,7 +31,14 @@ export default function GlowButton({ children, className }) {
   const mergedClasses = twMerge(defaultClasses, className);
 
   return (
-    <button className={mergedClasses} data-sound-hover data-sound-click>
+    <button
+      type="button"
+      onClick={onClick}
+      className={mergedClasses}
+      {...props}
+      data-sound-hover
+      data-sound-click
+    >
       {children}
       <Corner className="absolute top-1 left-1 text-orange-500" />
       <Corner className="absolute top-1 right-1 text-orange-500 transform rotate-90" />

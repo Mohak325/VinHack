@@ -212,6 +212,7 @@ export default function FaqSection() {
           </div>
         </div>
       </motion.div>
+      <div className="h-20"></div>
     </section>
   );
 }
@@ -243,7 +244,10 @@ function FaqItem({ question, answer }) {
         }`}
         style={{ listStyle: "none" }}
         aria-expanded={isOpen}
-        whileHover={{ backgroundColor: isOpen ? "#C8C4B1" : "#3A2A2A" }}
+        whileHover={{
+    backgroundColor: isOpen ? "#C8C4B1" : "#3A2A2A",
+    color: isOpen ? "#000000" : "#ffffff",
+  }}
       >
         {question}
       </motion.button>

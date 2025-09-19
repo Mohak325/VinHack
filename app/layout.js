@@ -11,6 +11,9 @@ import {
 export const metadata = {
   title: "VinHack 25",
   description: "Coming Soon...",
+  icons: {
+    icon: "/favicon.ico", // or "/favicon.png"
+  },
 };
 
 
