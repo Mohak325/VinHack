@@ -1,5 +1,9 @@
+import { gulimche } from "@/app/fonts";
+
 const EventCardContent = ({ event }) => (
-  <div className="card-content flex-1 text-center xl:text-left max-w-2xl">
+  <div
+    className={`card-content flex-1 text-center xl:text-left max-w-2xl ${gulimche.className}`}
+  >
     <p className="text-gray-300 text-sm sm:text-base lg:text-lg">
       [{event.date} {event.time}] {'{'}
     </p>
