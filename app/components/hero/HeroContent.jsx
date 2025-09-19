@@ -1,12 +1,13 @@
 "use client";
 
 import React from "react";
+import { motion } from "framer-motion";
 import GlowButton from "../GlowButton.jsx";
 import { orbitron, nostromoMedium } from "../../fonts";
 
-const HeroContent = ({ isVisible, ruigslayClassName }) => {
+const HeroContent = ({ ruigslayClassName, handVariants, leftHandVariants }) => {
   return (
-    <div className="relative w-full h-full flex flex-col justify-center items-center overflow-hidden">
+    <div className="relative w-full h-full flex flex-col justify-center items-center">
       {/* Sponsor presents text */}
       <div
         className={`flex items-center justify-center gap-x-[clamp(0.5rem,1.5vw,0.75rem)] text-[clamp(0.875rem,2.5vw,1.25rem)] mb-4 ${orbitron.className} text-black`}
@@ -20,7 +21,7 @@ const HeroContent = ({ isVisible, ruigslayClassName }) => {
       </div>
 
       <h1
-        className={`text-[clamp(3.5rem,10vw,10rem)] leading-none relative z-20 mx-auto text-black ${ruigslayClassName}`} // Added text-black
+        className={`text-[clamp(3.5rem,10vw,10rem)] leading-none relative z-20 mx-auto text-black ${ruigslayClassName}`}
       >
         VinHack
       </h1>
@@ -40,41 +41,27 @@ const HeroContent = ({ isVisible, ruigslayClassName }) => {
       </a>
 
       {/* Illustrations */}
-      <div
-        className={`absolute -top-12 -right-8 size-96 md:size-128 z-40 pointer-events-none transition-all duration-1000 ${
-          isVisible
-            ? "opacity-100 rotate-[-30deg] translate-x-5 -translate-y-3 md:rotate-0 md:translate-x-0 md:translate-y-0"
-            : "opacity-0 translate-x-10 -translate-y-4 rotate-12"
-        }`}
-        style={{
-          transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
-          transitionDelay: "500ms",
-        }}
+      <motion.div
+        className="absolute -top-12 -right-8 w-96 h-96 md:w-128 md:h-128 z-40 pointer-events-none"
+        variants={handVariants}
       >
         <img
           src="/assets/hero/top_right_hand.svg"
           alt="Illustration of a hand reaching down"
           className="w-full h-full"
         />
-      </div>
+      </motion.div>
 
-      <div
-        className={`absolute -bottom-12 -left-8 size-96 md:size-128 z-40 pointer-events-none transition-all duration-1000 ${
-          isVisible
-            ? "opacity-100 rotate-[-30deg] -translate-x-5 translate-y-3 md:rotate-0 md:translate-x-0 md:translate-y-0"
-            : "opacity-0 -translate-x-10 translate-y-4 -rotate-12"
-        }`}
-        style={{
-          transitionTimingFunction: "cubic-bezier(0.34, 1.56, 0.64, 1)",
-          transitionDelay: "600ms",
-        }}
+      <motion.div
+        className="absolute -bottom-12 -left-8 w-96 h-96 md:w-128 md:h-128 z-40 pointer-events-none overflow-clip"
+        variants={leftHandVariants}
       >
         <img
           src="/assets/hero/bottom_left_hand.svg"
           alt="Illustration of a hand reaching up"
           className="w-full h-full"
         />
-      </div>
+      </motion.div>
     </div>
   );
 };
