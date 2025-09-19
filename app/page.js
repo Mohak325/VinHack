@@ -1,4 +1,3 @@
-
 "use client";
 
 import { useState, useRef, useEffect, useCallback } from "react";
@@ -17,8 +16,7 @@ import { ruigslay, nostromoLight, nostromoMedium } from "./fonts";
 import AboutVinnovateit from "./components/about/AboutVinnovateit";
 import AboutVinnhack from "./components/about/AboutVinhack";
 import { GridPlusBackground } from "./components/Grid";
-
-import Marquees from "./components/Marquee";
+import Marquee from "./components/Marquee";
 
 function MainContent({ fontClassNames, isVisible }) {
   const [isFlipping, setIsFlipping] = useState(false);
@@ -45,8 +43,9 @@ function MainContent({ fontClassNames, isVisible }) {
 
   return (
     <Border {...fontClassNames}>
-      <Hero {...fontClassNames} isVisible={isVisible} />
-      <Marquees />
+      <Hero {...fontClassNames} />
+      <Marquee />
+
       <GridPlusBackground>
         {/* Scroll container for flipping effect */}
         <div ref={containerRef}>
@@ -95,7 +94,27 @@ export default function Home() {
   const assetPaths = [
     "/assets/hero/bottom_left_hand.svg",
     "/assets/hero/top_right_hand.svg",
-    //TODO: add all assets
+    "/assets/hero/sponsor.png",
+    "/assets/card.svg",
+    "/assets/circle_border.svg",
+    "/assets/click_for_website.svg",
+    "/assets/logo.png",
+    "/assets/p1.svg",
+    "/assets/vinhack_pic.jpeg",
+    "/assets/vinhack23.jpg",
+    "/assets/vinnovateit.jpg",
+    "/assets/whiteLogoViit.svg",
+    "/assets/X.svg",
+    "/assets/loader/loading-top.png",
+    "/assets/loader/loading-topmost.png",
+    "/assets/loader/loading-bottom.png",
+    "/assets/loader/loading-bottommost.png",
+    "/assets/tracks/track1.png",
+    "/assets/tracks/track2.png",
+    "/assets/tracks/track3.png",
+    "/assets/tracks/track4.png",
+    "/assets/tracks/track5.png",
+    "/assets/tracks/track6.png",
   ];
 
   // Pass font class names to components that need them
