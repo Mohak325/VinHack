@@ -254,11 +254,10 @@ const AboutVinnovateit = ({ isFlipping }) => {
 				<div
 					ref={circleRef}
 					className="absolute 
-        top-[25%] left-[15%] md:left-[40%] w-[70%] h-[35%]
-
+        top-[25%] left-[15%] md:left-[50%] w-[70%] h-[35%]
         md:top-[20%] md:w-[50%] md:h-[60%]
         flex justify-center items-center overflow-visible
-        z-20"
+        z-20 md:-translate-x-1/2"
         >
           <div className="h-full w-auto aspect-square max-w-full max-h-full relative">
             <CoinFlip
