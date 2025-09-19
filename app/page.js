@@ -77,9 +77,9 @@ function MainContent({ fontClassNames, isVisible }) {
 
 				<Tracks />
 
-				<div ref={timelineRef}>
+				{/* <div ref={timelineRef}>
 					<Timeline />
-				</div>
+				</div> */}
 
 				<FaqSection />
 
