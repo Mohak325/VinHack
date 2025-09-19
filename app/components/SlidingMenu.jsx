@@ -36,8 +36,8 @@ const SlidingMenu = () => {
 
   const menuOptions = [
     { name: "Home", href: "#hero" },
-    { name: "About VinHack", href: "#about-vinhack" },
-    { name: "About VinnovateIT", href: "#about-vinnovateit" },
+    { name: "What's VinHack", href: "#whats-vinhack" },
+    { name: "Who Are We?", href: "#who-are-we" },
     { name: "Tracks", href: "#tracks" },
     { name: "FAQ", href: "#faq" },
     { name: "Code Of Conduct", href: "#coc" },

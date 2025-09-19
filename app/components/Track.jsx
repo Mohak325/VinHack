@@ -105,6 +105,7 @@ const Tracks = () => {
   if (isMobile) {
     return (
       <div
+        id="tracks"
         className="w-full py-16"
         style={{ backgroundColor: "rgb(213,209,190)" }}
       >
@@ -209,6 +210,7 @@ const Tracks = () => {
 
   return (
     <div
+      id="tracks"
       ref={containerRef}
       className="relative w-full"
       style={{ height: `${containerHeightVh}vh` }}

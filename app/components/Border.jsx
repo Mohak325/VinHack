@@ -212,7 +212,7 @@ const Notch = ({ type, fontClassName, className, isVisible }) => {
           }}
         >
           <a
-            href="#discover"
+            href="#whats-vinhack"
             className={`${textClasses} hover:opacity-70`}
             style={textColor}
           >

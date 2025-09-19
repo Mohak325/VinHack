@@ -18,12 +18,9 @@ const Rules = () => {
   ];
 
   return (
-    <section>
+    <section id="rules">
       {/* Added pb-16 for extra padding at the bottom */}
-      <div
-        id="rules"
-        className="w-full max-w-6xl mx-auto p-6 sm:p-8 md:p-12 pb-12"
-      >
+      <div className="w-full max-w-6xl mx-auto p-6 sm:p-8 md:p-12 pb-12">
         {/* RULES in Type12 */}
         <h1
           className={`${t012.className} text-center text-4xl sm:text-5xl md:text-7xl tracking-widest font-bold mt-12`}
