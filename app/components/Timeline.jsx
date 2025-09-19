@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import hackathonEvents from './timeline/data';
-import TimelineGrid from './timeline/TimelineGrid';
+import TimelineGrid from './timeline/TimeLineGrid';
 import EventCard from './timeline/EventCard';
 import { t012 } from "../fonts";
 // Font configuration (simulating localFont)
