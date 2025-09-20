@@ -2,89 +2,189 @@ import React, { useState, useEffect, useRef } from "react";
 import { day1Events, day2Events } from "./timeline/data";
 import TimelineGrid from "./timeline/TimeLineGrid";
 import EventCard from "./timeline/EventCard";
-import { t012 } from "../fonts";
-// Font configuration (simulating localFont)
-const type12 = t012;
 
-const TimelineHeader = ({ isTimelineVisible }) => (
-  <header
-    className={`absolute top-0 left-0 right-0 z-20 flex flex-col sm:flex-row justify-between items-startp-4 sm:p-6 lg:p-8 gap-4 transition-transform duration-500 ${
-      isTimelineVisible ? "translate-y-0" : "-translate-y-full"
-    }`}
-  >
-    <h1
-      className={`text-4xl sm:text-6xl lg:text-8xl xl:text-9xl font-bold tracking-[0.1em] sm:tracking-[0.2em] lg:tracking-[0.3em]  bg-black ${type12.className}`}
-    >
-      TIMELINE
-    </h1>
-    {/* <CrosshairSVG className="hidden lg:block right-5"/> */}
-  </header>
-);
+import {TimelineHeader} from "./timeline/TimeLineHeader";
+import { gsap } from "gsap";
+import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+gsap.registerPlugin(ScrollTrigger);
 
 const HorizontalTimeline = ({ events }) => {
   const containerRef = useRef(null);
-  const [isTimelineVisible, setIsTimelineVisible] = useState(false);
+  const wrapperRef = useRef(null);
+  const [isMobile, setIsMobile] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
 
+  // Check if mobile
   useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth <= 768 || 'ontouchstart' in window);
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  // Mobile touch handlers
+  const handleTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchMove = (e) => {
+    setTouchEnd(e.targetTouches[0].clientX);
+  };
+
+  const handleTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > 50;
+    const isRightSwipe = distance < -50;
+
+    if (isLeftSwipe && currentIndex < events.length - 1) {
+      setCurrentIndex(currentIndex + 1);
+    }
+    if (isRightSwipe && currentIndex > 0) {
+      setCurrentIndex(currentIndex - 1);
+    }
+  };
+
+  // Mobile animation
+  useEffect(() => {
+    if (isMobile && wrapperRef.current) {
+      gsap.to(wrapperRef.current, {
+        x: -currentIndex * window.innerWidth,
+        duration: 0.5,
+        ease: "power2.out"
+      });
+    }
+  }, [currentIndex, isMobile]);
+
+  // Desktop ScrollTrigger animation
+  useEffect(() => {
+    if (isMobile) return;
+
     const container = containerRef.current;
-    if (!container) return;
+    const wrapper = wrapperRef.current;
 
-    let currentCard = 0;
-    const totalCards = events.length;
+    if (!container || !wrapper) return;
 
-    const handleScroll = () => {
-      const containerRect = container.getBoundingClientRect();
-      const scrollProgress =
-        Math.max(0, -containerRect.top) /
-        (container.offsetHeight - window.innerHeight);
-      const newIndex = Math.min(
-        Math.floor(scrollProgress * totalCards),
-        totalCards - 1
-      );
+    // Reset transforms
+    gsap.set(wrapper, { x: 0 });
 
-      if (newIndex !== currentCard) {
-        currentCard = newIndex;
-        setCurrentIndex(newIndex);
+    const tl = gsap.to(wrapper, {
+      x: () => -(wrapper.scrollWidth - window.innerWidth),
+      ease: "none",
+      scrollTrigger: {
+        trigger: container,
+        pin: true,
+        scrub: 2,
+        anticipatePin: 1,
+        end: () => `+=${wrapper.scrollWidth - window.innerWidth}`,
+        refreshPriority: -1,
+        // Force refresh on mobile orientation change
+        onRefresh: () => {
+          if (window.innerWidth <= 768) {
+            ScrollTrigger.getById(tl.scrollTrigger.id)?.kill();
+          }
+        }
       }
+    });
 
-      // Check if timeline is visible
-      const timelineVisible =
-        containerRect.top <= 0 && containerRect.bottom >= window.innerHeight;
-      setIsTimelineVisible(timelineVisible);
-
-      // Horizontal scroll effect
-      const wrapper = container.querySelector(".timeline-wrapper");
-      if (wrapper) {
-        const translateX =
-          -scrollProgress * (window.innerWidth * (totalCards - 1));
-        wrapper.style.transform = `translateX(${translateX}px)`;
+    const refresh = () => {
+      // Kill ScrollTrigger on mobile
+      if (window.innerWidth <= 768) {
+        tl.scrollTrigger?.kill();
+        tl.kill();
+        return;
       }
+      ScrollTrigger.refresh();
     };
 
-    window.addEventListener("scroll", handleScroll);
-    handleScroll(); // Initial call
+    window.addEventListener("resize", refresh);
+    window.addEventListener("orientationchange", refresh);
 
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", refresh);
+      window.removeEventListener("orientationchange", refresh);
+      tl.scrollTrigger?.kill();
+      tl.kill();
     };
-  }, [events.length]);
+  }, [events.length, isMobile]);
 
-  return (
-    <div
-      ref={containerRef}
-      className="relative"
-      style={{ height: `${events.length * 100}vh` }}
-    >
-      <div className="sticky top-0 h-screen overflow-hidden">
+  // Mobile render
+  if (isMobile) {
+    return (
+      <div className="relative w-full h-screen overflow-hidden">
         <div
-          className="timeline-wrapper flex h-full transition-transform duration-100 ease-linear"
+          ref={wrapperRef}
+          className="timeline-wrapper flex h-full"
           style={{ width: `${events.length * 100}vw` }}
+          onTouchStart={handleTouchStart}
+          onTouchMove={handleTouchMove}
+          onTouchEnd={handleTouchEnd}
         >
           {events.map((event, index) => (
-            <EventCard key={event.id} event={event} index={index} />
+            <div key={event.id} className="w-screen flex-shrink-0">
+              <EventCard event={event} />
+            </div>
           ))}
         </div>
+        
+        {/* Mobile navigation dots */}
+        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
+          {events.map((_, index) => (
+            <button
+              key={index}
+              onClick={() => setCurrentIndex(index)}
+              className={`w-3 h-3 rounded-full transition-all ${
+                index === currentIndex 
+                  ? 'bg-white' 
+                  : 'bg-white/30'
+              }`}
+            />
+          ))}
+        </div>
+
+        {/* Mobile navigation arrows */}
+        {currentIndex > 0 && (
+          <button
+            onClick={() => setCurrentIndex(currentIndex - 1)}
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white p-3 rounded-full z-10"
+          >
+            ←
+          </button>
+        )}
+        {currentIndex < events.length - 1 && (
+          <button
+            onClick={() => setCurrentIndex(currentIndex + 1)}
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white p-3 rounded-full z-10"
+          >
+            →
+          </button>
+        )}
+      </div>
+    );
+  }
+
+  // Desktop render
+  return (
+    <div ref={containerRef} className="relative w-full h-screen overflow-hidden">
+      <div
+        ref={wrapperRef}
+        className="timeline-wrapper flex h-full gap-4"
+        style={{ 
+          width: 'max-content',
+          minWidth: '100vw'
+        }}
+      >
+        {events.map((event) => (
+          <EventCard key={event.id} event={event} />
+        ))}
       </div>
     </div>
   );
@@ -98,7 +198,6 @@ const Timeline = () => {
     const handleScroll = () => {
       const scrollY = window.scrollY;
       const windowHeight = window.innerHeight;
-      // Show timeline header when user scrolls past hero section
       setIsTimelineVisible(scrollY > windowHeight * 0.5);
     };
 
