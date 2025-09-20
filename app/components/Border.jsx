@@ -242,7 +242,7 @@ const Notch = ({
           }}
         >
           <a
-            href="https://discord.gg/your-discord-invite" // Replace with your Discord invite link
+            href="https://discord.gg/6Thxh6R5" // Replace with your Discord invite link
             target="_blank"
             rel="noopener noreferrer"
             data-sound-hover
