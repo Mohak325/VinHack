@@ -8,10 +8,11 @@ import React, {
   useRef,
 } from "react";
 import SlidingMenu from "./SlidingMenu";
-import { ChevronDown } from "lucide-react";
+import { DiscordIcon } from "./DiscordIcon";
 const BorderContext = createContext();
 
 export const useBorder = () => useContext(BorderContext);
+
 
 const Notch = ({
   type,
@@ -231,32 +232,37 @@ const Notch = ({
         </div>
       );
 
-case "discover":
-  return (
-    <div
-      className={`${baseClasses} lg:bottom-4 sm:bottom-3 bottom-2 left-1/2 -translate-x-1/2 h-8 md:h-10 w-40 rounded-t-xl flex flex-col items-center justify-center`}
-      style={{
-        ...notchStyle,
-        clipPath: "polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)",
-      }}
-    >
-      <a
-        href="#whats-vinhack"
-        data-sound-hover
-        data-sound-click
-        className={`${textClasses} hover:opacity-70 transition-opacity duration-500 ${
-          isVisible ? "opacity-100" : "opacity-0 pointer-events-none"
-        } flex flex-col items-center`}
-        style={textStyle}
-      >
-        <span>DISCOVER</span>
-        <div className="flex flex-col items-center">
-          <ChevronDown className="w-4 h-4" strokeWidth={1.5} />
+    case "discord":
+      return (
+        <div
+          className={`${baseClasses} lg:bottom-4 sm:bottom-3 bottom-2 left-1/2 -translate-x-1/2 h-8 md:h-10 w-40 rounded-t-xl flex flex-col items-center justify-center`}
+          style={{
+            ...notchStyle,
+            clipPath: "polygon(10% 0%, 90% 0%, 100% 100%, 0% 100%)",
+          }}
+        >
+          <a
+            href="https://discord.gg/your-discord-invite" // Replace with your Discord invite link
+            target="_blank"
+            rel="noopener noreferrer"
+            data-sound-hover
+            data-sound-click
+            className={`${textClasses} hover:opacity-70 transition-opacity duration-300 flex flex-col items-center justify-center gap-1`}
+            style={textStyle}
+          >
+            <DiscordIcon 
+              className="w-4 h-4 md:w-5 md:h-5" 
+              style={textStyle}
+            />
+            <span className="text-xs">DISCORD</span>
+          </a>
         </div>
-      </a>
-    </div>
-  );default: return null; } };
+      );
 
+    default: 
+      return null; 
+  }
+};
 
 const Border = ({
   children,
@@ -267,7 +273,6 @@ const Border = ({
   const [coords, setCoords] = useState({ x: 0, y: 0 });
   const [soundOn, setSoundOn] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDiscoverVisible, setIsDiscoverVisible] = useState(true);
 
   const [borderColor, setBorderColor] = useState("#000000");
   const [notchTextColor, setNotchTextColor] = useState("#F5B37F");
@@ -402,16 +407,6 @@ const Border = ({
     };
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => {
-      setIsDiscoverVisible(window.scrollY < window.innerHeight * 0.9);
-    };
-    window.addEventListener("scroll", handleScroll);
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
   const borderStyle = {
     backgroundColor: borderColor,
     transition: "background-color 0.5s ease-in-out",
@@ -497,9 +492,8 @@ const Border = ({
             textColor={notchTextColor}
           />
           <Notch
-            type="discover"
+            type="discord"
             fontClassName={nostromoLightClassName}
-            isVisible={isDiscoverVisible}
             notchColor={borderColor}
             textColor={notchTextColor}
           />

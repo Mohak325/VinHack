@@ -235,7 +235,7 @@ const AboutVinhack = ({ isFlipping }) => {
         z-10" // <-- Add this for lower stacking
         >
           <div
-            className="text-[#EA8244] text-justify text-sm sm:text-base lg:text-lg xl:text-xl 2xl:text-2xl p-2 sm:p-3 lg:p-4 xl:p-5 leading-tight sm:leading-relaxed lg:leading-relaxed xl:leading-loose overflow-hidden"
+            className={`${nostromoMedium.className} text-[#EA8244] text-justify text-sm sm:text-lg p-2 sm:p-3 lg:p-4 xl:p-5 leading-tight sm:leading-relaxed lg:leading-relaxed xl:leading-loose overflow-hidden`}
             style={{ fontWeight: 600 }}
           >
             VinHack is a 36-hour hybrid hackathon that fosters collaboration,
