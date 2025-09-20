@@ -1,8 +1,20 @@
 "use client";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { useSession } from "next-auth/react";
 
 export default function TeamPage() {
+  const { status } = useSession();
+
+  // Show loading while checking authentication
+  if (status === "loading") {
+    return (
+      <div className="w-full relative min-h-screen flex items-center justify-center" style={{ backgroundColor: "#000000" }}>
+        <div className="text-orange-500 font-mono">Loading...</div>
+      </div>
+    );
+  }
+
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {

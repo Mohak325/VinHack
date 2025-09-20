@@ -1,14 +1,79 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 
 export default function CreateTeamPage() {
+  const { status } = useSession();
   const router = useRouter();
+  const [formData, setFormData] = useState({
+    teamName: "",
+    description: ""
+  });
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    router.push("/onboarding");
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setFormData(prev => ({ ...prev, [name]: value }));
+    if (error) setError("");
+    if (success) setSuccess("");
   };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    
+    if (!formData.teamName.trim()) {
+      setError("Team name is required");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await fetch('/api/teams', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          teamName: formData.teamName,
+          description: formData.description
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to create team');
+      }
+
+      setSuccess(`Team "${result.team.name}" created successfully! Team code: ${result.team.code}`);
+      
+      setTimeout(() => {
+        router.push("/onboarding");
+      }, 2000);
+
+    } catch (err) {
+      console.error('Create team error:', err);
+      setError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  if (status === "loading") {
+    return (
+      <div className="w-full relative min-h-screen flex items-center justify-center" style={{ backgroundColor: "#000000" }}>
+        <div className="text-orange-500 font-mono">Loading...</div>
+      </div>
+    );
+  }
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -152,15 +217,40 @@ export default function CreateTeamPage() {
               </motion.div>
 
               <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                {/* Error/Success Messages */}
+                {error && (
+                  <motion.div 
+                    className="bg-red-500/20 border border-red-500/30 rounded-xl p-4 text-red-300 font-mono text-sm"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
+                    {error}
+                  </motion.div>
+                )}
+                
+                {success && (
+                  <motion.div 
+                    className="bg-green-500/20 border border-green-500/30 rounded-xl p-4 text-green-300 font-mono text-sm"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
+                    {success}
+                  </motion.div>
+                )}
+
                 <motion.div variants={itemVariants}>
                   <label className="block text-black font-bold mb-2 font-mono">
                     Team Name
                   </label>
                   <motion.input
+                    name="teamName"
+                    value={formData.teamName}
+                    onChange={handleChange}
                     className="w-full p-4 border-2 border-black/20 rounded-xl bg-black/10 text-black placeholder-black/60 font-mono focus:outline-none focus:border-black/40 focus:bg-black/5 transition-all duration-300 backdrop-blur-sm"
                     type="text"
                     placeholder="Enter your team name"
                     required
+                    disabled={isSubmitting}
                     whileFocus={{ scale: 1.02 }}
                   />
                 </motion.div>
@@ -170,21 +260,26 @@ export default function CreateTeamPage() {
                     Team Description (Optional)
                   </label>
                   <motion.textarea
+                    name="description"
+                    value={formData.description}
+                    onChange={handleChange}
                     className="w-full p-4 border-2 border-black/20 rounded-xl bg-black/10 text-black placeholder-black/60 font-mono focus:outline-none focus:border-black/40 focus:bg-black/5 transition-all duration-300 backdrop-blur-sm resize-none"
                     rows="3"
                     placeholder="Describe your team's vision"
+                    disabled={isSubmitting}
                     whileFocus={{ scale: 1.02 }}
                   />
                 </motion.div>
 
                 <motion.button
                   type="submit"
-                  className="w-full bg-black/20 text-black font-bold py-4 px-6 rounded-xl hover:bg-black/30 transition-all duration-300 backdrop-blur-sm border border-black/10 font-mono"
+                  disabled={isSubmitting}
+                  className="w-full bg-black/20 text-black font-bold py-4 px-6 rounded-xl hover:bg-black/30 transition-all duration-300 backdrop-blur-sm border border-black/10 font-mono disabled:opacity-50 disabled:cursor-not-allowed"
                   variants={itemVariants}
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: isSubmitting ? 1 : 1.02, y: isSubmitting ? 0 : -2 }}
+                  whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                 >
-                  Create Team →
+                  {isSubmitting ? 'Creating Team...' : 'Create Team →'}
                 </motion.button>
               </form>
 

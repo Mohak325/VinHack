@@ -1,21 +1,162 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 export default function OnboardingPage() {
-  const [teamName] = useState("Team Alpha");
-  const [members, setMembers] = useState([
-    { name: "John Doe", isLead: true },
-    { name: "Alice" },
-    { name: "Bob" },
-    { name: "Charlie" },
-  ]);
+  const { status } = useSession();
+  const router = useRouter();
+  const [teamData, setTeamData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [showExitModal, setShowExitModal] = useState(false);
+  const [leaving, setLeaving] = useState(false);
+  
+  // Project information form state
+  const [projectForm, setProjectForm] = useState({
+    track: '',
+    projectTitle: '',
+    githubLink: '',
+    figmaLink: '',
+    pptLink: '',
+    otherLinks: '',
+    projectDescription: ''
+  });
+  const [projectSaving, setProjectSaving] = useState(false);
+  const [projectSaved, setProjectSaved] = useState(false);
+  const [showCopied, setShowCopied] = useState(false);
 
-  const removeMember = (name) => {
-    setMembers(members.filter((m) => m.name !== name));
+  useEffect(() => {
+    if (status === "loading") return;
+
+    // Fetch team data
+    const fetchTeamData = async () => {
+      try {
+        const response = await fetch('/api/user/status');
+        const data = await response.json();
+        
+        if (data.authenticated && !data.hasTeam) {
+          // Middleware should prevent reaching here
+          setTeamData(null);
+          return;
+        }
+
+        if (data.team) {
+          setTeamData(data.team);
+          
+          // Load project information if available
+          if (data.team.projectInfo) {
+            setProjectForm({
+              track: data.team.projectInfo.track || '',
+              projectTitle: data.team.projectInfo.projectTitle || '',
+              githubLink: data.team.projectInfo.githubLink || '',
+              figmaLink: data.team.projectInfo.figmaLink || '',
+              pptLink: data.team.projectInfo.pptLink || '',
+              otherLinks: data.team.projectInfo.otherLinks || '',
+              projectDescription: data.team.projectInfo.projectDescription || ''
+            });
+          }
+        }
+      } catch (error) {
+  console.error('Error fetching team data:', error);
+  setTeamData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Only check team status if user is registered
+    fetchTeamData();
+  }, [status, router]);
+
+  const handleLeaveTeam = async () => {
+    setLeaving(true);
+    try {
+      const response = await fetch('/api/teams/leave', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to leave team');
+      }
+
+      // Redirect to teams page after leaving
+      router.push('/teams');
+    } catch (error) {
+      console.error('Error leaving team:', error);
+      // Still redirect on error - user might not have a team anymore
+      router.push('/teams');
+    }
   };
+
+  // Project form handlers
+  const handleProjectFormChange = (field, value) => {
+    setProjectForm(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleProjectFormSubmit = async (e) => {
+    e.preventDefault();
+    setProjectSaving(true);
+
+    try {
+      const response = await fetch('/api/teams/project', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(projectForm)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to save project information');
+      }
+
+      // Show success message
+      setProjectSaved(true);
+      setTimeout(() => setProjectSaved(false), 3000); // Hide after 3 seconds
+      
+      // Optionally refresh team data
+      const statusResponse = await fetch('/api/user/status');
+      const statusData = await statusResponse.json();
+      if (statusData.team) {
+        setTeamData(statusData.team);
+      }
+
+    } catch (error) {
+      console.error('Error saving project info:', error);
+      alert('Failed to save project information. Please try again.');
+    } finally {
+      setProjectSaving(false);
+    }
+  };
+
+  // Show loading while checking authentication or fetching team data
+  if (status === "loading" || loading) {
+    return (
+      <div className="w-full relative min-h-screen flex items-center justify-center" style={{ backgroundColor: "#000000" }}>
+        <div className="text-orange-500 font-mono">Loading...</div>
+      </div>
+    );
+  }
+
+  if (!teamData) {
+    return (
+      <div className="w-full relative min-h-screen flex items-center justify-center" style={{ backgroundColor: "#000000" }}>
+        <div className="text-orange-500 font-mono">No team data found...</div>
+      </div>
+    );
+  }
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -145,7 +286,7 @@ export default function OnboardingPage() {
             className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-8 sm:mb-12 text-orange-400 font-mono"
             variants={itemVariants}
           >
-            {teamName}
+            {loading ? 'Loading...' : teamData?.name || 'Team Dashboard'}
           </motion.h1>
 
           <div className="grid xl:grid-cols-3 gap-8 max-w-7xl mx-auto">
@@ -170,55 +311,85 @@ export default function OnboardingPage() {
                   </motion.div>
                 </div>
 
-                <h2 className="text-xl font-bold mb-6 text-black text-center font-mono">Team Members</h2>
+                <h2 className="text-xl font-bold mb-6 text-black text-center font-mono">Team Information</h2>
+                
+                {/* Team Code Display */}
+                {teamData?.code && (
+                  <motion.div 
+                    className="bg-gradient-to-r from-yellow-400/20 to-orange-400/20 px-4 py-4 rounded-xl backdrop-blur-sm border-2 border-yellow-400/30 mb-6 cursor-pointer hover:from-yellow-400/30 hover:to-orange-400/30 hover:border-yellow-400/50 transition-all duration-200 shadow-lg"
+                    variants={memberVariants}
+                    onClick={() => {
+                      navigator.clipboard.writeText(teamData.code).then(() => {
+                        setShowCopied(true);
+                        setTimeout(() => setShowCopied(false), 2000);
+                      });
+                    }}
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <div className="text-center">
+                      <div className="flex items-center justify-center gap-2 mb-2">
+                        <svg className="w-4 h-4 text-yellow-600" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                        <p className="text-xs text-black/70 font-mono font-semibold">TEAM CODE (CLICK TO COPY)</p>
+                      </div>
+                      <p className="text-2xl font-bold text-black font-mono tracking-widest bg-black/10 py-2 px-4 rounded-lg">{teamData.code}</p>
+                    </div>
+                  </motion.div>
+                )}
+
+                <h3 className="text-lg font-semibold mb-4 text-black text-center font-mono">Team Members</h3>
                 
                 <motion.div className="flex flex-col gap-3 mb-6">
-                  {members.map((member, idx) => (
-                    <motion.div
-                      key={idx}
-                      className="flex items-center justify-between bg-black/20 px-4 py-3 rounded-xl backdrop-blur-sm border border-black/10"
-                      variants={memberVariants}
-                      layout
-                      whileHover={{ scale: 1.02, y: -2 }}
-                    >
-                      <div className="flex items-center gap-3">
-                        {member.isLead && (
-                          <motion.div
-                            className="text-yellow-300"
-                            title="Team Lead"
-                            animate={{ rotate: [0, 10, -10, 0] }}
-                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                          >
-                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732L14.146 12.8l-1.179 4.456a1 1 0 01-1.934 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732L9.854 7.2l1.179-4.456A1 1 0 0112 2z" clipRule="evenodd" />
-                            </svg>
-                          </motion.div>
-                        )}
-                        <p className="font-medium text-black font-mono text-sm">{member.name}</p>
-                      </div>
-                      {!member.isLead && (
-                        <motion.button
-                          onClick={() => removeMember(member.name)}
-                          className="text-red-600 hover:text-red-800 p-1 rounded-full hover:bg-red-100/20 transition-all duration-200"
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                          </svg>
-                        </motion.button>
-                      )}
-                    </motion.div>
-                  ))}
+                  {loading ? (
+                    <div className="flex items-center justify-center py-8">
+                      <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-black"></div>
+                    </div>
+                  ) : teamData?.members ? (
+                    teamData.members.map((member, idx) => (
+                      <motion.div
+                        key={member.id || idx}
+                        className="flex items-center justify-between bg-black/20 px-4 py-3 rounded-xl backdrop-blur-sm border border-black/10"
+                        variants={memberVariants}
+                        layout
+                        whileHover={{ scale: 1.02, y: -2 }}
+                      >
+                        <div className="flex items-center gap-3">
+                          {member.isLeader && (
+                            <motion.div
+                              className="text-yellow-300"
+                              title="Team Lead"
+                              animate={{ rotate: [0, 10, -10, 0] }}
+                              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                            >
+                              <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732L14.146 12.8l-1.179 4.456a1 1 0 01-1.934 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732L9.854 7.2l1.179-4.456A1 1 0 0112 2z" clipRule="evenodd" />
+                              </svg>
+                            </motion.div>
+                          )}
+                          <div className="flex flex-col">
+                            <p className="font-medium text-black font-mono text-sm">{member.name}</p>
+                            <p className="text-xs text-gray-600 font-mono">{member.email}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))
+                  ) : (
+                    <div className="text-center py-4 text-gray-600 font-mono text-sm">
+                      No team members found
+                    </div>
+                  )}
                 </motion.div>
 
                 <motion.button 
                   onClick={() => setShowExitModal(true)}
-                  className="w-full bg-red-500/70 text-white font-medium py-2 px-4 rounded-lg hover:bg-red-500/90 transition-all duration-300 font-mono border border-red-400/30 text-sm"
+                  disabled={leaving}
+                  className="w-full bg-red-500/70 text-white font-medium py-2 px-4 rounded-lg hover:bg-red-500/90 transition-all duration-300 font-mono border border-red-400/30 text-sm disabled:opacity-60 disabled:cursor-not-allowed"
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  Exit Team
+                  {leaving ? 'Exiting…' : 'Exit Team'}
                 </motion.button>
               </div>
             </motion.div>
@@ -304,28 +475,89 @@ export default function OnboardingPage() {
 
                 <h2 className="text-xl font-bold mb-6 text-black text-center font-mono">Project Information</h2>
                 
-                <div className="flex flex-col gap-4">
-                  {[
-                    { placeholder: "Track Chosen", type: "text" },
-                    { placeholder: "Project Title", type: "text" },
-                    { placeholder: "GitHub Link", type: "url" },
-                    { placeholder: "Figma Link", type: "url" },
-                    { placeholder: "PPT Link", type: "url" },
-                    { placeholder: "Other Links", type: "url" }
-                  ].map((field, idx) => (
-                    <motion.div key={idx} variants={itemVariants}>
-                      <motion.input
-                        type={field.type}
-                        placeholder={field.placeholder}
-                        className="w-full p-3 border-2 border-black/20 rounded-lg bg-black/10 text-black placeholder-black/60 font-mono focus:outline-none focus:border-black/40 focus:bg-black/5 transition-all duration-300 backdrop-blur-sm text-sm"
-                        whileFocus={{ scale: 1.02 }}
-                      />
-                    </motion.div>
-                  ))}
+                {projectSaved && (
+                  <motion.div 
+                    className="bg-green-500/20 border border-green-500/30 text-green-800 px-4 py-2 rounded-lg mb-4 text-center font-mono text-sm"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                  >
+                    ✅ Project information saved successfully!
+                  </motion.div>
+                )}
+                
+                <form onSubmit={handleProjectFormSubmit} className="flex flex-col gap-4">
+                  <motion.div variants={itemVariants}>
+                    <motion.input
+                      type="text"
+                      placeholder="Track Chosen"
+                      value={projectForm.track}
+                      onChange={(e) => handleProjectFormChange('track', e.target.value)}
+                      className="w-full p-3 border-2 border-black/20 rounded-lg bg-black/10 text-black placeholder-black/60 font-mono focus:outline-none focus:border-black/40 focus:bg-black/5 transition-all duration-300 backdrop-blur-sm text-sm"
+                      whileFocus={{ scale: 1.02 }}
+                    />
+                  </motion.div>
+                  
+                  <motion.div variants={itemVariants}>
+                    <motion.input
+                      type="text"
+                      placeholder="Project Title"
+                      value={projectForm.projectTitle}
+                      onChange={(e) => handleProjectFormChange('projectTitle', e.target.value)}
+                      className="w-full p-3 border-2 border-black/20 rounded-lg bg-black/10 text-black placeholder-black/60 font-mono focus:outline-none focus:border-black/40 focus:bg-black/5 transition-all duration-300 backdrop-blur-sm text-sm"
+                      whileFocus={{ scale: 1.02 }}
+                    />
+                  </motion.div>
+                  
+                  <motion.div variants={itemVariants}>
+                    <motion.input
+                      type="url"
+                      placeholder="GitHub Link"
+                      value={projectForm.githubLink}
+                      onChange={(e) => handleProjectFormChange('githubLink', e.target.value)}
+                      className="w-full p-3 border-2 border-black/20 rounded-lg bg-black/10 text-black placeholder-black/60 font-mono focus:outline-none focus:border-black/40 focus:bg-black/5 transition-all duration-300 backdrop-blur-sm text-sm"
+                      whileFocus={{ scale: 1.02 }}
+                    />
+                  </motion.div>
+                  
+                  <motion.div variants={itemVariants}>
+                    <motion.input
+                      type="url"
+                      placeholder="Figma Link"
+                      value={projectForm.figmaLink}
+                      onChange={(e) => handleProjectFormChange('figmaLink', e.target.value)}
+                      className="w-full p-3 border-2 border-black/20 rounded-lg bg-black/10 text-black placeholder-black/60 font-mono focus:outline-none focus:border-black/40 focus:bg-black/5 transition-all duration-300 backdrop-blur-sm text-sm"
+                      whileFocus={{ scale: 1.02 }}
+                    />
+                  </motion.div>
+                  
+                  <motion.div variants={itemVariants}>
+                    <motion.input
+                      type="url"
+                      placeholder="PPT Link"
+                      value={projectForm.pptLink}
+                      onChange={(e) => handleProjectFormChange('pptLink', e.target.value)}
+                      className="w-full p-3 border-2 border-black/20 rounded-lg bg-black/10 text-black placeholder-black/60 font-mono focus:outline-none focus:border-black/40 focus:bg-black/5 transition-all duration-300 backdrop-blur-sm text-sm"
+                      whileFocus={{ scale: 1.02 }}
+                    />
+                  </motion.div>
+                  
+                  <motion.div variants={itemVariants}>
+                    <motion.input
+                      type="url"
+                      placeholder="Other Links"
+                      value={projectForm.otherLinks}
+                      onChange={(e) => handleProjectFormChange('otherLinks', e.target.value)}
+                      className="w-full p-3 border-2 border-black/20 rounded-lg bg-black/10 text-black placeholder-black/60 font-mono focus:outline-none focus:border-black/40 focus:bg-black/5 transition-all duration-300 backdrop-blur-sm text-sm"
+                      whileFocus={{ scale: 1.02 }}
+                    />
+                  </motion.div>
                   
                   <motion.div variants={itemVariants}>
                     <motion.textarea
                       placeholder="Project Description"
+                      value={projectForm.projectDescription}
+                      onChange={(e) => handleProjectFormChange('projectDescription', e.target.value)}
                       className="w-full p-3 border-2 border-black/20 rounded-lg bg-black/10 text-black placeholder-black/60 font-mono focus:outline-none focus:border-black/40 focus:bg-black/5 transition-all duration-300 backdrop-blur-sm resize-none text-sm"
                       rows="3"
                       whileFocus={{ scale: 1.02 }}
@@ -334,23 +566,37 @@ export default function OnboardingPage() {
                   
                   <motion.div variants={itemVariants}>
                     <motion.button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        alert("Project info saved!");
-                      }}
-                      className="w-full bg-black/20 text-black font-medium py-3 px-6 rounded-lg hover:bg-black/30 transition-all duration-300 backdrop-blur-sm border border-black/10 font-mono text-sm"
-                      whileHover={{ scale: 1.02, y: -1 }}
-                      whileTap={{ scale: 0.98 }}
+                      type="submit"
+                      disabled={projectSaving}
+                      className="w-full bg-black/20 text-black font-medium py-3 px-6 rounded-lg hover:bg-black/30 transition-all duration-300 backdrop-blur-sm border border-black/10 font-mono text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                      whileHover={!projectSaving ? { scale: 1.02, y: -1 } : {}}
+                      whileTap={!projectSaving ? { scale: 0.98 } : {}}
                     >
-                      Save Project Info →
+                      {projectSaving ? 'Saving...' : 'Save Project Info →'}
                     </motion.button>
                   </motion.div>
-                </div>
+                </form>
               </div>
             </motion.div>
           </div>
         </motion.div>
       </div>
+
+      {/* Exit Confirmation Modal */}
+      <AnimatePresence>
+        {showCopied && (
+          <motion.div
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-black/80 border border-orange-500/40 text-orange-300 px-4 py-2 rounded-lg shadow-lg z-50 font-mono text-sm"
+            role="status"
+            aria-live="polite"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+          >
+            Team code copied to clipboard
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Exit Confirmation Modal */}
       <AnimatePresence>
@@ -385,16 +631,13 @@ export default function OnboardingPage() {
                     Cancel
                   </motion.button>
                   <motion.button
-                    onClick={() => {
-                      // Handle exit logic here
-                      setShowExitModal(false);
-                      alert("Exited team successfully!");
-                    }}
-                    className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-300 font-mono text-sm"
+                    onClick={handleLeaveTeam}
+                    disabled={leaving}
+                    className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-300 font-mono text-sm disabled:opacity-60 disabled:cursor-not-allowed"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    Exit Team
+                    {leaving ? 'Exiting…' : 'Exit Team'}
                   </motion.button>
                 </div>
               </div>

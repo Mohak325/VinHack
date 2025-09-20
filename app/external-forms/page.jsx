@@ -1,12 +1,14 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import { motion, AnimatePresence } from "framer-motion";
 import { orbitron } from "../fonts";
 
 
 
 export default function ExternalFormPage() {
+  const { data: session, status } = useSession();
   const [formData, setFormData] = useState({
     name: "",
     collegeName: "",
@@ -22,6 +24,13 @@ export default function ExternalFormPage() {
   const [submitMessage, setSubmitMessage] = useState("");
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (status === "loading") return;
+    if (session?.user?.name) {
+      setFormData(prev => ({ ...prev, name: session.user.name }));
+    }
+  }, [session, status]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -96,12 +105,22 @@ export default function ExternalFormPage() {
         body: JSON.stringify({
           ...formData,
           year: parseInt(formData.year),
+          userEmail: session.user.email
         }),
       });
 
       const result= await response.json();
 
       if (response.ok && result.success) {
+        // Update user registration status
+        await fetch('/api/user/status', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({ isRegistered: true }),
+        });
+
         setSubmitStatus('success');
         setSubmitMessage(result.message || 'Registration successful!');
         
