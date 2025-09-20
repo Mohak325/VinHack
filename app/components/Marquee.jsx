@@ -66,7 +66,7 @@ const NewMarquee = () => {
       </div>
 
       {/* Bottom marquee (VinHack) */}
-      <div className="absolute w-[120%] h-12 sm:h-16 md:h-20 lg:h-24 bg-[#D5D1BE] transform rotate-2 bottom-2 sm:bottom-3 md:bottom-4 lg:bottom-4 -left-10 flex items-center overflow-hidden z-20">
+      <div className="absolute w-[120%] h-12 sm:h-16 md:h-20 lg:h-24 bg-[#D5D1BE] transform rotate-2 bottom-2 sm:bottom-3 md:bottom-4 lg:bottom-4 -left-10 flex items-center overflow-hidden z-20 border-4 border-black">
         <div ref={bottomMarqueeRef} className="flex whitespace-nowrap">
           <p
             className={`${ruigslay.className} text-3xl sm:text-4xl md:text-6xl lg:text-7xl text-[#EF6400] inline-flex items-center`}
