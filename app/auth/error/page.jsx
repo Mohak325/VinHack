@@ -2,8 +2,9 @@
 import { useSearchParams, useRouter } from 'next/navigation'
 import { motion } from 'framer-motion'
 import Link from 'next/link'
+import { Suspense } from 'react'
 
-export default function AuthErrorPage() {
+function AuthErrorContent() {
   const searchParams = useSearchParams()
   const router = useRouter()
   const error = searchParams.get('error')
@@ -123,5 +124,34 @@ export default function AuthErrorPage() {
         </motion.div>
       </div>
     </div>
+  )
+}
+
+function AuthErrorLoading() {
+  return (
+    <div className="w-full relative min-h-screen" style={{ backgroundColor: "#000000" }}>
+      <div
+        className="absolute inset-0"
+        style={{
+          backgroundImage: `
+            linear-gradient(to right, #1a1a1a 1px, transparent 1px),
+            linear-gradient(to bottom, #1a1a1a 1px, transparent 1px)
+          `,
+          backgroundSize: "40px 40px",
+        }}
+      />
+      
+      <div className="relative z-10 flex items-center justify-center min-h-screen">
+        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-orange-500"></div>
+      </div>
+    </div>
+  )
+}
+
+export default function AuthErrorPage() {
+  return (
+    <Suspense fallback={<AuthErrorLoading />}>
+      <AuthErrorContent />
+    </Suspense>
   )
 }
