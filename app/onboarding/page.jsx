@@ -1,21 +1,202 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { orbitron } from "../fonts";
+import ReviewTimeline from "../components/ReviewTimeline";
 
 export default function OnboardingPage() {
-  const [teamName] = useState("Team Alpha");
-  const [members, setMembers] = useState([
-    { name: "John Doe", isLead: true },
-    { name: "Alice" },
-    { name: "Bob" },
-    { name: "Charlie" },
-  ]);
+  const { status } = useSession();
+  const router = useRouter();
+  const [teamData, setTeamData] = useState(null);
+  const [loading, setLoading] = useState(true);
   const [showExitModal, setShowExitModal] = useState(false);
+  const [leaving, setLeaving] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
+  
+  // Project information form state
+  const [projectForm, setProjectForm] = useState({
+    track: '',
+    projectTitle: '',
+    githubLink: '',
+    figmaLink: '',
+    pptLink: '',
+    otherLinks: '',
+    projectDescription: ''
+  });
+  const [projectSaving, setProjectSaving] = useState(false);
+  const [projectSaved, setProjectSaved] = useState(false);
+  const [showCopied, setShowCopied] = useState(false);
 
-  const removeMember = (name) => {
-    setMembers(members.filter((m) => m.name !== name));
+  // Check for mobile viewport
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 1024); // lg breakpoint
+    };
+    
+    checkMobile();
+    window.addEventListener('resize', checkMobile);
+    
+    return () => window.removeEventListener('resize', checkMobile);
+  }, []);
+
+  useEffect(() => {
+    if (status === "loading") return;
+
+    // Fetch team data
+    const fetchTeamData = async () => {
+      try {
+        const response = await fetch('/api/user/status');
+        const data = await response.json();
+        
+        if (data.authenticated && !data.hasTeam) {
+          // Middleware should prevent reaching here
+          setTeamData(null);
+          return;
+        }
+
+        if (data.team) {
+          setTeamData(data.team);
+          
+          // Load project information if available
+          if (data.team.projectInfo) {
+            setProjectForm({
+              track: data.team.projectInfo.track || '',
+              projectTitle: data.team.projectInfo.projectTitle || '',
+              githubLink: data.team.projectInfo.githubLink || '',
+              figmaLink: data.team.projectInfo.figmaLink || '',
+              pptLink: data.team.projectInfo.pptLink || '',
+              otherLinks: data.team.projectInfo.otherLinks || '',
+              projectDescription: data.team.projectInfo.projectDescription || ''
+            });
+          }
+        }
+      } catch (error) {
+        console.error('Error fetching team data:', error);
+        setTeamData(null);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    // Only check team status if user is registered
+    fetchTeamData();
+  }, [status, router]);
+
+  const handleLeaveTeam = async () => {
+    setLeaving(true);
+    try {
+      const response = await fetch('/api/teams/leave', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to leave team');
+      }
+
+      // Redirect to teams page after leaving
+      router.push('/teams');
+    } catch (error) {
+      console.error('Error leaving team:', error);
+      // Still redirect on error - user might not have a team anymore
+      router.push('/teams');
+    }
   };
+
+  // Project form handlers
+  const handleProjectFormChange = (field, value) => {
+    setProjectForm(prev => ({
+      ...prev,
+      [field]: value
+    }));
+  };
+
+  const handleProjectFormSubmit = async (e) => {
+    e.preventDefault();
+    setProjectSaving(true);
+
+    try {
+      const response = await fetch('/api/teams/project', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(projectForm)
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to save project information');
+      }
+
+      // Show success message
+      setProjectSaved(true);
+      setTimeout(() => setProjectSaved(false), 3000); // Hide after 3 seconds
+      
+      // Optionally refresh team data
+      const statusResponse = await fetch('/api/user/status');
+      const statusData = await statusResponse.json();
+      if (statusData.team) {
+        setTeamData(statusData.team);
+      }
+
+    } catch (error) {
+      console.error('Error saving project info:', error);
+      alert('Failed to save project information. Please try again.');
+    } finally {
+      setProjectSaving(false);
+    }
+  };
+
+  // Show mobile restriction message
+  if (isMobile) {
+    return (
+      <div className="w-full min-h-screen flex items-center justify-center bg-black p-8">
+        <div className="text-center max-w-md">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-8"
+          >
+            <svg className="w-24 h-24 text-orange-500 mx-auto mb-6" fill="none" stroke="currentColor" strokeWidth="1.5" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25"/>
+            </svg>
+          </motion.div>
+          <h1 className={`text-2xl font-bold text-orange-400 mb-4 ${orbitron.className}`}>
+            DESKTOP REQUIRED
+          </h1>
+          <p className={`text-gray-400 text-lg leading-relaxed ${orbitron.className}`}>
+            This dashboard is optimized for desktop viewing. Please access from a larger screen for the best experience.
+          </p>
+        </div>
+      </div>
+    );
+  }
+
+  // Show loading while checking authentication or fetching team data
+  if (status === "loading" || loading) {
+    return (
+      <div className="w-full relative min-h-screen flex items-center justify-center" style={{ backgroundColor: "#000000" }}>
+        <div className={`text-orange-500 text-xl ${orbitron.className}`}>LOADING...</div>
+      </div>
+    );
+  }
+
+  if (!teamData) {
+    return (
+      <div className="w-full relative min-h-screen flex items-center justify-center" style={{ backgroundColor: "#000000" }}>
+        <div className={`text-orange-500 text-xl ${orbitron.className}`}>NO TEAM DATA FOUND...</div>
+      </div>
+    );
+  }
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -72,59 +253,43 @@ export default function OnboardingPage() {
     }
   };
 
-  const timelineSteps = [
-    { name: "Review 1", status: "completed" },
-    { name: "Review 2", status: "current" },
-    { name: "Review 3", status: "upcoming" },
-    { name: "Final Presentation", status: "upcoming" }
-  ];
-
-  const getStepColor = (status) => {
-    switch (status) {
-      case "completed": return "bg-green-500 border-green-400";
-      case "current": return "bg-blue-500 border-blue-400";
-      case "upcoming": return "bg-gray-400 border-gray-300";
-      default: return "bg-gray-400 border-gray-300";
-    }
-  };
-
-  const getLineColor = (status) => {
-    switch (status) {
-      case "completed": return "bg-green-500";
-      case "current": return "bg-blue-500";
-      default: return "bg-gray-300";
-    }
-  };
 
   return (
-    <div className="w-full relative min-h-screen" style={{ backgroundColor: "#000000" }}>
-      {/* Grid lines background */}
+    <div className="w-full relative min-h-screen overflow-x-auto" style={{ backgroundColor: "#0a0a0a" }}>
+      {/* Enhanced grid background */}
       <motion.div
         className="absolute inset-0"
         style={{
           backgroundImage: `
-            linear-gradient(to right, #1a1a1a 1px, transparent 1px),
-            linear-gradient(to bottom, #1a1a1a 1px, transparent 1px)
+            linear-gradient(to right, #1f1f1f 1px, transparent 1px),
+            linear-gradient(to bottom, #1f1f1f 1px, transparent 1px)
           `,
-          backgroundSize: "40px 40px",
+          backgroundSize: "50px 50px",
         }}
         initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
+        animate={{ opacity: 0.3 }}
         transition={{ duration: 1 }}
       />
 
-      {/* Plus symbols pattern - reduced orange */}
-      <div className="absolute inset-0 grid grid-cols-12 gap-6 p-6 opacity-10">
-        {Array.from({ length: 72 }, (_, index) => (
+      {/* Animated plus symbols pattern */}
+      <div className="absolute inset-0 grid grid-cols-16 gap-8 p-8 opacity-30">
+        {Array.from({ length: 128 }, (_, index) => (
           <div key={index} className="flex items-center justify-center">
             <motion.div
-              className="text-xs font-light select-none"
-              style={{ color: "#f97316" }}
-              animate={{ rotate: 360 }}
+              className={`text-lg font-light select-none text-orange-400 ${orbitron.className}`}
+              animate={{ 
+                rotate: 360,
+                scale: [1, 1.2, 1]
+              }}
               transition={{ 
-                duration: 10 + (index % 4) * 2, 
+                duration: 15 + (index % 6) * 3, 
                 repeat: Infinity, 
-                ease: "linear" 
+                ease: "linear",
+                scale: {
+                  duration: 8,
+                  repeat: Infinity,
+                  ease: "easeInOut"
+                }
               }}
             >
               +
@@ -134,7 +299,7 @@ export default function OnboardingPage() {
       </div>
 
       {/* Content overlay */}
-      <div className="relative z-10 min-h-screen p-4 sm:p-8">
+      <div className="relative z-10 min-h-screen p-8">
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -142,190 +307,240 @@ export default function OnboardingPage() {
         >
           {/* Team Header */}
           <motion.h1 
-            className="text-4xl sm:text-5xl md:text-6xl font-bold text-center mb-8 sm:mb-12 text-orange-400 font-mono"
+            className={`text-6xl xl:text-7xl font-bold text-center mb-16 text-transparent bg-clip-text bg-gradient-to-r from-orange-400 via-orange-500 to-red-500 ${orbitron.className} tracking-wider`}
             variants={itemVariants}
           >
-            {teamName}
+            {loading ? 'LOADING...' : teamData?.name || 'TEAM DASHBOARD'}
           </motion.h1>
 
-          <div className="grid xl:grid-cols-3 gap-8 max-w-7xl mx-auto">
-            {/* Left Section - Team Info */}
+          {/* Top Row: Team Info and Timeline */}
+          <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto mb-8">
+            {/* Team Info Section */}
             <motion.div 
-              className="xl:col-span-1 bg-gradient-to-br from-orange-400/80 to-orange-500/80 rounded-2xl shadow-2xl border border-orange-400/30 overflow-hidden"
+              className="bg-gradient-to-br from-orange-400/90 to-orange-600/90 rounded-3xl shadow-2xl border border-orange-400/40 overflow-hidden backdrop-blur-sm"
               variants={cardVariants}
             >
-              {/* Background Glow */}
-              <div className="absolute inset-0 bg-orange-400 opacity-10 blur-xl"></div>
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-400/20 to-transparent opacity-50"></div>
               
-              <div className="relative z-10 p-6">
-                <div className="flex items-center justify-center mb-6">
+              <div className="relative z-10 p-8">
+                <div className="flex items-center justify-center mb-8">
                   <motion.div 
-                    className="p-3 bg-black/20 rounded-full backdrop-blur-sm"
-                    whileHover={{ rotate: 360 }}
+                    className="p-4 bg-black/30 rounded-full backdrop-blur-md border border-black/20"
+                    whileHover={{ rotate: 360, scale: 1.1 }}
                     transition={{ duration: 0.6 }}
                   >
-                    <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <svg className="w-8 h-8 text-black" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"/>
                     </svg>
                   </motion.div>
                 </div>
 
-                <h2 className="text-xl font-bold mb-6 text-black text-center font-mono">Team Members</h2>
+                <h2 className={`text-2xl font-bold mb-8 text-black text-center ${orbitron.className} tracking-wide`}>TEAM MEMBERS</h2>
                 
-                <motion.div className="flex flex-col gap-3 mb-6">
-                  {members.map((member, idx) => (
-                    <motion.div
-                      key={idx}
-                      className="flex items-center justify-between bg-black/20 px-4 py-3 rounded-xl backdrop-blur-sm border border-black/10"
-                      variants={memberVariants}
-                      layout
-                      whileHover={{ scale: 1.02, y: -2 }}
-                    >
-                      <div className="flex items-center gap-3">
-                        {member.isLead && (
-                          <motion.div
-                            className="text-yellow-300"
-                            title="Team Lead"
-                            animate={{ rotate: [0, 10, -10, 0] }}
-                            transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-                          >
-                            <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 20 20">
-                              <path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732L14.146 12.8l-1.179 4.456a1 1 0 01-1.934 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732L9.854 7.2l1.179-4.456A1 1 0 0112 2z" clipRule="evenodd" />
-                            </svg>
-                          </motion.div>
-                        )}
-                        <p className="font-medium text-black font-mono text-sm">{member.name}</p>
+                {/* Team Code Display */}
+                {teamData?.code && (
+                  <motion.div 
+                    className="bg-gradient-to-r from-yellow-400/30 to-orange-400/30 px-6 py-5 rounded-2xl backdrop-blur-md border-2 border-yellow-400/40 mb-8 cursor-pointer hover:from-yellow-400/40 hover:to-orange-400/40 hover:border-yellow-400/60 transition-all duration-300 shadow-lg"
+                    variants={memberVariants}
+                    onClick={() => {
+                      navigator.clipboard.writeText(teamData.code).then(() => {
+                        setShowCopied(true);
+                        setTimeout(() => setShowCopied(false), 2000);
+                      });
+                    }}
+                    whileHover={{ scale: 1.02, y: -2 }}
+                    whileTap={{ scale: 0.98 }}
+                  >
+                    <div className="text-center">
+                      <div className="flex items-center justify-center gap-3 mb-3">
+                        <svg className="w-5 h-5 text-yellow-700" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                        </svg>
+                        <p className={`text-sm text-black/80 font-bold ${orbitron.className} tracking-wider`}>TEAM CODE [CLICK TO COPY]</p>
                       </div>
-                      {!member.isLead && (
-                        <motion.button
-                          onClick={() => removeMember(member.name)}
-                          className="text-red-600 hover:text-red-800 p-1 rounded-full hover:bg-red-100/20 transition-all duration-200"
-                          whileHover={{ scale: 1.1 }}
-                          whileTap={{ scale: 0.9 }}
-                        >
-                          <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12"/>
-                          </svg>
-                        </motion.button>
-                      )}
-                    </motion.div>
-                  ))}
+                      <p className={`text-3xl font-bold text-black tracking-widest bg-black/15 py-3 px-6 rounded-xl ${orbitron.className}`}>{teamData.code}</p>
+                    </div>
+                  </motion.div>
+                )}
+                
+                <motion.div className="flex flex-col gap-4 mb-8">
+                  {loading ? (
+                    <div className="flex items-center justify-center py-12">
+                      <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-black"></div>
+                    </div>
+                  ) : teamData?.members ? (
+                    teamData.members.map((member, idx) => (
+                      <motion.div
+                        key={member.id || idx}
+                        className="flex items-center justify-between bg-black/25 px-6 py-4 rounded-2xl backdrop-blur-md border border-black/15 hover:bg-black/35 transition-all duration-300"
+                        variants={memberVariants}
+                        layout
+                        whileHover={{ scale: 1.02, y: -2 }}
+                      >
+                        <div className="flex items-center gap-4">
+                          {member.isLeader && (
+                            <motion.div
+                              className="text-yellow-300"
+                              title="Team Lead"
+                              animate={{ 
+                                rotate: [0, 15, -15, 0],
+                                scale: [1, 1.1, 1]
+                              }}
+                              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
+                            >
+                              <svg className="w-6 h-6" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M5 2a1 1 0 011 1v1h1a1 1 0 010 2H6v1a1 1 0 01-2 0V6H3a1 1 0 010-2h1V3a1 1 0 011-1zm0 10a1 1 0 011 1v1h1a1 1 0 110 2H6v1a1 1 0 11-2 0v-1H3a1 1 0 110-2h1v-1a1 1 0 011-1zM12 2a1 1 0 01.967.744L14.146 7.2 17.5 9.134a1 1 0 010 1.732L14.146 12.8l-1.179 4.456a1 1 0 01-1.934 0L9.854 12.8 6.5 10.866a1 1 0 010-1.732L9.854 7.2l1.179-4.456A1 1 0 0112 2z" clipRule="evenodd" />
+                              </svg>
+                            </motion.div>
+                          )}
+                          <div className="flex flex-col">
+                            <p className={`font-bold text-black text-lg ${orbitron.className}`}>{member.name}</p>
+                            <p className={`text-sm text-black/70 ${orbitron.className} font-light`}>{member.email}</p>
+                          </div>
+                        </div>
+                      </motion.div>
+                    ))
+                  ) : (
+                    <div className={`text-center py-8 text-black/70 text-lg ${orbitron.className}`}>
+                      NO TEAM MEMBERS FOUND
+                    </div>
+                  )}
                 </motion.div>
 
                 <motion.button 
                   onClick={() => setShowExitModal(true)}
-                  className="w-full bg-red-500/70 text-white font-medium py-2 px-4 rounded-lg hover:bg-red-500/90 transition-all duration-300 font-mono border border-red-400/30 text-sm"
-                  whileHover={{ scale: 1.02 }}
+                  disabled={leaving}
+                  className={`w-full bg-red-500/80 text-white font-bold py-4 px-6 rounded-2xl hover:bg-red-500 transition-all duration-300 border border-red-400/40 text-lg disabled:opacity-60 disabled:cursor-not-allowed ${orbitron.className} tracking-wide`}
+                  whileHover={{ scale: 1.02, y: -2 }}
                   whileTap={{ scale: 0.98 }}
                 >
-                  Exit Team
+                  {leaving ? 'EXITING...' : 'EXIT TEAM'}
                 </motion.button>
               </div>
             </motion.div>
+            </div>
+            {/* Timeline Section */}
+           <ReviewTimeline/>
 
-            {/* Middle Section - Timeline */}
+          {/* Bottom Section - Project Info Form */}
+          <motion.div 
+            className="max-w-7xl mx-auto"
+            variants={cardVariants}
+          >
             <motion.div 
-              className="xl:col-span-1 bg-gray-900/90 rounded-2xl shadow-2xl border border-gray-700/50 overflow-hidden"
+              className="bg-gradient-to-br from-orange-400/90 to-orange-600/90 rounded-3xl shadow-2xl border border-orange-400/40 overflow-hidden backdrop-blur-sm"
               variants={cardVariants}
             >
-              <div className="relative z-10 p-6">
-                <div className="flex items-center justify-center mb-6">
+              <div className="absolute inset-0 bg-gradient-to-br from-orange-400/20 to-transparent opacity-50"></div>
+              
+              <div className="relative z-10 p-8">
+                <div className="flex items-center justify-center mb-8">
                   <motion.div 
-                    className="p-3 bg-blue-500/20 rounded-full backdrop-blur-sm"
-                    whileHover={{ rotate: 360 }}
+                    className="p-4 bg-black/30 rounded-full backdrop-blur-md border border-black/20"
+                    whileHover={{ rotate: 360, scale: 1.1 }}
                     transition={{ duration: 0.6 }}
                   >
-                    <svg className="w-6 h-6 text-blue-400" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-                    </svg>
-                  </motion.div>
-                </div>
-
-                <h2 className="text-xl font-bold mb-8 text-blue-400 text-center font-mono">Review Timeline</h2>
-                
-                <div className="relative">
-                  {/* Timeline line */}
-                  <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-gray-600"></div>
-                  
-                  <div className="flex flex-col gap-6">
-                    {timelineSteps.map((step, i) => (
-                      <motion.div 
-                        key={i} 
-                        className="flex items-center gap-4 relative"
-                        variants={itemVariants}
-                        whileHover={{ scale: 1.02, x: 5 }}
-                      >
-                        {/* Timeline dot */}
-                        <motion.div 
-                          className={`w-8 h-8 rounded-full border-2 flex items-center justify-center text-white font-bold text-xs z-10 ${getStepColor(step.status)}`}
-                          whileHover={{ scale: 1.1 }}
-                        >
-                          {i + 1}
-                        </motion.div>
-                        
-                        {/* Connecting line to next step */}
-                        {i < timelineSteps.length - 1 && (
-                          <div className={`absolute left-4 top-8 w-0.5 h-6 ${getLineColor(step.status)}`}></div>
-                        )}
-                        
-                        <div className="flex-1">
-                          <p className={`font-medium font-mono text-sm ${
-                            step.status === 'completed' ? 'text-green-400' :
-                            step.status === 'current' ? 'text-blue-400' : 'text-gray-400'
-                          }`}>
-                            {step.name}
-                          </p>
-                          <p className="text-xs text-gray-500 capitalize">{step.status}</p>
-                        </div>
-                      </motion.div>
-                    ))}
-                  </div>
-                </div>
-              </div>
-            </motion.div>
-
-            {/* Right Section - Project Info Form */}
-            <motion.div 
-              className="xl:col-span-1 bg-gradient-to-br from-orange-400/60 to-orange-500/60 rounded-2xl shadow-2xl border border-orange-400/30 overflow-hidden"
-              variants={cardVariants}
-            >
-              <div className="relative z-10 p-6">
-                <div className="flex items-center justify-center mb-6">
-                  <motion.div 
-                    className="p-3 bg-black/20 rounded-full backdrop-blur-sm"
-                    whileHover={{ rotate: 360 }}
-                    transition={{ duration: 0.6 }}
-                  >
-                    <svg className="w-6 h-6 text-black" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
+                    <svg className="w-8 h-8 text-black" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24">
                       <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
                     </svg>
                   </motion.div>
                 </div>
 
-                <h2 className="text-xl font-bold mb-6 text-black text-center font-mono">Project Information</h2>
+                <h2 className={`text-2xl font-bold mb-8 text-black text-center ${orbitron.className} tracking-wide`}>PROJECT INFORMATION</h2>
                 
-                <div className="flex flex-col gap-4">
-                  {[
-                    { placeholder: "Track Chosen", type: "text" },
-                    { placeholder: "Project Title", type: "text" },
-                    { placeholder: "GitHub Link", type: "url" },
-                    { placeholder: "Figma Link", type: "url" },
-                    { placeholder: "PPT Link", type: "url" },
-                    { placeholder: "Other Links", type: "url" }
-                  ].map((field, idx) => (
-                    <motion.div key={idx} variants={itemVariants}>
-                      <motion.input
-                        type={field.type}
-                        placeholder={field.placeholder}
-                        className="w-full p-3 border-2 border-black/20 rounded-lg bg-black/10 text-black placeholder-black/60 font-mono focus:outline-none focus:border-black/40 focus:bg-black/5 transition-all duration-300 backdrop-blur-sm text-sm"
-                        whileFocus={{ scale: 1.02 }}
-                      />
-                    </motion.div>
-                  ))}
+                {projectSaved && (
+                  <motion.div 
+                    className="bg-emerald-500/30 border border-emerald-500/40 text-emerald-800 px-6 py-4 rounded-2xl mb-6 text-center font-bold"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -10 }}
+                  >
+                    <span className={`text-lg ${orbitron.className} tracking-wide`}>✅ PROJECT INFORMATION SAVED SUCCESSFULLY!</span>
+                  </motion.div>
+                )}
+                
+                <form onSubmit={handleProjectFormSubmit} className="grid lg:grid-cols-2 gap-6">
+                  <motion.div variants={itemVariants}>
+                    <motion.select
+  value={projectForm.track}
+  onChange={(e) => handleProjectFormChange("track", e.target.value)}
+  className={`w-full p-4 border-2 border-black/30 rounded-2xl bg-black/15 text-black placeholder-black/60 focus:outline-none focus:border-black/50 focus:bg-black/10 transition-all duration-300 backdrop-blur-md text-lg font-bold tracking-wide ${orbitron.className}`}
+  whileFocus={{ scale: 1.02 }}
+>
+  <option value="" disabled>
+    TRACK CHOSEN
+  </option>
+  <option value="sponsor track">Sponsor Track</option>
+  <option value="innovate for impact">Innovate for Impact</option>
+  <option value="gravitech">Gravitech</option>
+  <option value="taskmaster">Taskmaster</option>
+  <option value="infiniloop">Infiniloop</option>
+  <option value="cyberforge">Cyberforge</option>
+  <option value="finovate">Finovate</option>
+</motion.select>
+</motion.div>
+                  
+                 <motion.div variants={itemVariants}>
+  <motion.input
+    type="text"
+    placeholder="PROJECT TITLE"
+    value={projectForm.projectTitle}
+    onChange={(e) => handleProjectFormChange("projectTitle", e.target.value)}
+    className={`w-full p-4 border-2 border-black/30 rounded-2xl bg-black/15 text-black placeholder-black/60 focus:outline-none focus:border-black/50 focus:bg-black/10 transition-all duration-300 backdrop-blur-md text-lg font-bold tracking-wide ${orbitron.className}`}
+    whileFocus={{ scale: 1.02 }}
+  />
+</motion.div>
+
+                  
+                  <motion.div variants={itemVariants}>
+                    <motion.input
+                      type="url"
+                      placeholder="GITHUB LINK"
+                      value={projectForm.githubLink}
+                      onChange={(e) => handleProjectFormChange('githubLink', e.target.value)}
+                      className={`w-full p-4 border-2 border-black/30 rounded-2xl bg-black/15 text-black placeholder-black/60 focus:outline-none focus:border-black/50 focus:bg-black/10 transition-all duration-300 backdrop-blur-md text-lg font-bold tracking-wide ${orbitron.className}`}
+                      whileFocus={{ scale: 1.02 }}
+                    />
+                  </motion.div>
+                  
+                  <motion.div variants={itemVariants}>
+                    <motion.input
+                      type="url"
+                      placeholder="Figma Link"
+                      value={projectForm.figmaLink}
+                      onChange={(e) => handleProjectFormChange('figmaLink', e.target.value)}
+                      className={`w-full p-4 border-2 border-black/30 rounded-2xl bg-black/15 text-black placeholder-black/60 focus:outline-none focus:border-black/50 focus:bg-black/10 transition-all duration-300 backdrop-blur-md text-lg font-bold tracking-wide ${orbitron.className}`}
+                      whileFocus={{ scale: 1.02 }}
+                    />
+                  </motion.div>
+                  
+                  <motion.div variants={itemVariants}>
+                    <motion.input
+                      type="url"
+                      placeholder="PPT Link"
+                      value={projectForm.pptLink}
+                      onChange={(e) => handleProjectFormChange('pptLink', e.target.value)}
+                      className={`w-full p-4 border-2 border-black/30 rounded-2xl bg-black/15 text-black placeholder-black/60 focus:outline-none focus:border-black/50 focus:bg-black/10 transition-all duration-300 backdrop-blur-md text-lg font-bold tracking-wide ${orbitron.className}`}
+                      whileFocus={{ scale: 1.02 }}
+                    />
+                  </motion.div>
+                  
+                  <motion.div variants={itemVariants}>
+                    <motion.input
+                      type="url"
+                      placeholder="Other Links"
+                      value={projectForm.otherLinks}
+                      onChange={(e) => handleProjectFormChange('otherLinks', e.target.value)}
+                      className={`w-full p-4 border-2 border-black/30 rounded-2xl bg-black/15 text-black placeholder-black/60 focus:outline-none focus:border-black/50 focus:bg-black/10 transition-all duration-300 backdrop-blur-md text-lg font-bold tracking-wide ${orbitron.className}`}
+                      whileFocus={{ scale: 1.02 }}
+                    />
+                  </motion.div>
                   
                   <motion.div variants={itemVariants}>
                     <motion.textarea
                       placeholder="Project Description"
+                      value={projectForm.projectDescription}
+                      onChange={(e) => handleProjectFormChange('projectDescription', e.target.value)}
                       className="w-full p-3 border-2 border-black/20 rounded-lg bg-black/10 text-black placeholder-black/60 font-mono focus:outline-none focus:border-black/40 focus:bg-black/5 transition-all duration-300 backdrop-blur-sm resize-none text-sm"
                       rows="3"
                       whileFocus={{ scale: 1.02 }}
@@ -334,23 +549,37 @@ export default function OnboardingPage() {
                   
                   <motion.div variants={itemVariants}>
                     <motion.button
-                      onClick={(e) => {
-                        e.preventDefault();
-                        alert("Project info saved!");
-                      }}
-                      className="w-full bg-black/20 text-black font-medium py-3 px-6 rounded-lg hover:bg-black/30 transition-all duration-300 backdrop-blur-sm border border-black/10 font-mono text-sm"
-                      whileHover={{ scale: 1.02, y: -1 }}
-                      whileTap={{ scale: 0.98 }}
+                      type="submit"
+                      disabled={projectSaving}
+                      className="w-full bg-black/20 text-black font-medium py-3 px-6 rounded-lg hover:bg-black/30 transition-all duration-300 backdrop-blur-sm border border-black/10 font-mono text-sm disabled:opacity-50 disabled:cursor-not-allowed"
+                      whileHover={!projectSaving ? { scale: 1.02, y: -1 } : {}}
+                      whileTap={!projectSaving ? { scale: 0.98 } : {}}
                     >
-                      Save Project Info →
+                      {projectSaving ? 'Saving...' : 'Save Project Info →'}
                     </motion.button>
                   </motion.div>
-                </div>
+                </form>
               </div>
             </motion.div>
-          </div>
+          </motion.div>
         </motion.div>
       </div>
+
+      {/* Exit Confirmation Modal */}
+      <AnimatePresence>
+        {showCopied && (
+          <motion.div
+            className="fixed bottom-6 left-1/2 -translate-x-1/2 bg-black/80 border border-orange-500/40 text-orange-300 px-4 py-2 rounded-lg shadow-lg z-50 font-mono text-sm"
+            role="status"
+            aria-live="polite"
+            initial={{ opacity: 0, y: 10 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: 10 }}
+          >
+            Team code copied to clipboard
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Exit Confirmation Modal */}
       <AnimatePresence>
@@ -385,16 +614,13 @@ export default function OnboardingPage() {
                     Cancel
                   </motion.button>
                   <motion.button
-                    onClick={() => {
-                      // Handle exit logic here
-                      setShowExitModal(false);
-                      alert("Exited team successfully!");
-                    }}
-                    className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-300 font-mono text-sm"
+                    onClick={handleLeaveTeam}
+                    disabled={leaving}
+                    className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-300 font-mono text-sm disabled:opacity-60 disabled:cursor-not-allowed"
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
-                    Exit Team
+                    {leaving ? 'Exiting…' : 'Exit Team'}
                   </motion.button>
                 </div>
               </div>

@@ -1,14 +1,73 @@
 "use client";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 
 export default function JoinTeamPage() {
+  const { status } = useSession();
   const router = useRouter();
+  const [teamCode, setTeamCode] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [error, setError] = useState("");
+  const [success, setSuccess] = useState("");
 
-  const handleSubmit = (e) => {
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    router.push("/onboarding");
+    
+    if (!teamCode.trim()) {
+      setError("Team code is required");
+      return;
+    }
+
+    if (teamCode.trim().length !== 6) {
+      setError("Team code must be 6 characters");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setError("");
+    setSuccess("");
+
+    try {
+      const response = await fetch('/api/teams/join', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          teamCode: teamCode.trim()
+        }),
+      });
+
+      const result = await response.json();
+
+      if (!response.ok) {
+        throw new Error(result.error || 'Failed to join team');
+      }
+
+      setSuccess(result.message);
+      
+      setTimeout(() => {
+        router.push("/onboarding");
+      }, 2000);
+
+    } catch (err) {
+      console.error('Join team error:', err);
+      setError(err.message || 'Something went wrong. Please try again.');
+    } finally {
+      setIsSubmitting(false);
+    }
   };
+
+  if (status === "loading") {
+    return (
+      <div className="w-full relative min-h-screen flex items-center justify-center" style={{ backgroundColor: "#000000" }}>
+        <div className="text-orange-500 font-mono">Loading...</div>
+      </div>
+    );
+  }
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -152,16 +211,44 @@ export default function JoinTeamPage() {
               </motion.div>
 
               <form onSubmit={handleSubmit} className="flex flex-col gap-6">
+                {/* Error/Success Messages */}
+                {error && (
+                  <motion.div 
+                    className="bg-red-500/20 border border-red-500/30 rounded-xl p-4 text-red-300 font-mono text-sm"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
+                    {error}
+                  </motion.div>
+                )}
+                
+                {success && (
+                  <motion.div 
+                    className="bg-green-500/20 border border-green-500/30 rounded-xl p-4 text-green-300 font-mono text-sm"
+                    initial={{ opacity: 0, y: -10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                  >
+                    {success}
+                  </motion.div>
+                )}
+
                 <motion.div variants={itemVariants}>
                   <label className="block text-orange-500 font-bold mb-2 font-mono">
                     Team Code
                   </label>
                   <motion.input
+                    value={teamCode}
+                    onChange={(e) => {
+                      setTeamCode(e.target.value.toUpperCase());
+                      if (error) setError("");
+                      if (success) setSuccess("");
+                    }}
                     className="w-full p-4 border-2 border-orange-500/30 rounded-xl bg-orange-500/10 text-orange-300 placeholder-orange-300/60 font-mono focus:outline-none focus:border-orange-500/60 focus:bg-orange-500/5 transition-all duration-300 backdrop-blur-sm"
                     type="text"
                     placeholder="Enter 6-digit team code"
                     required
                     maxLength="6"
+                    disabled={isSubmitting}
                     style={{ textTransform: 'uppercase', letterSpacing: '0.2em' }}
                     whileFocus={{ scale: 1.02 }}
                   />
@@ -169,12 +256,13 @@ export default function JoinTeamPage() {
 
                 <motion.button
                   type="submit"
-                  className="w-full bg-orange-500/20 text-orange-500 font-bold py-4 px-6 rounded-xl hover:bg-orange-500/30 transition-all duration-300 backdrop-blur-sm border border-orange-500/20 font-mono"
+                  disabled={isSubmitting}
+                  className="w-full bg-orange-500/20 text-orange-500 font-bold py-4 px-6 rounded-xl hover:bg-orange-500/30 transition-all duration-300 backdrop-blur-sm border border-orange-500/20 font-mono disabled:opacity-50 disabled:cursor-not-allowed"
                   variants={itemVariants}
-                  whileHover={{ scale: 1.02, y: -2 }}
-                  whileTap={{ scale: 0.98 }}
+                  whileHover={{ scale: isSubmitting ? 1 : 1.02, y: isSubmitting ? 0 : -2 }}
+                  whileTap={{ scale: isSubmitting ? 1 : 0.98 }}
                 >
-                  Join Team →
+                  {isSubmitting ? 'Joining Team...' : 'Join Team →'}
                 </motion.button>
               </form>
 

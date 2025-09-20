@@ -1,6 +1,6 @@
 "use client";
 import React from "react";
-import { t012 } from "../fonts";
+import { t012,nostromoMedium } from "../fonts";
 import { motion } from "framer-motion";
 
 const Rules = () => {
@@ -33,7 +33,7 @@ const Rules = () => {
           RULES
         </motion.h1>
 
-        <ul className="list-none p-0 m-0 flex flex-col gap-4 md:gap-6 mt-12 px-4 md:px-10 ">
+        <ul className={`${nostromoMedium.className} text-black list-none p-0 m-0 flex flex-col gap-4 md:gap-6 mt-20 pb-10 mb-24`}>
           {rules.map((rule, index) => (
             <motion.li
               key={index}
@@ -42,13 +42,6 @@ const Rules = () => {
               transition={{ duration: 0.5, delay: index * 0.1 }}
               viewport={{ once: false, amount: 0.2 }} // 👈 replay on revisit/scroll
               className="text-base sm:text-lg md:text-xl"
-              style={{
-                fontFamily: '"Poppins", sans-serif',
-                fontWeight: "bold",
-                textAlign: "left",
-                lineHeight: "1.7",
-                color: "#000",
-              }}
             >
               • {rule}
             </motion.li>

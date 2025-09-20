@@ -1,10 +1,12 @@
 "use client";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useSession } from "next-auth/react";
 import { motion } from "framer-motion";
 import { orbitron } from "../fonts";
 
 export default function VITFormPage() {
+  const { data: session, status } = useSession();
   const [isHostel, setIsHostel] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
@@ -21,6 +23,15 @@ export default function VITFormPage() {
   });
 
   const router = useRouter();
+
+  useEffect(() => {
+    if (status === "loading") return;
+
+    // Pre-fill name from session
+    if (session.user?.name) {
+      setFormData(prev => ({ ...prev, name: session.user.name }));
+    }
+  }, [session, status]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,12 +62,16 @@ export default function VITFormPage() {
     setSuccess("");
 
     try {
+      // First, create the VIT student record
       const response = await fetch('/api/vit-students', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          ...formData,
+          userEmail: session.user.email
+        }),
       });
 
       const result = await response.json();
@@ -64,6 +79,15 @@ export default function VITFormPage() {
       if (!response.ok) {
         throw new Error(result.error || 'Registration failed');
       }
+
+      // Update user registration status
+      await fetch('/api/user/status', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ isRegistered: true }),
+      });
 
       setSuccess("Registration successful! Redirecting to teams...");
       
