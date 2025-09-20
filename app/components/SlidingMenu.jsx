@@ -63,7 +63,7 @@ const SlidingMenu = () => {
               project: New Era of VinnovateIT
             </p>
           </div>
-          <div className="flex items-center gap-3">
+          <div className="flex top-0 items-center gap-3">
             <UserButton />
             <button
               onClick={handleClose}

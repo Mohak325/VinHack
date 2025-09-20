@@ -309,7 +309,7 @@ const AboutVinhack = ({ isFlipping }) => {
           <div
             ref={newDotRef}
             style={{ opacity: 0 }}
-            className={`text-center ${nostromoMedium.className}`}
+            className={`hidden md:block text-center ${nostromoMedium.className}`}
           >
             <div
               className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl text-black"

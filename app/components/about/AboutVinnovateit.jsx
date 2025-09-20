@@ -310,9 +310,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
   ref={newDotRef}
   style={{ opacity: 0 }}
   className={`absolute ${nostromoMedium.className}
-    bottom-[5%]   /* push it below the button */
-    right-[5%]    /* keep aligned to the right */
-    text-center`}
+    bottom-[5%] right-[5%] text-center`}
 >
   <div
     className="text-2xl md:text-4xl lg:text-5xl xl:text-6xl text-black"

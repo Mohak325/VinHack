@@ -313,7 +313,9 @@ export default function OnboardingPage() {
             {loading ? 'LOADING...' : teamData?.name || 'TEAM DASHBOARD'}
           </motion.h1>
 
-          {/* Top Row: Team Info and Timeline */}
+          {/* ====================================================== */}
+          {/* MODIFIED SECTION: Team Info and Timeline are now peers */}
+          {/* ====================================================== */}
           <div className="grid lg:grid-cols-2 gap-8 max-w-7xl mx-auto mb-8">
             {/* Team Info Section */}
             <motion.div 
@@ -418,9 +420,10 @@ export default function OnboardingPage() {
                 </motion.button>
               </div>
             </motion.div>
-            </div>
+
             {/* Timeline Section */}
-           <ReviewTimeline/>
+            <ReviewTimeline/>
+          </div>
 
           {/* Bottom Section - Project Info Form */}
           <motion.div 
@@ -462,35 +465,34 @@ export default function OnboardingPage() {
                 <form onSubmit={handleProjectFormSubmit} className="grid lg:grid-cols-2 gap-6">
                   <motion.div variants={itemVariants}>
                     <motion.select
-  value={projectForm.track}
-  onChange={(e) => handleProjectFormChange("track", e.target.value)}
-  className={`w-full p-4 border-2 border-black/30 rounded-2xl bg-black/15 text-black placeholder-black/60 focus:outline-none focus:border-black/50 focus:bg-black/10 transition-all duration-300 backdrop-blur-md text-lg font-bold tracking-wide ${orbitron.className}`}
-  whileFocus={{ scale: 1.02 }}
->
-  <option value="" disabled>
-    TRACK CHOSEN
-  </option>
-  <option value="sponsor track">Sponsor Track</option>
-  <option value="innovate for impact">Innovate for Impact</option>
-  <option value="gravitech">Gravitech</option>
-  <option value="taskmaster">Taskmaster</option>
-  <option value="infiniloop">Infiniloop</option>
-  <option value="cyberforge">Cyberforge</option>
-  <option value="finovate">Finovate</option>
-</motion.select>
-</motion.div>
+                      value={projectForm.track}
+                      onChange={(e) => handleProjectFormChange("track", e.target.value)}
+                      className={`w-full p-4 border-2 border-black/30 rounded-2xl bg-black/15 text-black placeholder-black/60 focus:outline-none focus:border-black/50 focus:bg-black/10 transition-all duration-300 backdrop-blur-md text-lg font-bold tracking-wide ${orbitron.className}`}
+                      whileFocus={{ scale: 1.02 }}
+                    >
+                      <option value="" disabled>
+                        TRACK CHOSEN
+                      </option>
+                      <option value="sponsor track">Sponsor Track</option>
+                      <option value="innovate for impact">Innovate for Impact</option>
+                      <option value="gravitech">Gravitech</option>
+                      <option value="taskmaster">Taskmaster</option>
+                      <option value="infiniloop">Infiniloop</option>
+                      <option value="cyberforge">Cyberforge</option>
+                      <option value="finovate">Finovate</option>
+                    </motion.select>
+                  </motion.div>
                   
                  <motion.div variants={itemVariants}>
-  <motion.input
-    type="text"
-    placeholder="PROJECT TITLE"
-    value={projectForm.projectTitle}
-    onChange={(e) => handleProjectFormChange("projectTitle", e.target.value)}
-    className={`w-full p-4 border-2 border-black/30 rounded-2xl bg-black/15 text-black placeholder-black/60 focus:outline-none focus:border-black/50 focus:bg-black/10 transition-all duration-300 backdrop-blur-md text-lg font-bold tracking-wide ${orbitron.className}`}
-    whileFocus={{ scale: 1.02 }}
-  />
-</motion.div>
-
+                  <motion.input
+                    type="text"
+                    placeholder="PROJECT TITLE"
+                    value={projectForm.projectTitle}
+                    onChange={(e) => handleProjectFormChange("projectTitle", e.target.value)}
+                    className={`w-full p-4 border-2 border-black/30 rounded-2xl bg-black/15 text-black placeholder-black/60 focus:outline-none focus:border-black/50 focus:bg-black/10 transition-all duration-300 backdrop-blur-md text-lg font-bold tracking-wide ${orbitron.className}`}
+                    whileFocus={{ scale: 1.02 }}
+                  />
+                </motion.div>
                   
                   <motion.div variants={itemVariants}>
                     <motion.input
@@ -541,23 +543,27 @@ export default function OnboardingPage() {
                       placeholder="Project Description"
                       value={projectForm.projectDescription}
                       onChange={(e) => handleProjectFormChange('projectDescription', e.target.value)}
-                      className="w-full p-3 border-2 border-black/20 rounded-lg bg-black/10 text-black placeholder-black/60 font-mono focus:outline-none focus:border-black/40 focus:bg-black/5 transition-all duration-300 backdrop-blur-sm resize-none text-sm"
+                      className={`w-full p-3 border-2 border-black/20 rounded-lg bg-black/10 text-black placeholder-black/60 ${orbitron.className} focus:outline-none focus:border-black/40 focus:bg-black/5 transition-all duration-300 backdrop-blur-sm resize-none text-sm`}
                       rows="3"
                       whileFocus={{ scale: 1.02 }}
                     />
                   </motion.div>
                   
                   <motion.div variants={itemVariants}>
-                    <motion.button
-                      type="submit"
-                      disabled={projectSaving}
-                      className="w-full bg-black/20 text-black font-medium py-3 px-6 rounded-lg hover:bg-black/30 transition-all duration-300 backdrop-blur-sm border border-black/10 font-mono text-sm disabled:opacity-50 disabled:cursor-not-allowed"
-                      whileHover={!projectSaving ? { scale: 1.02, y: -1 } : {}}
-                      whileTap={!projectSaving ? { scale: 0.98 } : {}}
-                    >
-                      {projectSaving ? 'Saving...' : 'Save Project Info →'}
-                    </motion.button>
-                  </motion.div>
+  <motion.button
+    type="submit"
+    disabled={projectSaving}
+    className={`w-full bg-black text-orange-400 font-medium py-3 px-6 rounded-lg 
+                hover:bg-black/90 hover:text-orange-300 
+                transition-all duration-300 backdrop-blur-sm 
+                border border-orange-500 ${orbitron.className} 
+                text-sm disabled:opacity-50 disabled:cursor-not-allowed`}
+    whileHover={!projectSaving ? { scale: 1.02, y: -1 } : {}}
+    whileTap={!projectSaving ? { scale: 0.98 } : {}}
+  >
+    {projectSaving ? 'Saving...' : 'Save Project Info →'}
+  </motion.button>
+</motion.div>
                 </form>
               </div>
             </motion.div>
@@ -607,7 +613,7 @@ export default function OnboardingPage() {
                 <div className="flex gap-4 justify-center">
                   <motion.button
                     onClick={() => setShowExitModal(false)}
-                    className="px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-all duration-300 font-mono text-sm"
+                    className={`px-6 py-2 bg-gray-700 text-white rounded-lg hover:bg-gray-600 transition-all duration-300 ${orbitron.className} text-sm`}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
@@ -616,7 +622,7 @@ export default function OnboardingPage() {
                   <motion.button
                     onClick={handleLeaveTeam}
                     disabled={leaving}
-                    className="px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-300 font-mono text-sm disabled:opacity-60 disabled:cursor-not-allowed"
+                    className={`px-6 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-all duration-300 ${orbitron.className} text-sm disabled:opacity-60 disabled:cursor-not-allowed`}
                     whileHover={{ scale: 1.05 }}
                     whileTap={{ scale: 0.95 }}
                   >
