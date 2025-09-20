@@ -12,6 +12,7 @@ gsap.registerPlugin(ScrollTrigger);
 const HorizontalTimeline = ({ events }) => {
   const containerRef = useRef(null);
   const wrapperRef = useRef(null);
+  const tlRef = useRef(null); // Store reference to timeline
   const [isMobile, setIsMobile] = useState(false);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [touchStart, setTouchStart] = useState(null);
@@ -88,18 +89,25 @@ const HorizontalTimeline = ({ events }) => {
         refreshPriority: -1,
         // Force refresh on mobile orientation change
         onRefresh: () => {
-          if (window.innerWidth <= 768) {
-            ScrollTrigger.getById(tl.scrollTrigger.id)?.kill();
+          if (window.innerWidth <= 768 && tlRef.current) {
+            tlRef.current.scrollTrigger?.kill();
+            tlRef.current.kill();
           }
         }
       }
     });
 
+    // Store reference to timeline
+    tlRef.current = tl;
+
     const refresh = () => {
       // Kill ScrollTrigger on mobile
       if (window.innerWidth <= 768) {
-        tl.scrollTrigger?.kill();
-        tl.kill();
+        if (tlRef.current) {
+          tlRef.current.scrollTrigger?.kill();
+          tlRef.current.kill();
+          tlRef.current = null;
+        }
         return;
       }
       ScrollTrigger.refresh();
@@ -111,8 +119,11 @@ const HorizontalTimeline = ({ events }) => {
     return () => {
       window.removeEventListener("resize", refresh);
       window.removeEventListener("orientationchange", refresh);
-      tl.scrollTrigger?.kill();
-      tl.kill();
+      if (tlRef.current) {
+        tlRef.current.scrollTrigger?.kill();
+        tlRef.current.kill();
+        tlRef.current = null;
+      }
     };
   }, [events.length, isMobile]);
 
@@ -122,51 +133,43 @@ const HorizontalTimeline = ({ events }) => {
       <div className="relative w-full h-screen overflow-hidden">
         <div
           ref={wrapperRef}
-          className="timeline-wrapper flex h-full"
+          className="timeline-wrapper flex h-full items-center justify-center"
           style={{ width: `${events.length * 100}vw` }}
           onTouchStart={handleTouchStart}
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
         >
           {events.map((event, index) => (
-            <div key={event.id} className="w-screen flex-shrink-0">
-              <EventCard event={event} />
+            <div key={event.id} className="w-screen flex-shrink-0 flex items-center justify-center px-8">
+              <div className="w-full max-w-sm">
+                <EventCard event={event} />
+              </div>
             </div>
           ))}
         </div>
         
-        {/* Mobile navigation dots */}
-        <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex space-x-2 z-10">
-          {events.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`w-3 h-3 rounded-full transition-all ${
-                index === currentIndex 
-                  ? 'bg-white' 
-                  : 'bg-white/30'
-              }`}
-            />
-          ))}
-        </div>
-
-        {/* Mobile navigation arrows */}
-        {currentIndex > 0 && (
+        {/* Mobile navigation arrows at bottom */}
+        <div className="absolute bottom-8 left-1/2 transform -translate-x-1/2 flex items-center space-x-6 z-10">
           <button
             onClick={() => setCurrentIndex(currentIndex - 1)}
-            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white p-3 rounded-full z-10"
+            disabled={currentIndex === 0}
+            className={`bg-white/20 backdrop-blur-sm text-white p-3 rounded-full transition-all ${
+              currentIndex === 0 ? 'opacity-30' : 'opacity-100 hover:bg-white/30'
+            }`}
           >
             ←
           </button>
-        )}
-        {currentIndex < events.length - 1 && (
+          
           <button
             onClick={() => setCurrentIndex(currentIndex + 1)}
-            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-white/20 backdrop-blur-sm text-white p-3 rounded-full z-10"
+            disabled={currentIndex === events.length - 1}
+            className={`bg-white/20 backdrop-blur-sm text-white p-3 rounded-full transition-all ${
+              currentIndex === events.length - 1 ? 'opacity-30' : 'opacity-100 hover:bg-white/30'
+            }`}
           >
             →
           </button>
-        )}
+        </div>
       </div>
     );
   }
