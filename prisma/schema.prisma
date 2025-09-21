@@ -53,12 +53,12 @@ model User {
   createdAt     DateTime  @default(now()) @map("created_at")
   updatedAt     DateTime  @updatedAt @map("updated_at")
 
-  accounts  Account[]
-  sessions  Session[]
-  
+  accounts Account[]
+  sessions Session[]
+
   // Relations to VIT students and external participants
-  vitStudent           VITStudent?
-  externalParticipant  externalParticipant?
+  vitStudent          VITStudent?
+  externalParticipant externalParticipant?
 
   @@map("users")
 }
@@ -128,17 +128,29 @@ model Team {
   updatedAt   DateTime @updatedAt @map("updated_at")
 
   // Project Information
-  projectTitle       String?  @map("project_title")
-  projectDescription String?  @map("project_description")
-  track             String?
-  githubLink        String?  @map("github_link")
-  figmaLink         String?  @map("figma_link")
-  pptLink           String?  @map("ppt_link")
-  otherLinks        String?  @map("other_links")
+  projectTitle       String? @map("project_title")
+  projectDescription String? @map("project_description")
+  track              String?
+  githubLink         String? @map("github_link")
+  figmaLink          String? @map("figma_link")
+  pptLink            String? @map("ppt_link")
+  otherLinks         String? @map("other_links")
 
   // Relations
   externalParticipants externalParticipant[]
   vitStudents          VITStudent[]
 
   @@map("teams")
+}
+
+model Gravitas {
+  id                 String  @id @default(auto()) @map("_id") @db.ObjectId
+  name               String?
+  email              String  @unique
+  registrationNumber String?
+  isVITian           Boolean @default(false)
+  createdAt          String
+  updatedAt          String
+
+  @@map("gravitas")
 }

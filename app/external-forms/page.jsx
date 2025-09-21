@@ -231,7 +231,7 @@ export default function ExternalFormPage() {
           {/* Back Button */}
           <motion.button
             variants={itemVariants}
-            onClick={() => router.back()}
+            onClick={() => router.push("/")}
             className="mb-6 flex items-center text-orange-400 hover:text-orange-300 transition-colors font-mono group"
             whileHover={{ x: -5 }}
             transition={{ duration: 0.2 }}

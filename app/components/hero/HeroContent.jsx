@@ -37,7 +37,6 @@ const HeroContent = ({ ruigslayClassName, handVariants, leftHandVariants }) => {
       {/* Register Button */}
       <a
         href="/login"
-        target="_blank"
         rel="noopener noreferrer"
         className=" inline-block pt-3 z-20 group"
       >

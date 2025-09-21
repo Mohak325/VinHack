@@ -22,6 +22,20 @@ export async function GET(request) {
     }
 
     const email = session.user.email
+    
+    // Check if email exists in Gravitas collection
+    console.log('🔍 Auth callback: Checking Gravitas registration for:', email)
+    const gravitasRegistration = await prisma.gravitas.findUnique({
+      where: { email }
+    })
+
+    if (!gravitasRegistration) {
+      console.log('❌ Auth callback: Email not found in Gravitas collection, access denied')
+      return NextResponse.redirect(new URL('/auth/error?error=NotRegisteredOnGravitas', request.url))
+    }
+
+    console.log('✅ Auth callback: Email found in Gravitas collection, proceeding...')
+    
     const isVitStudent = email.endsWith('@vitstudent.ac.in')
     console.log('🔍 Auth callback: Email analysis:', {
       email,

@@ -4,11 +4,13 @@ import { useRouter, useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { useEffect, useState, Suspense } from 'react'
 import { ruigslay } from "../fonts";
+
 function LoginContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
   const callbackUrl = searchParams.get('callbackUrl') || '/api/auth/callback'
   const [isLoading, setIsLoading] = useState(false)
+  const error = searchParams.get('error')
 
   useEffect(() => {
     // No client-side redirect
@@ -122,6 +124,31 @@ function LoginContent() {
             Sign in with your Google account to join the hackathon
           </motion.p>
 
+          {/* Error Display */}
+          {error && (
+            <motion.div 
+              className="w-full max-w-md mb-6 p-4 bg-red-500/20 border border-red-500/50 rounded-xl backdrop-blur-sm"
+              variants={itemVariants}
+              initial={{ opacity: 0, scale: 0.95 }}
+              animate={{ opacity: 1, scale: 1 }}
+            >
+              <div className="flex items-center gap-3">
+                <svg className="w-5 h-5 text-red-400 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.728-.833-2.498 0L4.316 16.5c-.77.833.192 2.5 1.732 2.5z" />
+                </svg>
+                <div>
+                  <p className="text-red-300 font-mono text-sm font-semibold">Authentication Error</p>
+                  <p className="text-red-300/80 font-mono text-xs mt-1">
+                    {error === 'NotRegisteredOnGravitas' 
+                      ? 'You must register on Gravitas website first'
+                      : 'Please try signing in again'
+                    }
+                  </p>
+                </div>
+              </div>
+            </motion.div>
+          )}
+
           {/* Login Card */}
           <motion.div 
             className="w-full max-w-md bg-black rounded-2xl shadow-2xl border border-orange-500/50 overflow-hidden"
@@ -182,6 +209,33 @@ function LoginContent() {
                 <p className="text-orange-300/80 text-sm font-mono text-center">
                   Use your institutional email for VIT students (@vitstudent.ac.in) or personal email for external participants
                 </p>
+              </motion.div>
+
+              {/* Gravitas Registration Notice */}
+              <motion.div 
+                className="mt-4 p-4 bg-blue-500/10 rounded-xl backdrop-blur-sm border border-blue-500/20"
+                variants={itemVariants}
+              >
+                <div className="flex items-start gap-3">
+                  <svg className="w-5 h-5 text-blue-400 flex-shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  <div className="text-blue-300/80 text-xs font-mono">
+                    <p className="font-semibold mb-1">Gravitas Registration Required</p>
+                    <p className="leading-relaxed">
+                      You must be registered on the{' '}
+                      <a 
+                        href="https://gravitas.vit.ac.in" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-blue-300 hover:text-blue-200 underline transition-colors"
+                      >
+                        Gravitas website
+                      </a>
+                      {' '}before you can access VinHack 25. Please complete your Gravitas registration first.
+                    </p>
+                  </div>
+                </div>
               </motion.div>
 
               {/* Decorative Elements */}
