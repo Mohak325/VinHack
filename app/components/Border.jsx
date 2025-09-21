@@ -271,7 +271,7 @@ const Border = ({
   isTimelineVisible,
 }) => {
   const [coords, setCoords] = useState({ x: 0, y: 0 });
-  const [soundOn, setSoundOn] = useState(false);
+  const [soundOn, setSoundOn] = useState(true); // Changed from false to true
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const [borderColor, setBorderColor] = useState("#000000");

@@ -10,6 +10,7 @@ import {
   FaLinkedin,
   FaYoutube,
   FaFacebook,
+  FaEnvelope
 } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 import { motion } from "framer-motion";
@@ -167,60 +168,72 @@ export default function Footer() {
                   </p>
                 </div>
                 <div className="mt-8 md:mt-0 flex flex-col items-center">
-                  <div className="flex space-x-4 mb-10">
-                    <a
-                      href="https://www.instagram.com/vinnovateit/?hl=en"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
-                    >
-                      <FaInstagram />
-                    </a>
-                    <a
-                      href="https://x.com/v_innovate_it?lang=en"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
-                    >
-                      <FaXTwitter />
-                    </a>
-                    <a
-                      href="https://github.com/vinnovateit"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
-                    >
-                      <FaGithub />
-                    </a>
-                    <a
-                      href="https://www.linkedin.com/company/v-innovate-it/?originalSubdomain=in"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
-                    >
-                      <FaLinkedin />
-                    </a>
-                    <a
-                      href="https://www.youtube.com/channel/UClqr0ir3N1_sG4ubZjEDe3g"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
-                    >
-                      <FaYoutube />
-                    </a>
-                    <a
-                      href="https://www.facebook.com/VinnovateIT/about/?_rdr"
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
-                    >
-                      <FaFacebook />
-                    </a>
-                  </div>
-                  <GlowButton className={nostromoMedium.className}>
-                    LET’S CONNECT!
-                  </GlowButton>
-                </div>
+  <div className="flex space-x-4 mb-10">
+    <a
+      href="https://www.instagram.com/vinnovateit/?hl=en"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+    >
+      <FaInstagram />
+    </a>
+    <a
+      href="https://x.com/v_innovate_it?lang=en"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+    >
+      <FaXTwitter />
+    </a>
+    <a
+      href="https://github.com/vinnovateit"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+    >
+      <FaGithub />
+    </a>
+    <a
+      href="https://www.linkedin.com/company/v-innovate-it/?originalSubdomain=in"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+    >
+      <FaLinkedin />
+    </a>
+    <a
+      href="https://www.youtube.com/channel/UClqr0ir3N1_sG4ubZjEDe3g"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+    >
+      <FaYoutube />
+    </a>
+    <a
+      href="mailto:vinnovateit@vit.ac.in"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+    >
+      <FaEnvelope />
+    </a>
+    <a
+      href="https://www.facebook.com/VinnovateIT/about/?_rdr"
+      target="_blank"
+      rel="noopener noreferrer"
+      className="w-9 h-9 bg-black flex items-center justify-center text-white text-xl transition-all duration-300 hover:text-orange-400 hover:shadow-[0_0_15px_rgba(245,179,127,0.8)]"
+    >
+      <FaFacebook />
+    </a>
+  </div>
+
+  <a href="https://discord.gg/6Thxh6R5">
+    <GlowButton className={nostromoMedium.className}>
+      LET’S CONNECT!
+    </GlowButton>
+  </a>
+</div>
+
               </div>
             </footer>
           </div>

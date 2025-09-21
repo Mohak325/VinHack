@@ -3,7 +3,7 @@ import { signIn } from 'next-auth/react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import { motion } from 'framer-motion'
 import { useEffect, useState, Suspense } from 'react'
-
+import { ruigslay } from "../fonts";
 function LoginContent() {
   const router = useRouter()
   const searchParams = useSearchParams()
@@ -108,12 +108,12 @@ function LoginContent() {
           animate="visible"
         >
           {/* Logo/Title */}
-          <motion.h1 
-            className="text-5xl sm:text-6xl md:text-7xl font-bold mb-6 text-orange-500"
-            variants={titleVariants}
-          >
-            VinHack 25
-          </motion.h1>
+          <motion.h1
+              className={`text-7xl sm:text-8xl md:text-[11rem] text-orange-500 ${ruigslay.className} mb-4`}
+              variants={titleVariants}
+            >
+              VinHack 25
+            </motion.h1>
           
           <motion.p 
             className="text-lg text-orange-300 mb-12 text-center max-w-lg font-mono"

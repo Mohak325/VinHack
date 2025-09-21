@@ -36,7 +36,7 @@ const HeroContent = ({ ruigslayClassName, handVariants, leftHandVariants }) => {
 
       {/* Register Button */}
       <a
-        href="https://gravitas.vit.ac.in/events/5fceeb67-a8ca-4ab9-9419-eb3f9b9d6b69"
+        href="/login"
         target="_blank"
         rel="noopener noreferrer"
         className=" inline-block pt-3 z-20 group"

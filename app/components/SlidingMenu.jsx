@@ -56,13 +56,8 @@ const SlidingMenu = () => {
       } bg-black/80 backdrop-blur-md`}
     >
       <div className="relative w-full h-full grid grid-cols-1 md:grid-cols-3 grid-rows-3 p-4 md:p-0">
-        {/* Mobile Layout Header */}
-        <div className="col-span-1 row-start-1 px-4 py-4 flex md:hidden justify-between items-start">
-          <div className="text-left">
-            <p className={`${gulimche.className} text-[#EA8244] text-xs`}>
-              project: New Era of VinnovateIT
-            </p>
-          </div>
+        {/* Mobile Layout Header - Only UserButton and Close */}
+        <div className="col-span-1 row-start-1 px-4 py-4 flex md:hidden justify-end items-start">
           <div className="flex top-0 items-center gap-3">
             <UserButton />
             <button
@@ -74,15 +69,16 @@ const SlidingMenu = () => {
           </div>
         </div>
 
-        {/* Desktop Top Right Project Info */}
+        {/* Desktop Top Right - Only UserButton and Close */}
         <div className="col-start-3 row-start-1 px-10 py-8 hidden md:flex justify-end items-start">
-          <div className="text-right">
-            <p className={`${gulimche.className} text-[#EA8244] text-sm`}>
-              project:
-            </p>
-            <p className={`${gulimche.className} text-[#EA8244] text-sm`}>
-              New Era of VinnovateIT
-            </p>
+          <div className="flex items-center gap-3">
+            <UserButton />
+            <button
+              onClick={handleClose}
+              className={`${nostromoLight.className} text-[#F5B37F] text-sm hover:text-white`}
+            >
+              CLOSE
+            </button>
           </div>
         </div>
 
@@ -154,16 +150,11 @@ const SlidingMenu = () => {
           </div>
         </div>
 
-        {/* Desktop Bottom Right User Controls */}
-        <div className="col-start-3 row-start-3 px-10 py-8 hidden md:flex justify-end items-end">
-          <UserButton />
-        </div>
-
         {/* Mobile Footer */}
         <div className="col-span-1 row-start-3 px-4 py-4 flex md:hidden justify-center items-end">
           <div className="text-center">
             <p className={`${gulimche.className} text-[#EA8244] text-xs`}>
-              LEGAL: ©2014-2025
+              LEGAL: ©2025-2026
             </p>
           </div>
         </div>

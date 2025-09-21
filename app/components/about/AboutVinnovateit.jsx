@@ -186,7 +186,7 @@ const AboutVinnovateit = ({ isFlipping }) => {
               />
             ))}
           </div>
-          <div className="text-black">CODE-ESSENCE: CREATIVE CHAOS</div>
+          <div className="text-black">THE TEAM BEHIND THE COOLEST COLLEGE LIVE SAVIOURS!</div>
           <div className="flex justify-center">
             <Image
               className="w-2/3 sm:w-full"
@@ -211,9 +211,9 @@ const AboutVinnovateit = ({ isFlipping }) => {
             className="text-lg sm:text-2xl md:text-3xl text-black"
             style={{ fontWeight: 300 }}
           >
-            <div>DISRUPT.</div>
+            <div>THINK.</div>
             <div>CREATE.</div>
-            <div>DOMINATE.</div>
+            <div>INNOVATE.</div>
           </div>
         </div>
 

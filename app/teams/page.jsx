@@ -251,13 +251,22 @@ export default function TeamPage() {
 
           {/* Additional Info */}
           <motion.div 
-            className="mt-12 text-center"
-            variants={itemVariants}
-          >
-            <p className="text-orange-300/60 font-mono text-sm">
-              Teams can have 2-4 members • Mix of skills encouraged
-            </p>
-          </motion.div>
+  className="mt-12 text-center"
+  variants={itemVariants}
+>
+  <p className="text-orange-300/60 font-mono text-sm">
+    Teams can have 4 members • Mix of skills encouraged
+  </p>
+  <a
+    href="https://discord.gg/6Thxh6R5"
+    target="_blank"
+    rel="noopener noreferrer"
+    className="block mt-2 text-orange-400 font-mono text-sm hover:underline"
+  >
+    Join here to find teammates if you don’t have them already
+  </a>
+</motion.div>
+
         </motion.div>
       </div>
     </div>
