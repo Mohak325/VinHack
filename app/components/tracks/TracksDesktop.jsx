@@ -136,7 +136,7 @@ const TracksDesktop = () => {
 				</h2>
 			</div>
 
-			<Sponsor />
+			{/* <Sponsor /> */}
 
 			<div className="w-full py-16">
 				<div

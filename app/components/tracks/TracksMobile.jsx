@@ -15,7 +15,7 @@ const TracksMobile = () => {
           TRACKS
         </h2>
       </div>
-      <Sponsor />
+      {/* <Sponsor /> */}
       <div className="w-full pt-8 pb-16">
         <div className="px-4 space-y-12">
           {tracksData.map((track, index) => (

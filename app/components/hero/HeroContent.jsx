@@ -10,7 +10,7 @@ const HeroContent = ({ ruigslayClassName, handVariants, leftHandVariants }) => {
   return (
     <div className="relative w-full h-full flex flex-col justify-center items-center">
       {/* Sponsor presents text */}
-      <div
+      {/* <div
         className={`flex items-center justify-center 
               gap-x-[clamp(0.6rem,1.8vw,0.9rem)] 
               text-[clamp(1.05rem,3vw,1.5rem)] 
@@ -26,7 +26,7 @@ const HeroContent = ({ ruigslayClassName, handVariants, leftHandVariants }) => {
           style={{ height: "auto" }}
         />
         <span>presents</span>
-      </div>
+      </div> */}
 
       <h1
         className={`text-[clamp(3.5rem,10vw,10rem)] leading-none relative z-20 mx-auto text-black ${ruigslayClassName}`}
