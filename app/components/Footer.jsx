@@ -137,8 +137,7 @@ export default function Footer() {
               
               <div className="mt-10 mb-8">
                 <a
-                  href="https://gravitas.vit.ac.in/events/5fceeb67-a8ca-4ab9-9419-eb3f9b9d6b69"
-                  target="_blank"
+                  href="/login"
                   rel="noopener noreferrer"
                 >
                   <GlowButton className={nostromoMedium.className}>

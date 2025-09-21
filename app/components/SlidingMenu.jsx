@@ -145,7 +145,7 @@ const SlidingMenu = () => {
               LEGAL:
             </p>
             <p className={`${gulimche.className} text-[#EA8244] text-sm`}>
-              ©2014-2025
+              ©2025-2026
             </p>
           </div>
         </div>

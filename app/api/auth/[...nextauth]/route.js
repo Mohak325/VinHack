@@ -26,8 +26,27 @@ export const authOptions = {
     },
     async signIn({ user, account, profile }) {
       console.log('🔄 NextAuth: Sign in attempt for:', user.email)
-      // Allow sign in
-      return true
+      
+      try {
+        // Check if email exists in gravitas collection
+        const gravitasUser = await prisma.gravitas.findUnique({
+          where: {
+            email: user.email
+          }
+        })
+        
+        if (!gravitasUser) {
+          console.log('❌ NextAuth: Email not found in gravitas collection:', user.email)
+          return false // Deny sign in
+        }
+        
+        console.log('✅ NextAuth: Email found in gravitas collection:', user.email)
+        return true // Allow sign in
+        
+      } catch (error) {
+        console.error('❌ NextAuth: Error checking gravitas collection:', error)
+        return false // Deny sign in on error
+      }
     },
     async redirect({ url, baseUrl }) {
       console.log('🔄 NextAuth: Redirect callback:', { url, baseUrl })
